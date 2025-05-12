@@ -6,7 +6,7 @@ Sebuah aplikasi web berbasis Laravel yang digunakan untuk menunjang pemantauan p
 
 ## Features
 
-- Coming Soon!
+- Coming Soon yah!
 
 ## Requirements
 
