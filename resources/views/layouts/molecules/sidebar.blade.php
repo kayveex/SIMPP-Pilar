@@ -1,4 +1,4 @@
-<nav class="flex flex-col pb-6 pt-2 px-4 h-screen w-[300px] border-r-[1.5px] border-[#DBDADA]" >
+<nav class="hidden md:flex lg:flex flex-col pb-6 pt-2 px-4 h-screen w-[300px] border-r-[1.5px] border-[#DBDADA]">
     <div class="flex flex-col justify-center items-center">
         <img src="{{ asset('assets/img/loginpillar.png') }}" alt="Logo" class="w-[100px]">
     </div>

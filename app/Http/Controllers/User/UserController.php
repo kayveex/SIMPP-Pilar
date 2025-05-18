@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 // Additional imports
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -14,18 +15,27 @@ class UserController extends Controller
     }
 
     function doLogin(Request $request) {
-        $data = [
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-        ];
+        // Buat validator manual
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6|max:16',
+        ]);
 
-        if (Auth::attempt($data)) {
-            // if login success, redirect to home page
-            return redirect()->route('home')->with('success', 'Sign in berhasil');
-        }else {
-            // redirect back to login page '/' with error message
-            return redirect('/')->with('error', 'Email atau Password salah');
+        // Jika validasi gagal, kembalikan semua error
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
+
+        // Coba login
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return redirect()->route('home')->with('success', 'Sign in berhasil');
+        }
+
+        // Jika login gagal
+        return back()->withErrors([
+            'email' => 'Email yang anda masukkan tidak terdaftar!',
+            'password' => 'Password anda salah!',
+        ])->withInput();
     }
 
     function logout() {
