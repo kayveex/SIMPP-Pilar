@@ -5,6 +5,11 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+/* Add DaisyUI without Themes */
+@plugin "daisyui" {
+  themes: false;
+}
+
 * {
     font-family: "Nunito Sans", sans-serif;
 }

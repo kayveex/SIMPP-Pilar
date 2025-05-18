@@ -19,6 +19,17 @@ class UserController extends Controller
             'password' => $request->input('password'),
         ];
 
-        dd($data);
+        if (Auth::attempt($data)) {
+            // if login success, redirect to home page
+            return redirect()->route('home')->with('success', 'Sign in berhasil');
+        }else {
+            // redirect back to login page '/' with error message
+            return redirect('/')->with('error', 'Email atau Password salah');
+        }
+    }
+
+    function logout() {
+        Auth::logout();
+        return redirect('/')->with('success', 'Sign out berhasil');
     }
 }
