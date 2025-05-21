@@ -13,6 +13,15 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
+     * Available roles in the system
+     */
+    const ROLE_TEKNIKAL = 'Divisi Teknikal';
+    const ROLE_PURCHASING = 'Divisi Purchasing';
+    const ROLE_ADMINISTRASI = 'Divisi Administrasi';
+    const ROLE_FINANCE = 'Divisi Finance';
+    const ROLE_DIREKTUR = 'Direktur';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -48,19 +57,54 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the role associated with the user.
+     * Check if user has a specific role
+     *
+     * @param string $roleName
+     * @return bool
      */
-    public function role()
+    public function hasRole(string $roleName): bool
     {
-        return $this->belongsTo(Role::class, 'role_id', 'role_id');
+        return $this->role === $roleName;
     }
-
+    
     /**
-     * Get the department associated with the user.
+     * Check if user is from technical division
      */
-    public function department()
+    public function isTeknikal(): bool
     {
-        return $this->belongsTo(Department::class, 'department_id', 'department_id');
+        return $this->role === self::ROLE_TEKNIKAL;
+    }
+    
+    /**
+     * Check if user is from purchasing division
+     */
+    public function isPurchasing(): bool
+    {
+        return $this->role === self::ROLE_PURCHASING;
+    }
+    
+    /**
+     * Check if user is from admin division
+     */
+    public function isAdministrasi(): bool
+    {
+        return $this->role === self::ROLE_ADMINISTRASI;
+    }
+    
+    /**
+     * Check if user is from finance division
+     */
+    public function isFinance(): bool
+    {
+        return $this->role === self::ROLE_FINANCE;
+    }
+    
+    /**
+     * Check if user is the director
+     */
+    public function isDirektur(): bool
+    {
+        return $this->role === self::ROLE_DIREKTUR;
     }
 
     /**

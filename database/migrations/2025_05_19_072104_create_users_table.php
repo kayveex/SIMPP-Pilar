@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            // Additional fields
-            $table->string('role')->default('user');
+            $table->string('role')->default('Divisi Administrasi'); // Default role
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('role_id')->nullable();
-            $table->unsignedBigInteger('department_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             
-            $table->foreign('role_id')->references('role_id')->on('roles')->nullOnDelete();
-            $table->foreign('department_id')->references('department_id')->on('departments')->nullOnDelete();
+            // Remove these foreign keys
+            // $table->unsignedBigInteger('role_id')->nullable();
+            // $table->unsignedBigInteger('department_id')->nullable();
+            // $table->foreign('role_id')->references('role_id')->on('roles')->nullOnDelete();
+            // $table->foreign('department_id')->references('department_id')->on('departments')->nullOnDelete();
         });
     }
 
