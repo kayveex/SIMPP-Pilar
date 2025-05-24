@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     const ROLE_TEKNIKAL = 'Divisi Teknikal';
     const ROLE_PURCHASING = 'Divisi Purchasing';
-    const ROLE_ADMINISTRASI = 'Divisi Administrasi';
+    const ROLE_ADMINISTRASI = 'Admin';
     const ROLE_FINANCE = 'Divisi Finance';
     const ROLE_DIREKTUR = 'Direktur';
 
