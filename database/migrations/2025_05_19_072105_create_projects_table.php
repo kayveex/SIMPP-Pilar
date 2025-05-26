@@ -10,15 +10,18 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('project_id');
-            $table->string('project_code')->unique();
+            // $table->string('project_code')->unique(); - Ini gaperlu, udh di handle project_id
+            $table->string('project_type')->enum('onsite','bengkel'); // 'onsite', 'bengkel';
             $table->string('project_name');
             $table->text('description')->nullable();
+            $table->string('person_in_charge');
+            $table->text('location')->nullable();
             $table->string('client_name')->nullable();
             $table->string('client_contact')->nullable();
             $table->date('start_date')->nullable();
             $table->date('estimated_end_date')->nullable();
             $table->date('actual_end_date')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('belum_dimulai'); //belum_dimulai, berlangsung, tertunda, selesai, dibatalkan
             $table->decimal('budget', 15, 2)->nullable();
             $table->decimal('actual_cost', 15, 2)->nullable();
             $table->boolean('director_approval')->default(false);

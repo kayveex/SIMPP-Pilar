@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -15,7 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::orderBy('created_at', 'desc')->paginate(10);
-        return view('pages.projects', compact('projects'));
+        return view('pages.projects.index', compact('projects'));
     }
 
     /**
@@ -69,7 +70,7 @@ class ProjectController extends Controller
             'estimated_end_date' => $request->estimated_end_date,
             'status' => 'pending',
             'budget' => $request->budget,
-            'created_by' => auth()->id(),
+            'created_by' => Auth::user()->id,
         ]);
         
         return redirect()->route('projects.show', $project->project_id)
