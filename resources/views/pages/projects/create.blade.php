@@ -25,6 +25,21 @@
 
 {{-- Page content --}}
 @section('page-content')
+
+    <section class="flex flex-col px-6 pt-6">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h1 class="text-2xl font-bold text-gray-800">Tambah Proyek Baru</h1>
+        </div>
+
+        {{-- Breadcrumb --}}
+        <div class="breadcrumbs text-md font-bold">
+            <ul>
+                <li class="text-[#4880FF]"><a href="/projects">Detail Proyek</a></li>
+                <li>Tambah Proyek</li>
+            </ul>
+        </div>
+    </section>
+
     <section class="flex flex-col p-6">
         <div id="box-item" class="flex flex-col w-full h-fit p-6 bg-[#FFFFFF] rounded-lg shadow-md">
             <form class="flex flex-col" action="" method="post">
@@ -105,7 +120,14 @@
                     {{-- Buat Multiple Attachments --}}
                     <div class="flex flex-col w-1/2">
                         <label for="attachments" class="text-sm font-bold text-gray-700 mb-2">Lampiran</label>
-                        <input type="file" id="attachments" name="attachments[]" multiple class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+                        <input 
+                            type="file" 
+                            id="attachments" 
+                            name="attachments[]" 
+                            multiple 
+                            class="file-input file-input-bordered border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full
+                                file:bg-gray-300 file:text-gray-800 file:border-none file:rounded file:px-4 file:py-2 file:cursor-pointer" 
+                        />
                     </div>
 
                     {{-- Lokasi --}}
@@ -115,8 +137,12 @@
                     </div>
                 </div>
 
-
-
+                {{-- Tombol Simpan --}}
+                <div class="flex justify-end mt-6">
+                    <button type="submit" class="bg-[#4880FF] cursor-pointer text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Tambahkan
+                    </button>
+                </div>
             </form>
         </div>
     </section>
