@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('project_payments', function (Blueprint $table) {
-            $table->bigIncrements('payment_id');
+            $table->id('payment_id')->primary();
             $table->unsignedBigInteger('project_id');
             $table->decimal('amount', 15, 2);
             $table->date('payment_date');

@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('material_requests', function (Blueprint $table) {
-            $table->bigIncrements('request_id');
+            $table->id('request_id')->primary();
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('requested_by');
             $table->boolean('approval_status')->default(false);

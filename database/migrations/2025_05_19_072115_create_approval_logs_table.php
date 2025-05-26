@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('approval_logs', function (Blueprint $table) {
-            $table->bigIncrements('log_id');
+            $table->id('log_id')->primary();
             $table->unsignedBigInteger('project_id');
             $table->string('approval_type');
             $table->unsignedBigInteger('approved_by')->nullable();

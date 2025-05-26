@@ -16,9 +16,9 @@
         {{-- Proyek Tab --}}
         <div class="mt-4 flex-col">
             <label for="home" class="font-bold">PROYEK</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="/projects" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-article"></i>
-                <span>Detail Proyek</span>
+                <span>Daftar Proyek</span>
             </a>
             <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-calendar-blank"></i>
