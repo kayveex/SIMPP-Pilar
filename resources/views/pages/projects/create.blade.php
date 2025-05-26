@@ -42,7 +42,7 @@
 
     <section class="flex flex-col p-6">
         <div id="box-item" class="flex flex-col w-full h-fit p-6 bg-[#FFFFFF] rounded-lg shadow-md">
-            <form class="flex flex-col" action="" method="post">
+            <form class="flex flex-col" action="{{ route('projects.store') }}" method="post">
                 @csrf
                 {{-- Form Baris #1 --}}
                 <div class="flex flex-row">
@@ -71,8 +71,8 @@
 
                     {{-- Tanggal Selesai --}}
                     <div class="flex flex-col w-1/2">
-                        <label for="end_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Selesai</label>
-                        <input type="date" id="end_date" name="end_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <label for="estimated_end_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Selesai (Perkiraan)</label>
+                        <input type="date" id="estimated_end_date" name="estimated_end_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                     </div>
                 </div>
 
@@ -111,8 +111,8 @@
                 {{-- Form Baris #4 --}}
                 <div class="flex flex-col mt-4">
                     {{-- Deskripsi Proyek --}}
-                    <label for="project_description" class="text-sm font-bold text-gray-700 mb-2">Keterangan Proyek</label>
-                    <textarea id="project_description" name="project_description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required></textarea>
+                    <label for="description" class="text-sm font-bold text-gray-700 mb-2">Keterangan Proyek</label>
+                    <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required></textarea>
                 </div>
 
                 {{-- Form Baris #5 --}}

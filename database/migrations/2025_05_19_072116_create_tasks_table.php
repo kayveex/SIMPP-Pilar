@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->bigIncrements('task_id');
+            $table->id('task_id')->primary();
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('phase_id')->nullable();
             $table->string('task_name');

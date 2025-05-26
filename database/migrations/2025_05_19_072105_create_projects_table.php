@@ -9,29 +9,32 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->bigIncrements('project_id');
-            // $table->string('project_code')->unique(); - Ini gaperlu, udh di handle project_id
+            $table->id('project_id')->primary();
             $table->string('project_type')->enum('onsite','bengkel'); // 'onsite', 'bengkel';
-            $table->string('project_name');
-            $table->text('description')->nullable();
-            $table->string('person_in_charge');
-            $table->text('location')->nullable();
-            $table->string('client_name')->nullable();
+            $table->string('project_name'); //required
+            $table->text('description')->nullable(); //required->create
+            $table->string('person_in_charge'); //required->create
+            $table->text('location')->nullable(); //required->create
+            $table->string('client_name')->nullable(); //required->create
             $table->string('client_contact')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('estimated_end_date')->nullable();
+            $table->date('start_date');
+            $table->date('estimated_end_date');
             $table->date('actual_end_date')->nullable();
-            $table->string('status')->default('belum_dimulai'); //belum_dimulai, berlangsung, tertunda, selesai, dibatalkan
+            $table->string('status')->enum('belum_dimulai','berlangsung','tertunda','selesai','dibatalkan'); //belum_dimulai, berlangsung, tertunda, selesai, dibatalkan
+            // Fitur tambahan, untuk menjumlahkan biaya proyek dari fitur anggaran
             $table->decimal('budget', 15, 2)->nullable();
             $table->decimal('actual_cost', 15, 2)->nullable();
+            // Fitur tambahan, untuk menyimpan informasi tentang persetujuan proyek
             $table->boolean('director_approval')->default(false);
             $table->boolean('technical_approval')->default(false);
             $table->boolean('admin_approval')->default(false);
             $table->boolean('purchasing_approval')->default(false);
             $table->boolean('finance_approval')->default(false);
+
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
 
+            // Bagian Foreign key 
             $table->foreign('created_by')->references('id')->on('users')->cascadeOnDelete();
         });
     }

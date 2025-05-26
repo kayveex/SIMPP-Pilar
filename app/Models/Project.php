@@ -13,7 +13,6 @@ class Project extends Model
     protected $primaryKey = 'project_id';
     
     protected $fillable = [
-        // 'project_code',
         'project_name',
         'project_type',
         'description',

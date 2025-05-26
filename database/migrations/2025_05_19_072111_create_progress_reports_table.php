@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('progress_reports', function (Blueprint $table) {
-            $table->bigIncrements('report_id');
+            $table->id('report_id')->primary();
             $table->unsignedBigInteger('project_id');
             $table->date('report_date');
             $table->decimal('progress_percentage', 5, 2);
