@@ -56,7 +56,6 @@ class ProjectController extends Controller
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
             // 'actual_end_date' => 'nullable|date|after_or_equal:start_date',
-            'person_in_charge' => 'required|max:255',
             'description' => 'nullable|max:1000',
             'location' => 'nullable|max:255',
         ]);
