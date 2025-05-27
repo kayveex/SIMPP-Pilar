@@ -11,7 +11,8 @@ class ProjectDocument extends Model
 
     protected $table = 'project_documents';
     protected $primaryKey = 'document_id';
-    
+    public $incrementing = true;
+        
     protected $fillable = [
         'project_id',
         'document_name',
@@ -22,7 +23,7 @@ class ProjectDocument extends Model
     ];
 
     protected $casts = [
-        'upload_date' => 'datetime',
+        'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
