@@ -23,172 +23,77 @@ class MaterialController extends Controller
     }
 
     /**
-     * Show the form for creating a new material.
+     * Show the material status page.
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function status()
     {
-        return view('pages.materials.create');
+        $materialRequests = MaterialRequest::with(['project', 'requester', 'approver'])->get();
+        return view('pages.material_status', compact('materialRequests'));
     }
 
     /**
-     * Store a newly created material in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'material_code' => 'required|string|unique:materials,material_code',
-            'material_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'unit' => 'required|string|max:50',
-            'unit_price' => 'required|numeric|min:0',
-        ]);
-
-        Material::create($validated);
-
-        return redirect()->route('materials.index')
-            ->with('success', 'Material berhasil ditambahkan.');
-    }
-
-    /**
-     * Display the specified material.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $material = Material::findOrFail($id);
-        return view('pages.materials.show', compact('material'));
-    }
-
-    /**
-     * Show the form for editing the specified material.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function edit($id)
-    {
-        $material = Material::findOrFail($id);
-        return view('pages.materials.edit', compact('material'));
-    }
-
-    /**
-     * Update the specified material in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function update(Request $request, $id)
-    {
-        $material = Material::findOrFail($id);
-        
-        $validated = $request->validate([
-            'material_code' => 'required|string|unique:materials,material_code,'.$id.',material_id',
-            'material_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'unit' => 'required|string|max:50',
-            'unit_price' => 'required|numeric|min:0',
-        ]);
-
-        $material->update($validated);
-
-        return redirect()->route('materials.index')
-            ->with('success', 'Material berhasil diperbarui.');
-    }
-
-    /**
-     * Remove the specified material from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function destroy($id)
-    {
-        $material = Material::findOrFail($id);
-        $material->delete();
-
-        return redirect()->route('materials.index')
-            ->with('success', 'Material berhasil dihapus.');
-    }
-
-    /**
-     * Display a listing of material requests.
+     * Show the material add page.
      *
      * @return \Illuminate\View\View
      */
-    public function requests()
+    public function add()
     {
-        $materialRequests = MaterialRequest::with('project', 'requester')->get();
-        $projects = Project::all();
+        $projects = Project::where('status', '!=', 'selesai')
+            ->get();
         $materials = Material::all();
-        
-        return view('pages.materials.requests', compact('materialRequests', 'projects', 'materials'));
+
+        return view('pages.material_add', compact('projects', 'materials'));
     }
 
     /**
-     * Store a new material request.
+     * Show the material view page.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  int|null  $id
+     * @return \Illuminate\View\View
      */
-    public function storeRequest(Request $request)
+    public function view($id = null)
     {
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,project_id',
-            'notes' => 'nullable|string',
-            'materials' => 'required|array',
-            'materials.*.material_id' => 'required|exists:materials,material_id',
-            'materials.*.quantity' => 'required|numeric|min:1',
-            'materials.*.unit' => 'required|string',
-            'materials.*.required_date' => 'nullable|date',
-        ]);
-
-        $materialRequest = MaterialRequest::create([
-            'project_id' => $validated['project_id'],
-            'requested_by' => Auth::id(),
-            'notes' => $validated['notes'] ?? null,
-            'requested_at' => now(),
-        ]);
-
-        foreach ($validated['materials'] as $item) {
-            MaterialRequestItem::create([
-                'request_id' => $materialRequest->request_id,
-                'material_id' => $item['material_id'],
-                'quantity' => $item['quantity'],
-                'unit' => $item['unit'],
-                'required_date' => $item['required_date'] ?? null,
-                'status' => 'pending',
-            ]);
-        }
-
-        return redirect()->route('materials.requests')
-            ->with('success', 'Permintaan material berhasil disubmit!');
+        // Logic to fetch material request details
+        return view('pages.material_view');
     }
 
     /**
-     * Approve a material request.
+     * Show the material process page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function process($id)
+    {
+        // Logic to fetch material request details
+        return view('pages.material_proses');
+    }
+
+    /**
+     * Show the material approval page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function approval($id)
+    {
+        // Logic to fetch material request details
+        return view('pages.material_persetujuan');
+    }
+
+    /**
+     * Process a material approval request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function approveRequest(Request $request, $id)
+    public function processApproval(Request $request, $id)
     {
-        $materialRequest = MaterialRequest::findOrFail($id);
-        $materialRequest->update([
-            'approval_status' => true,
-            'approved_by' => Auth::id(),
-            'approved_at' => now(),
-        ]);
-
-        return redirect()->route('materials.requests')
-            ->with('success', 'Permintaan material berhasil disetujui!');
+        // Process approval logic
+        return redirect()->route('material.status')
+            ->with('success', 'Material berhasil diproses!');
     }
 }

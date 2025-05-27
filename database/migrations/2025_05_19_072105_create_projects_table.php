@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('estimated_end_date');
             $table->date('actual_end_date')->nullable();
-            $table->string('status')->enum('belum_dimulai','berlangsung','tertunda','selesai','dibatalkan'); //belum_dimulai, berlangsung, tertunda, selesai, dibatalkan
+            $table->enum('status', ['belum_dimulai','berlangsung','tertunda','selesai','dibatalkan']); //belum_dimulai, berlangsung, tertunda, selesai, dibatalkan
             // Fitur tambahan, untuk menjumlahkan biaya proyek dari fitur anggaran
             $table->decimal('budget', 15, 2)->nullable();
             $table->decimal('actual_cost', 15, 2)->nullable();

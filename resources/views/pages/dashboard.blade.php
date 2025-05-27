@@ -128,9 +128,7 @@
                         <h3 class="text-sm font-medium text-gray-500 mb-2">Proyek Masuk</h3>
                         <div class="text-3xl font-bold text-gray-900 mb-2">4</div>
                         <div class="flex items-center text-sm">
-                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg>
+                            <i class="ph ph-trend-up w-4 h-4 text-green-500 mr-1"></i>
                             <span class="text-green-600 font-medium">+2</span>
                             <span class="text-gray-500 ml-1">dari bulan April</span>
                         </div>
@@ -157,9 +155,7 @@
                         <h3 class="text-sm font-medium text-gray-500 mb-2">Proyek Selesai</h3>
                         <div class="text-3xl font-bold text-gray-900 mb-2">10</div>
                         <div class="flex items-center text-sm">
-                            <svg class="w-4 h-4 text-green-500 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-                            </svg>
+                            <i class="ph ph-trend-up w-4 h-4 text-green-500 mr-1"></i>
                             <span class="text-green-600 font-medium">+16</span>
                             <span class="text-gray-500 ml-1">dari bulan April</span>
                         </div>
