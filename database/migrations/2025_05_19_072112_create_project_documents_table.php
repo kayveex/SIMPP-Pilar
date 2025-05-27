@@ -10,13 +10,13 @@ return new class extends Migration
     {
         Schema::create('project_documents', function (Blueprint $table) {
             $table->id('document_id')->primary();
-            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('project_id'); //Foreign Key
             $table->string('document_name');
             $table->string('document_type');
-            $table->string('file_path');
+            $table->string('file_path'); // Path to the file in storage
             $table->text('description')->nullable();
             $table->unsignedBigInteger('uploaded_by');
-            $table->timestamp('upload_date')->nullable();
+            $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
             $table->foreign('project_id')->references('project_id')->on('projects')->cascadeOnDelete();

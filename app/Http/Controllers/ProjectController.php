@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -55,71 +58,50 @@ class ProjectController extends Controller
             'client_name' => 'required|max:255',
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
-            // 'actual_end_date' => 'nullable|date|after_or_equal:start_date',
             'description' => 'nullable|max:1000',
             'location' => 'nullable|max:255',
         ]);
 
-        // Create project
-        $projectData = Project::create([
-            'project_name' => $request->project_name,
-            'project_type' => $request->project_type,
-            'status' => $request->status,
-            'person_in_charge' => $request->person_in_charge,
-            'client_name' => $request->client_name,
-            'start_date' => $request->start_date,
-            'estimated_end_date' => $request->estimated_end_date,
-            // 'actual_end_date' => $request->actual_end_date,
-            'description' => $request->description,
-            'location' => $request->location,
-            'created_by' => Auth::user()->id,
-        ]);
+        DB::beginTransaction();
 
-        // Fungsi tambahan untuk unggah file (jika diperlukan)
+        try {
+            $project = Project::create([
+                'project_name' => $request->project_name,
+                'project_type' => $request->project_type,
+                'status' => $request->status,
+                'person_in_charge' => $request->person_in_charge,
+                'client_name' => $request->client_name,
+                'start_date' => $request->start_date,
+                'estimated_end_date' => $request->estimated_end_date,
+                'description' => $request->description,
+                'location' => $request->location,
+                'created_by' => Auth::id(),
+            ]);
 
+            // If the request has a file, handle the file upload
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $filename = time() . '_' . Str::random(8) . '_' . $file->getClientOriginalName();
+                    $filePath = $file->storeAs('documents', $filename, 'public');
 
+                    ProjectDocument::create([
+                        'project_id' => $project->project_id,
+                        'document_name' => $filename,
+                        'document_type' => $file->getClientMimeType(),
+                        'file_path' => $filePath,
+                        'uploaded_by' => Auth::id(),
+                    ]);
+                }
+            }
 
-        // kembali ke halaman daftar proyek dengan pesan sukses
-        return redirect()->route('projects.index')
-            ->with('success', 'Proyek berhasil dibuat!');
-        
-        
+            DB::commit();
 
-
-
-
-
-
-
-
-        // // Validation logic here
-        // $validated = $request->validate([
-        //     'project_code' => 'required|unique:projects,project_code',
-        //     'project_name' => 'required',
-        //     'start_date' => 'required|date',
-        //     'estimated_end_date' => 'required|date|after_or_equal:start_date',
-        //     'client_name' => 'nullable',
-        //     'client_contact' => 'nullable',
-        //     'description' => 'nullable',
-        //     'budget' => 'nullable|numeric|min:0',
-        // ]);
-        
-        // // Create project
-        // $project = Project::create([
-        //     'project_code' => $request->project_code,
-        //     'project_name' => $request->project_name,
-        //     'description' => $request->description,
-        //     'client_name' => $request->client_name,
-        //     'client_contact' => $request->client_contact,
-        //     'start_date' => $request->start_date,
-        //     'estimated_end_date' => $request->estimated_end_date,
-        //     'status' => 'pending',
-        //     'budget' => $request->budget,
-        //     'created_by' => Auth::user()->id,
-        // ]);
-        
-        // return redirect()->route('projects.show', $project->project_id)
-        //     ->with('success', 'Proyek berhasil dibuat!');
+            return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->back()->withErrors(['error' => 'Gagal membuat proyek: ' . $th->getMessage()]);
+        }
     }
 
     /**

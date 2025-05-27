@@ -42,7 +42,8 @@
 
     <section class="flex flex-col p-6">
         <div id="box-item" class="flex flex-col w-full h-fit p-6 bg-[#FFFFFF] rounded-lg shadow-md">
-            <form class="flex flex-col" action="{{ route('projects.store') }}" method="post">
+            <form class="flex flex-col" action="{{ route('projects.store') }}" method="post" enctype="multipart/form-data">
+                {{-- CSRF Token --}}
                 @csrf
                 {{-- Form Baris #1 --}}
                 <div class="flex flex-row">
@@ -103,9 +104,6 @@
                         <label for="person_in_charge" class="text-sm font-bold text-gray-700 mb-2">Penanggungjawab</label>
                         <input type="text" id="person_in_charge" name="person_in_charge" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                     </div>
-
-
-                    
                 </div>
 
                 {{-- Form Baris #4 --}}
