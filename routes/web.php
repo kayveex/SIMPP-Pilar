@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScheduleController;
-
-
+// Import controllers
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\AnggaranController;
+use App\Http\Controllers\ArchiveController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
@@ -58,14 +60,20 @@ Route::middleware('auth')->group(function() {
         Route::post('/update', [ScheduleController::class, 'update'])->name('schedule.update');
     });
 
-    // Add other authenticated routes here
+    // Simple Material Route
+    Route::get('/material', [MaterialController::class, 'index'])->name('material');
+    
+    // Simple Anggaran Route
+    Route::get('/anggaran', [AnggaranController::class, 'index'])->name('anggaran');
+    
+    // Simple Archive Route
+    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');
 });
 
 Route::middleware('guest')->group(function() {
     // Routes - Authentication
     Route::get('/', [UserController::class, 'login'])->name('login');
     Route::post('/login', [UserController::class, 'doLogin'])->name('doLogin');
-
 });
 
 
