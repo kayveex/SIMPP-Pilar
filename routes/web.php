@@ -50,8 +50,19 @@ Route::middleware('auth')->group(function() {
     // Anggaran Rencana (only if page exists)
     Route::get('/anggaran/rencana/{id}', [AnggaranRencanaController::class, 'index'])->name('anggaran.rencana');
     
-    // Material
-    Route::get('/material', [MaterialController::class, 'index'])->name('material');
+    // Material Routes
+    Route::prefix('material')->group(function() {
+        // Main material page
+        Route::get('/', [MaterialController::class, 'index'])->name('material');
+        
+        // Additional material pages that have corresponding controller methods
+        Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
+        Route::get('/view/{id?}', [MaterialController::class, 'view'])->name('material.view');
+        Route::get('/status', [MaterialController::class, 'status'])->name('material.status');
+        Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
+        Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
+        Route::post('/approval/process/{id}', [MaterialController::class, 'processApproval'])->name('material.process-approval');
+    });
     
     // Archive
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');

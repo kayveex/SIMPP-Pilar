@@ -3,7 +3,11 @@
 
 {{-- Page Title --}}
 @section('page_title')
-    Arsip Proyek - SIMPP Pillar Presisisisi
+    Anggaran Proyek - SIMPP Pillar Presisi
+@endsection
+
+{{-- Head - Styles --}}
+@section('styles-head')
 @endsection
 
 {{-- Sidebar --}}
@@ -18,102 +22,75 @@
 
 {{-- Page content --}}
 @section('page-content')
-    <div class="min-h-screen bg-gray-50 p-6">
-        <div class="max-w-7xl mx-auto">
-            {{-- Header Section --}}
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Arsip Proyek</h1>
-                    <div class="breadcrumbs text-sm text-gray-500">
-                        <ul>
-                            <li><a href="#" class="text-blue-500 hover:text-blue-700">Anggaran Proyek</a></li>
-                            <li class="text-gray-400">Anggaran Rencana</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="btn btn-primary bg-blue-500 hover:bg-blue-600 border-blue-500 text-white px-6">
-                    Kembali
-                </button>
+    <div class="p-6 bg-gray-50 min-h-screen">
+        <!-- Page Header -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-4">Anggaran Proyek</h1>
+
+            <!-- Tab Navigation -->
+            <div class="tabs tabs-boxed bg-white p-1 mb-6 w-fit">
+                <a class="tab tab-active">Rencana</a>
+                <a class="tab">Realisasi</a>
             </div>
+        </div>
 
-            {{-- Project Info Cards --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <p class="text-gray-600 text-sm font-medium">Rekondisi Pipa Laut X</p>
-                </div>
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <p class="text-gray-600 text-sm font-medium">05/05/2025 - 01/06/2025</p>
-                </div>
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <p class="text-gray-600 text-sm font-medium">PT Gelombang Barat</p>
-                    <i class="ph ph-file-arrow-down text-gray-700"></i>
-                </div>
-                <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-                    <p class="text-gray-600 text-sm font-medium">On-Site</p>
-                </div>
-            </div>
-
-            {{-- Main Content Grid --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6">
-                {{-- Detail Proyek Card --}}
-                <div class="card bg-white shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
-                    <div class="card-body items-center text-center p-8">
-                        <div class="mb-4">
-                            <i class="ph ph-file-text text-gray-700 mx-auto" style="font-size: 32px;"></i>
+        <!-- Anggaran Rencana Section -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">Anggaran Rencana</h2>
+                        <div class="breadcrumbs text-sm text-blue-600">
+                            <ul>
+                                <li><a href="#" class="link link-hover">Anggaran Proyek</a></li>
+                                <li>Anggaran Rencana</li>
+                            </ul>
                         </div>
-                        <h3 class="card-title text-xl font-semibold text-gray-800 mb-0">Detail Proyek</h3>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="ph ph-download mr-2"></i>
+                            Unduh
+                        </button>
+                        <button class="btn btn-primary btn-sm">Kembali</button>
                     </div>
                 </div>
 
-                {{-- Jadwal Proyek Card --}}
-                <div class="card bg-white shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
-                    <div class="card-body items-center text-center p-8">
-                        <div class="mb-4">
-                            <i class="ph ph-calendar text-gray-700" style="font-size: 32px;"></i>
-                        </div>
-                        <h3 class="card-title text-xl font-semibold text-gray-800 mb-0">Jadwal Proyek</h3>
+                <!-- Project Info Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-1">Rekondisi Pipa Laut X</p>
                     </div>
-                </div>
-
-                {{-- Catatan Proyek Card --}}
-                <div class="card bg-white shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
-                    <div class="card-body items-center text-center p-8">
-                        <div class="mb-4">
-                            <i class="ph ph-note text-gray-700" style="font-size: 32px;"></i>
-                        </div>
-                        <h3 class="card-title text-xl font-semibold text-gray-800 mb-0">Catatan Proyek</h3>
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-1">05/05/2025 - 01/06/2025</p>
                     </div>
-                </div>
-
-                {{-- Anggaran Proyek Card --}}
-                <div class="card bg-white shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer">
-                    <div class="card-body items-center text-center p-8">
-                        <div class="mb-4">
-                            <i class="ph ph-money text-gray-700" style="font-size: 32px;"></i>
-                        </div>
-                        <h3 class="card-title text-xl font-semibold text-gray-800 mb-0">Anggaran Proyek</h3>
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-1">PT Gelombang Barat</p>
+                    </div>
+                    <div class="bg-gray-100 p-3 rounded-lg">
+                        <p class="text-sm text-gray-600 mb-1">On-Site</p>
                     </div>
                 </div>
             </div>
 
             <!-- Budget Table -->
-            <div class="mt-6 bg-white shadow-sm border overflow-hidden">
-                <table class="w-full">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="text-center font-semibold text-gray-700">No</th>
-                            <th class="text-center font-semibold text-gray-700">Uraian</th>
+                            <th class="text-left font-semibold text-gray-700">No</th>
+                            <th class="text-left font-semibold text-gray-700">Uraian Pekerjaan</th>
                             <th class="text-center font-semibold text-gray-700">Jumlah</th>
                             <th class="text-center font-semibold text-gray-700">Satuan</th>
-                            <th class="text-center font-semibold text-gray-700">Harga Satuan</th>
-                            <th class="text-center font-semibold text-gray-700">Jumlah Harga</th>
-                            <th></th>
+                            <th class="text-right font-semibold text-gray-700">Harga Satuan</th>
+                            <th class="text-right font-semibold text-gray-700">Jumlah Harga</th>
+                            <th class="text-right font-semibold text-gray-700">Total Harga</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Section A: Bahan Material -->
                         <tr class="bg-blue-50">
-                            <td class="text-center font-semibold">A</td>
+                            <td class="font-semibold">A</td>
                             <td class="font-semibold">Bahan Material</td>
                             <td></td>
                             <td></td>
@@ -122,8 +99,8 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td class="text-center">1</td>
-                            <td class="pl-6">Baut A</td>
+                            <td>1</td>
+                            <td>Baut A</td>
                             <td class="text-center">20</td>
                             <td class="text-center">Pcs</td>
                             <td class="text-right">3.000</td>
@@ -131,27 +108,36 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td class="text-center">2</td>
-                            <td class="pl-6">Baut B</td>
+                            <td>2</td>
+                            <td>Baut B</td>
                             <td class="text-center">20</td>
                             <td class="text-center">Pcs</td>
                             <td class="text-right">3.000</td>
                             <td class="text-right">60.000</td>
                             <td></td>
                         </tr>
-                        <tr class="bg-gray-50 font-semibold">
+                        <tr>
+                            <td>3</td>
+                            <td>Baut C</td>
+                            <td class="text-center">20</td>
+                            <td class="text-center">Pcs</td>
+                            <td class="text-right">3.000</td>
+                            <td class="text-right">60.000</td>
+                            <td></td>
+                        </tr>
+                        <tr class="bg-gray-50">
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td class="text-right">Jumlah</td>
-                            <td class="text-right">180.000</td>
+                            <td class="text-right font-semibold">Jumlah</td>
+                            <td class="text-right font-semibold">180.000</td>
                         </tr>
 
                         <!-- Section B: Pekerjaan Persiapan -->
                         <tr class="bg-blue-50">
-                            <td class="text-center font-semibold">B</td>
+                            <td class="font-semibold">B</td>
                             <td class="font-semibold">Pekerjaan Persiapan</td>
                             <td></td>
                             <td></td>
@@ -160,8 +146,8 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td class="text-center">1</td>
-                            <td class="pl-6">Pembersihan Lokasi</td>
+                            <td>1</td>
+                            <td>Pembersihan Lokasi</td>
                             <td class="text-center">1</td>
                             <td class="text-center">Lot</td>
                             <td class="text-right">100.000</td>
@@ -169,33 +155,33 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td class="text-center">2</td>
-                            <td class="pl-6">Memasang XYZ</td>
+                            <td>2</td>
+                            <td>Memasang XYZ</td>
                             <td class="text-center">1</td>
                             <td class="text-center">Lot</td>
                             <td class="text-right">100.000</td>
                             <td class="text-right">100.000</td>
                             <td></td>
                         </tr>
-                        <tr class="bg-gray-50 font-semibold">
+                        <tr class="bg-gray-50">
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td class="text-right">Jumlah</td>
-                            <td class="text-right">200.000</td>
+                            <td class="text-right font-semibold">Jumlah</td>
+                            <td class="text-right font-semibold">200.000</td>
                         </tr>
 
                         <!-- Total -->
-                        <tr class="bg-green-50 font-bold text-lg">
+                        <tr class="bg-blue-100 border-t-2 border-blue-200">
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td class="text-right">Jumlah Keseluruhan</td>
-                            <td class="text-right">218.000</td>
+                            <td class="text-right font-bold text-lg">Jumlah Keseluruhan</td>
+                            <td class="text-right font-bold text-lg">218.000</td>
                         </tr>
                     </tbody>
                 </table>
@@ -207,45 +193,36 @@
 {{-- Script for JS --}}
 @section('scripts')
     <script>
+        // Add any JavaScript functionality here
         document.addEventListener('DOMContentLoaded', function() {
-            // Add click handlers for cards
-            const cards = document.querySelectorAll('.card');
-
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    const title = this.querySelector('.card-title').textContent.trim();
-                    const projectId = {{ $project->project_id ?? 'null' }};
-
-                    // Navigation logic
-                    switch (title) {
-                        case 'Detail Proyek':
-                            console.log('Navigate to Detail Proyek');
-                            window.location.href = `/projects/${projectId}`;
-                            break;
-                        case 'Jadwal Proyek':
-                            console.log('Navigate to Jadwal Proyek');
-                            window.location.href = `/schedule`;
-                            break;
-                        case 'Catatan Proyek':
-                            console.log('Navigate to Catatan Proyek');
-                            window.location.href = `/projects/${projectId}/notes`;
-                            break;
-                        case 'Anggaran Proyek':
-                            console.log('Navigate to Anggaran Proyek');
-                            window.location.href = `/anggaran/realisasi/${projectId}`;
-                            break;
-                    }
-                });
-            });
-
-            // Tab functionality
+            // Tab switching functionality
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
-                    tabs.forEach(t => t.classList.remove('tab-active', 'bg-white', 'shadow-sm'));
-                    this.classList.add('tab-active', 'bg-white', 'shadow-sm');
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('tab-active'));
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
                 });
             });
+
+            // Download button functionality
+            const downloadBtn = document.querySelector('.btn-outline');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    // Add download functionality here
+                    console.log('Download initiated');
+                });
+            }
+
+            // Back button functionality
+            const backBtn = document.querySelector('.btn-primary');
+            if (backBtn) {
+                backBtn.addEventListener('click', function() {
+                    // Add navigation back functionality
+                    window.history.back();
+                });
+            }
         });
     </script>
 @endsection
