@@ -77,4 +77,6 @@ Route::middleware('guest')->group(function() {
 });
 
 
-
+Route::get('/testing', function() {
+    return view('pages.projects.indexnew');
+});
