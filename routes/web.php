@@ -76,6 +76,3 @@ Route::middleware('guest')->group(function() {
     Route::get('/', [UserController::class, 'login'])->name('login');
     Route::post('/login', [UserController::class, 'doLogin'])->name('doLogin');
 });
-
-
-
