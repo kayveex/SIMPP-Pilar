@@ -10,68 +10,69 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\ArchiveController;
+// New controllers for detailed pages
+use App\Http\Controllers\AnggaranRealisasiController;
+use App\Http\Controllers\AnggaranRencanaController;
+use App\Http\Controllers\ArchiveViewController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
     // Logout
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-    // Routes - Home
+    
+    // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Route for dashboard page
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
-    // Project Routes with better naming convention
+    // Project Routes
     Route::prefix('projects')->group(function() {
-        // List all projects
         Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
-        
-        // Create new project form
         Route::get('/create', [ProjectController::class, 'create'])->name('projects.create');
-        
-        // Add project form
         Route::get('/add', [ProjectController::class, 'add'])->name('projects.add');
-        
-        // Store new project
         Route::post('/', [ProjectController::class, 'store'])->name('projects.store');
-        
-        // Show project details (must be after /create to prevent conflicts)
         Route::get('/{id}', [ProjectController::class, 'show'])->name('projects.show');
-        
-        // Edit project form
         Route::get('/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
-        
-        // Update project
         Route::put('/{id}', [ProjectController::class, 'update'])->name('projects.update');
-        
-        // Delete project
         Route::delete('/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     });
     
-    // Schedule Routes
-    Route::prefix('schedule')->group(function() {
-        // View schedule dashboard
-        Route::get('/', [ScheduleController::class, 'index'])->name('schedule.index');
-        
-        // Edit schedule page - rename this line if you want
-        Route::get('/schedule', [ScheduleController::class, 'schedule'])->name('schedule.edit');
-        
-        // Update schedule
-        Route::post('/update', [ScheduleController::class, 'update'])->name('schedule.update');
-    });
-
-    // Simple Material Route
-    Route::get('/material', [MaterialController::class, 'index'])->name('material');
+    // Schedule
+    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
     
-    // Simple Anggaran Route
+    // Anggaran
     Route::get('/anggaran', [AnggaranController::class, 'index'])->name('anggaran');
     
-    // Simple Archive Route
+    // Anggaran Realisasi (only if page exists)
+    Route::get('/anggaran/realisasi/{id}', [AnggaranRealisasiController::class, 'index'])->name('anggaran.realisasi');
+    
+    // Anggaran Rencana (only if page exists)
+    Route::get('/anggaran/rencana/{id}', [AnggaranRencanaController::class, 'index'])->name('anggaran.rencana');
+    
+    // Material Routes
+    Route::prefix('material')->group(function() {
+        // Main material page
+        Route::get('/', [MaterialController::class, 'index'])->name('material');
+        
+        // Additional material pages that have corresponding controller methods
+        Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
+        Route::get('/view/{id?}', [MaterialController::class, 'view'])->name('material.view');
+        Route::get('/status', [MaterialController::class, 'status'])->name('material.status');
+        Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
+        Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
+        Route::post('/approval/process/{id}', [MaterialController::class, 'processApproval'])->name('material.process-approval');
+    });
+    
+    // Archive
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');
+    
+    // Archive View (only if page exists)
+    Route::get('/archive/{id}/view', [ArchiveViewController::class, 'index'])->name('archive.view');
 });
 
+// Guest routes
 Route::middleware('guest')->group(function() {
-    // Routes - Authentication
     Route::get('/', [UserController::class, 'login'])->name('login');
     Route::post('/login', [UserController::class, 'doLogin'])->name('doLogin');
 });

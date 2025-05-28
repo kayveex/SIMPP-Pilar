@@ -27,13 +27,13 @@ class ArchiveController extends Controller
     }
     
     /**
-     * Show details of an archived project.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
+         * Show details of an archived project.
+         *
+         * @param  int  $id
+         * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+         */
+        public function show($id)
+        {
         $project = Project::with([
                 'finalReport', 
                 'creator', 
@@ -65,7 +65,7 @@ class ArchiveController extends Controller
         
         // Check if file exists
         if (!Storage::disk('public')->exists($document->file_path)) {
-            return redirect()->back()->with('error', 'File tidak ditemukan.');
+            abort(404, 'File tidak ditemukan.');
         }
         
         return Storage::disk('public')->download(
