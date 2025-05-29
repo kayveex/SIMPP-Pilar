@@ -34,7 +34,7 @@
         {{-- Breadcrumb --}}
         <div class="breadcrumbs text-md font-bold">
             <ul>
-                <li class="text-[#4880FF]"><a href="/projects">Detail Proyek</a></li>
+                <li class="text-[#4880FF]"><a href="/projects">Daftar Proyek</a></li>
                 <li>Tambah Proyek</li>
             </ul>
         </div>

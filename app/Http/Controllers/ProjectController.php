@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 class ProjectController extends Controller
 {
@@ -16,11 +18,52 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $projects = Project::orderBy('created_at', 'desc')->paginate(10);
+        $query = Project::query();
+
+        // Filter: Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('project_name', 'like', "%$search%")
+                ->orWhere('client_name', 'like', "%$search%");
+            });
+        }
+
+        // Filter: Jenis Proyek
+        if ($request->filled('project_type')) {
+            $query->where('project_type', $request->project_type);
+        }
+
+        // Filter: Status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter: Prioritas
+        if ($request->filled('priority')) {
+            $today = Carbon::today();
+
+            $query->whereNotNull('estimated_end_date')->where(function ($q) use ($request, $today) {
+                if ($request->priority === 'high') {
+                    $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(7));
+                } elseif ($request->priority === 'medium') {
+                    $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(14))
+                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(7));
+                } elseif ($request->priority === 'low') {
+                    $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(30))
+                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(14));
+                }
+            });
+        }
+
+        $projects = $query->orderBy('created_at', 'desc')->paginate(5)->withQueryString();
+
         return view('pages.projects.index', compact('projects'));
     }
+
 
     /**
      * Show the form for creating a new project.
