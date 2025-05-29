@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectDocument;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -208,10 +209,32 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
-        $project = Project::findOrFail($id);
-        $project->delete();
-        
-        return redirect()->route('projects.index')
-            ->with('success', 'Proyek berhasil dihapus!');
+        DB::beginTransaction();
+
+        try {
+            $project = Project::findOrFail($id);
+
+            // Hapus semua dokumen terkait
+            $documents = $project->documents; // asumsi relasi `documents()` sudah didefinisikan di model Project
+            foreach ($documents as $document) {
+                // Hapus file fisik dari storage
+                if (Storage::disk('public')->exists($document->file_path)) {
+                    Storage::disk('public')->delete($document->file_path);
+                }
+
+                // Hapus data dari database
+                $document->delete();
+            }
+
+            // Hapus data proyek
+            $project->delete();
+
+            DB::commit();
+
+            return redirect()->route('projects.index')->with('success', 'Proyek berhasil dihapus!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal menghapus proyek: ' . $th->getMessage()]);
+        }
     }
 }
