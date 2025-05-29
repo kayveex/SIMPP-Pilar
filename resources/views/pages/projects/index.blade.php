@@ -35,18 +35,18 @@
         {{-- Bagian Filter Tabel --}}
         <div class="flex flex-row w-full gap-4 bg-white shadow-sm rounded-lg p-4 mb-6 border-gray-200">
             {{-- Search Bar --}}
-            <form class="flex flex-row w-1/3" action="" method="POST">
+            <form class="flex flex-row w-1/3" action="" method="GET">
                 <div class="relative flex-1 min-w-64">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="ph-bold ph-magnifying-glass text-xl text-gray-400 w-5 h-5"></i>
                     </div>
-                    <input type="text" name="search_bar" placeholder="Cari proyek..."
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari proyek..."
                         class="block w-full pl-12 pr-3 py-2 border text-md border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </form>
 
             {{-- Filter Controls --}}
-            <form class="flex flex-row w-2/3 items-center gap-2" action="" method="POST">
+            <form class="flex flex-row w-2/3 items-center gap-2" action="" method="GET">
                 <button class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" type="submit">
                     <i class="ph-bold ph-funnel"></i>                    
                     <span class="ml-2">Filter</span>
@@ -54,34 +54,34 @@
                 {{-- Input Dropdown - Prioritas  --}}
                 <select name="priority" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
                     <option value="">Prioritas</option>
-                    <option value="high">Tinggi</option>
-                    <option value="medium">Sedang</option>
-                    <option value="low">Rendah</option>
+                    <option value="high" {{ request('priority') == 'high' ? 'selected' : '' }}>Tinggi</option>
+                    <option value="medium" {{ request('priority') == 'medium' ? 'selected' : '' }}>Sedang</option>
+                    <option value="low" {{ request('priority') == 'low' ? 'selected' : '' }}>Rendah</option>
                 </select>
 
                 {{-- Input Dropdown - Jenis Proyek --}}
-                <select name="project_type" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
+                <select name="project_type" value="{{ request('project_type') }}" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
                     <option value="">Jenis Proyek</option>
-                    <option value="onsite">On-Site</option>
-                    <option value="bengkel">Bengkel</option>
+                    <option value="onsite" {{ request('project_type') == 'onsite' ? 'selected' : '' }}>On-Site</option>
+                    <option value="bengkel" {{ request('project_type') == 'bengkel' ? 'selected' : '' }}>Bengkel</option>
                 </select>
 
                 {{-- Input Dropdown - Status --}}
                 <select name="status" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
                     <option value="">Status</option>
-                    <option value="belum_dimulai">Belum Dimulai</option>
-                    <option value="berlangsung">Berlangsung</option>
-                    <option value="tertunda">Tertunda</option>
-                    <option value="selesai">Selesai</option>
-                    <option value="dibatalkan">Dibatalkan</option>
+                    <option value="belum_dimulai" {{ request('status') == 'belum_dimulai' ? 'selected' : '' }}>Belum Dimulai</option>
+                    <option value="berlangsung" {{ request('status') == 'berlangsung' ? 'selected' : '' }}>Berlangsung</option>
+                    <option value="tertunda" {{ request('status') == 'tertunda' ? 'selected' : '' }}>Tertunda</option>
+                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="dibatalkan" {{ request('status') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
                 </select>
 
 
                 {{-- Make reset button --}}
-                <button class="px-4 py-2 bg-white text-red-600 flex flex-row items-center cursor-pointer  rounded-lg hover:bg-red-600 hover:text-white transition duration-200" type="reset">
+                <a href="{{ route('projects.index') }}" class="px-4 py-2 bg-white text-red-600 flex flex-row items-center cursor-pointer rounded-lg hover:bg-red-600 hover:text-white transition duration-200">
                     <i class="ph-bold ph-arrows-counter-clockwise"></i>
                     <span class="ml-2">Reset</span>
-                </button>
+                </a>
             </form>
         </div>
 
@@ -125,24 +125,41 @@
 
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="{{ route('projects.show', 1) }}" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Proyek">
+                                        <a href="{{ route('projects.show', $project->project_id) }}" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Proyek">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
-                                        <a href="{{ route('projects.edit', 1) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Proyek">
+                                        <a href="{{ route('projects.edit', $project->project_id ) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Proyek">
                                             <i class="ph-bold ph-pencil-simple-line"></i>
                                         </a>
-                                        <form action="{{ route('projects.destroy', 1) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="py-2 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer" title="Hapus Proyek">
+                                        <div x-data="{ showModal: false }">
+                                            <button @click="showModal = true" class="py-2 text-red-500 hover:text-red-600 transition duration-200 cursor-pointer" title="Hapus Proyek">
                                                 <i class="ph-bold ph-trash-simple"></i>
                                             </button>
-                                        </form>
+
+                                            {{-- Modal --}}
+                                            <div x-show="showModal" x-cloak class="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-sm bg-black/30">
+                                                <div @click.away="showModal = false" class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+                                                    <h2 class="text-lg font-bold mb-4 text-gray-800">Konfirmasi Hapus</h2>
+                                                    <p class="text-gray-600 mb-6">
+                                                        Apakah Anda yakin ingin menghapus proyek <strong>{{ $project->project_name }}</strong>? Tindakan ini tidak dapat dibatalkan.
+                                                    </p>
+
+                                                    <div class="flex justify-end gap-4">
+                                                        <button @click="showModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">Batal</button>
+
+                                                        <form action="{{ route('projects.destroy', $project->project_id ) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </td>
-
                             </tr>
-                            
                         @endforeach
                         
                     @endif
@@ -156,12 +173,23 @@
                 </tbody>
 
             </table>
-            
+
+            {{-- Info jumlah data + Pagination --}}
+            <div class="flex justify-between items-center mt-4 px-4 py-2 text-sm text-gray-600">
+                <div>
+                    Menampilkan
+                    <span class="font-semibold">{{ $projects->firstItem() }}</span>
+                    –
+                    <span class="font-semibold">{{ $projects->lastItem() }}</span>
+                    dari
+                    <span class="font-semibold">{{ $projects->total() }}</span>
+                    proyek
+                </div>
+
+                <div class="flex justify-end">
+                    {{ $projects->links('pagination::tailwind') }}
+                </div>
+            </div>
         </div>
-        
     </section>
-
-
-
-
 @endsection
