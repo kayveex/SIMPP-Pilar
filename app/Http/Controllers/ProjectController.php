@@ -156,9 +156,10 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        $project = Project::findOrFail($id);
-        return view('pages.projects.show', compact('project'));
+        $project = Project::with('documents')->findOrFail($id);
+        return view('pages.projects.detail', compact('project'));
     }
+
 
     /**
      * Show the form for editing the specified project.
