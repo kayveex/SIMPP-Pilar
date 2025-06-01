@@ -26,10 +26,10 @@ class ProjectController extends Controller
 
         // Filter: Search
         if ($request->filled('search')) {
-            $search = $request->search;
+            $search = strtolower($request->search); // konversi input ke lowercase
             $query->where(function ($q) use ($search) {
-                $q->where('project_name', 'like', "%$search%")
-                ->orWhere('client_name', 'like', "%$search%");
+                $q->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"])
+                ->orWhereRaw('LOWER(client_name) LIKE ?', ["%{$search}%"]);
             });
         }
 
