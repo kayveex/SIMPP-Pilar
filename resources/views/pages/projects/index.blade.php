@@ -35,7 +35,7 @@
         {{-- Bagian Filter Tabel --}}
         <div class="flex flex-row w-full gap-4 bg-white shadow-sm rounded-lg p-4 mb-6 border-gray-200">
             {{-- Search Bar --}}
-            <form class="flex flex-row w-1/3" action="" method="GET">
+            <form class="flex flex-row w-1/3" action="{{ route('projects.index') }}" method="GET">
                 <div class="relative flex-1 min-w-64">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="ph-bold ph-magnifying-glass text-xl text-gray-400 w-5 h-5"></i>
