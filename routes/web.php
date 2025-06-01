@@ -34,7 +34,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/', [ProjectController::class, 'store'])->name('projects.store');
         Route::get('/{id}', [ProjectController::class, 'show'])->name('projects.show');
         Route::get('/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
-        Route::put('/{id}', [ProjectController::class, 'update'])->name('projects.update');
+        // Update Project - Start
+        Route::patch('/{id}/detail-update', [ProjectController::class, 'updateDetail'])->name('projects.update.detail');
+
+
+        // Update Project - End
         Route::delete('/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     });
     
@@ -69,6 +73,19 @@ Route::middleware('auth')->group(function() {
     
     // Archive View (only if page exists)
     Route::get('/archive/{id}/view', [ArchiveViewController::class, 'index'])->name('archive.view');
+
+    // Project Documents
+    Route::prefix('projectDocs')->group(function() {
+        Route::post('/upload/{id}', [ProjectController::class, 'addDocuments'])->name('projectDocs.upload');
+        Route::delete('/{id}', [ProjectController::class, 'deleteDocument'])->name('projectDocs.delete');
+    
+    // Persetujuan Project
+    Route::patch('/approval/{id}', [ProjectController::class, 'updatePersetujuanProject'])->name('project.approval');
+    // Hapus Persetujuan Project
+    Route::patch('/approval/delete/{id}', [ProjectController::class, 'deletePersetujuanProject'])->name('project.approval.delete');
+
+
+    });
 });
 
 // Guest routes

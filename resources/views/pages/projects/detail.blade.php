@@ -187,7 +187,7 @@
                                 @foreach ($project->documents as $document)
                                     <li class="mb-2">
                                         <a href="{{ asset('storage/' . $document->file_path) }}" class="text-blue-600 hover:underline" target="_blank">
-                                            {{ $document->document_name }} ({{ $document->document_type }})
+                                            {{ $document->document_name }} ({{ $document->created_at->format('d-m-Y') }})
                                         </a>
                                     </li>
                                 @endforeach

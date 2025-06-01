@@ -143,7 +143,6 @@ class ProjectController extends Controller
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
             return redirect()->back()->withErrors(['error' => 'Gagal membuat proyek: ' . $th->getMessage()]);
         }
     }
@@ -170,7 +169,8 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $project = Project::findOrFail($id);
-        return view('pages.projects.edit', compact('project'));
+        $projectDocuments = ProjectDocument::where('project_id', $id)->get();
+        return view('pages.projects.edit', compact('project', 'projectDocuments'));
     }
 
     /**
@@ -180,26 +180,82 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function updateDetail(Request $request, $id)
     {
-        // Validation logic here
-        $validated = $request->validate([
-            'project_code' => 'required|unique:projects,project_code,'.$id.',project_id',
-            'project_name' => 'required',
+        $request->validate([
+            'project_name' => 'required|max:255',
+            'project_type' => 'required|in:bengkel,onsite',
+            'status' => 'required|in:belum_dimulai,berlangsung,tertunda,selesai,dibatalkan',
+            'person_in_charge' => 'required|max:255',
+            'client_name' => 'required|max:255',
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
-            'client_name' => 'nullable',
-            'client_contact' => 'nullable',
-            'description' => 'nullable',
-            'budget' => 'nullable|numeric|min:0',
-            'status' => 'required|in:pending,in_progress,completed,canceled',
+            'actual_end_date' => 'nullable|date|after_or_equal:start_date',
+            'description' => 'nullable|max:1000',
+            'location' => 'nullable|max:255',
         ]);
-        
-        $project = Project::findOrFail($id);
-        $project->update($request->all());
-        
-        return redirect()->route('projects.show', $project->project_id)
-            ->with('success', 'Proyek berhasil diperbarui!');
+
+        DB::beginTransaction();
+
+        try {
+            $project = Project::findOrFail($id);
+
+            $project->update([
+                'project_name' => $request->project_name,
+                'project_type' => $request->project_type,
+                'status' => $request->status,
+                'person_in_charge' => $request->person_in_charge,
+                'client_name' => $request->client_name,
+                'start_date' => $request->start_date,
+                'estimated_end_date' => $request->estimated_end_date,
+                'actual_end_date' => $request->actual_end_date, 
+                'description' => $request->description,
+                'location' => $request->location,
+            ]);
+
+            DB::commit();
+            return redirect()->route('projects.index')->with('success', 'Detail Proyek berhasil diperbarui!');
+            
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui detail proyek: ' . $th->getMessage()]);
+        }
+    }
+
+
+    // Update the permission of the project
+
+    public function updatePersetujuanProject($id) 
+    {
+        if (Auth::user()->role === 'Divisi Teknikal') {
+            $project = Project::findOrFail($id);
+            $project->update([
+                'technical_approval' => true,
+            ]);
+
+        }
+
+        // Other roles soon!
+
+        return redirect()->back()->with('success', 'Persetujuan berhasil diperbarui.');
+
+    }
+
+
+    // Delete Persetujuan Project
+    public function deletePersetujuanProject($id) 
+    {
+        if (Auth::user()->role === 'Divisi Teknikal') {
+            $project = Project::findOrFail($id);
+            $project->update([
+                'technical_approval' => false,
+            ]);
+        }
+
+        // Other roles soon!
+
+        return redirect()->back()->with('success', 'Persetujuan berhasil dihapus.');
     }
 
     /**
@@ -236,6 +292,68 @@ class ProjectController extends Controller
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Gagal menghapus proyek: ' . $th->getMessage()]);
+        }
+    }
+
+    // Adding new document to project
+    public function addDocuments(Request $request, $id) 
+    {
+        $request->validate([
+            'attachments.*' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $project = Project::findOrFail($id);
+
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $filename = time() . '_' . Str::random(8) . '_' . $file->getClientOriginalName();
+                    $filePath = $file->storeAs('documents', $filename, 'public');
+
+                    ProjectDocument::create([
+                        'project_id' => $project->project_id,
+                        'document_name' => $filename,
+                        'document_type' => $file->getClientMimeType(),
+                        'file_path' => $filePath,
+                        'uploaded_by' => Auth::id(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('projects.show', ['id' => $id])->with('success', 'Dokumen berhasil ditambahkan!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal menambahkan dokumen: ' . $th->getMessage()]);
+        }
+
+    }
+
+    // delete document
+    public function deleteDocument($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $document = ProjectDocument::findOrFail($id);
+
+            // Hapus file fisik dari storage
+            if (Storage::disk('public')->exists($document->file_path)) {
+                Storage::disk('public')->delete($document->file_path);
+            }
+
+            // Hapus data dari database
+            $document->delete();
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Dokumen berhasil dihapus!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal menghapus dokumen: ' . $th->getMessage()]);
         }
     }
 }
