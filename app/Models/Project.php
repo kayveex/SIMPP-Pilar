@@ -28,10 +28,15 @@ class Project extends Model
         'budget',
         'actual_cost',
         'director_approval',
+        'director_approval_date',
         'technical_approval',
+        'technical_approval_date',
         'admin_approval',
+        'admin_approval_date',
         'purchasing_approval',
+        'purchasing_approval_date',
         'finance_approval',
+        'finance_approval_date',
         'created_by',
     ];
 
@@ -70,10 +75,6 @@ class Project extends Model
         return $this->hasMany(ProjectTeam::class, 'project_id');
     }
 
-    public function materialRequests()
-    {
-        return $this->hasMany(MaterialRequest::class, 'project_id');
-    }
 
     public function expenses()
     {

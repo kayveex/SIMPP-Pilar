@@ -25,12 +25,23 @@ return new class extends Migration
             $table->decimal('budget', 15, 2)->nullable();
             $table->decimal('actual_cost', 15, 2)->nullable();
             // Fitur tambahan, untuk menyimpan informasi tentang persetujuan proyek
+            // Persetujuan Direktur
             $table->boolean('director_approval')->default(false);
+            $table->date('director_approval_date')->nullable();
+            // Persetujuan Tim Technical
             $table->boolean('technical_approval')->default(false);
+            $table->date('technical_approval_date')->nullable();
+            // Persetujuan Tim Administrasi
             $table->boolean('admin_approval')->default(false);
+            $table->date('admin_approval_date')->nullable();
+            // Persetujuan Tim Purchasing
             $table->boolean('purchasing_approval')->default(false);
+            $table->date('purchasing_approval_date')->nullable();
+            // Persetujuan Tim Finance
             $table->boolean('finance_approval')->default(false);
+            $table->date('finance_approval_date')->nullable();
 
+            // Fitur tambahan, untuk menyimpan informasi tentang siapa yang membuat  & kapan proyek dibuat
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
 

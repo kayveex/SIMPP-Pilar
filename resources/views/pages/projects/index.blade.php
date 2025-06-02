@@ -4,7 +4,7 @@
 
 {{-- Page Title --}}
 @section('page_title')
-    Detail Proyek - SIMPP Pillar Presisi
+    Daftar Proyek - SIMPP Pillar Presisi
 @endsection
 
 {{-- Head - Styles --}}

@@ -30,13 +30,11 @@ Route::middleware('auth')->group(function() {
     Route::prefix('projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
         Route::get('/create', [ProjectController::class, 'create'])->name('projects.create');
-        Route::get('/add', [ProjectController::class, 'add'])->name('projects.add');
         Route::post('/', [ProjectController::class, 'store'])->name('projects.store');
         Route::get('/{id}', [ProjectController::class, 'show'])->name('projects.show');
         Route::get('/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
         // Update Project - Start
         Route::patch('/{id}/detail-update', [ProjectController::class, 'updateDetail'])->name('projects.update.detail');
-
 
         // Update Project - End
         Route::delete('/{id}', [ProjectController::class, 'destroy'])->name('projects.destroy');
@@ -60,9 +58,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [MaterialController::class, 'index'])->name('material');
         
         // Additional material pages that have corresponding controller methods
-        Route::get('/add', [MaterialController::class, 'add'])->name('material.add');
+        Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
         Route::get('/view/{id?}', [MaterialController::class, 'view'])->name('material.view');
-        Route::get('/status', [MaterialController::class, 'status'])->name('material.status');
         Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
         Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
         Route::post('/approval/process/{id}', [MaterialController::class, 'processApproval'])->name('material.process-approval');

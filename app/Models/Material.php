@@ -13,15 +13,19 @@ class Material extends Model
     protected $primaryKey = 'material_id';
     
     protected $fillable = [
-        'material_code',
-        'material_name',
-        'description',
-        'unit',
-        'unit_price',
+        'material_title',
+        'material_notes',
+        'vendor',
+        'client_name',
+        'purchasing_approval',
+        'purchasing_approval_date',
+        'approval_status',
+        'invoice',
+        'created_by',
+        'project_id',
     ];
 
     protected $casts = [
-        'unit_price' => 'decimal:2',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
