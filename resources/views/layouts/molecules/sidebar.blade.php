@@ -6,16 +6,15 @@
         {{-- Home Tab --}}
         <div class="mt-2 flex-col">
             <label for="home" class="font-bold">HOME</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
+            <a href="/" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
                 <i class="ph-fill ph-squares-four"></i>
                 <span>Dashboard</span>
             </a>
         </div>
 
-
         {{-- Proyek Tab --}}
         <div class="mt-4 flex-col">
-            <label for="home" class="font-bold">PROYEK</label>
+            <label for="proyek" class="font-bold">PROYEK</label>
             <a href="/projects" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-article"></i>
                 <span>Daftar Proyek</span>
@@ -36,8 +35,8 @@
 
         {{-- Material Tab --}}
         <div class="mt-4 flex-col">
-            <label for="home" class="font-bold">MATERIAL</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <label for="material" class="font-bold">MATERIAL</label>
+            <a href="/material" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-check-square-offset"></i>
                 <span>Pengajuan Material</span>
             </a>
@@ -49,7 +48,7 @@
 
         {{-- Keuangan Tab --}}
         <div class="mt-4 flex-col">
-            <label for="home" class="font-bold">KEUANGAN</label>
+            <label for="keuangan" class="font-bold">KEUANGAN</label>
             <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-coins"></i>
                 <span>Anggaran Proyek</span>
@@ -58,14 +57,12 @@
 
         {{-- Arsip --}}
         <div class="mt-4 flex-col">
-            <label for="home" class="font-bold">ARSIP</label>
+            <label for="arsip" class="font-bold">ARSIP</label>
             <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-box-arrow-down"></i>
                 <span>Arsip Proyek</span>
             </a>
         </div>
-
-
     </section>
 
 </nav>

@@ -10,18 +10,17 @@ return new class extends Migration
     {
         Schema::create('material_request_items', function (Blueprint $table) {
             $table->id('item_id')->primary();
-            $table->unsignedBigInteger('request_id');
-            $table->unsignedBigInteger('material_id');
+            $table->string('item_name'); //nama item, misal: "Paralon PVC"
             $table->decimal('quantity', 15, 2);
-            $table->string('unit');
-            $table->date('required_date')->nullable();
-            $table->string('status')->nullable();
+            $table->enum('unit', ['pcs', 'kg', 'm', 'cm', 'liter', 'set'])->default('pcs'); //unit of measurement
+            $table->date('required_date')->nullable(); //tanggal item dibutuhkan, bisa dikosongkan jika tidak ada batas waktu
             $table->decimal('received_quantity', 15, 2)->nullable();
             $table->date('received_date')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->foreign('request_id')->references('request_id')->on('material_requests')->cascadeOnDelete();
+            // Foreign key for material_request_items
+            $table->unsignedBigInteger('material_id');
             $table->foreign('material_id')->references('material_id')->on('materials')->cascadeOnDelete();
         });
     }

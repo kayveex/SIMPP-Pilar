@@ -13,15 +13,15 @@ class MaterialRequestItem extends Model
     protected $primaryKey = 'item_id';
     
     protected $fillable = [
-        'request_id',
-        'material_id',
+        'item_id',
+        'item_name', // nama item, misal: "Paralon PVC"
         'quantity',
-        'unit',
-        'required_date',
-        'status',
+        'unit', // unit of measurement
+        'required_date', // tanggal item dibutuhkan, bisa dikosongkan jika tidak ada batas waktu
         'received_quantity',
         'received_date',
         'notes',
+        'material_id', // Foreign key for material
     ];
 
     protected $casts = [
@@ -33,10 +33,6 @@ class MaterialRequestItem extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function materialRequest()
-    {
-        return $this->belongsTo(MaterialRequest::class, 'request_id');
-    }
 
     public function material()
     {

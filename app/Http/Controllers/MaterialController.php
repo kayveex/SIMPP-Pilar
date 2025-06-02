@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\MaterialRequest;
-use App\Models\MaterialRequestItem;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,25 +26,18 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function status()
-    {
-        $materialRequests = MaterialRequest::with(['project', 'requester', 'approver'])->get();
-        return view('pages.material_status', compact('materialRequests'));
-    }
+
 
     /**
-     * Show the material add page.
+     * Show the material create page.
      *
      * @return \Illuminate\View\View
      */
-    public function add()
-    {
-        $projects = Project::where('status', '!=', 'selesai')
-            ->get();
-        $materials = Material::all();
-
-        return view('pages.material_add', compact('projects', 'materials'));
+    public function create() {
+        $projects = Project::all();
+        return view('pages.materials.create', compact('projects'));
     }
+
 
     /**
      * Show the material view page.
