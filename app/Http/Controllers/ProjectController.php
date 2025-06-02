@@ -95,15 +95,15 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'project_name' => 'required|max:255',
+            'project_name' => 'required|max:255|min:3',
             'project_type' => 'required|in:bengkel,onsite',
             'status' => 'required|in:belum_dimulai,berlangsung,tertunda,selesai,dibatalkan',
-            'person_in_charge' => 'required|max:255',
-            'client_name' => 'required|max:255',
+            'person_in_charge' => 'required|max:255|min:3',
+            'client_name' => 'required|max:255|min:3',
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
-            'description' => 'nullable|max:1000',
-            'location' => 'nullable|max:255',
+            'description' => 'nullable|max:1000|min:3',
+            'location' => 'nullable|max:255|min:3',
         ]);
 
         DB::beginTransaction();

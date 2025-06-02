@@ -50,12 +50,22 @@
                     {{-- Nama Proyek --}}
                     <div class="flex flex-col w-1/2">
                         <label for="project_name" class="text-sm font-bold text-gray-700 mb-2">Nama Proyek</label>
-                        <input type="text" id="project_name" name="project_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <input type="text" value="{{ old('project_name') }}" id="project_name" name="project_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('project_name')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>     
+                        @enderror
                     </div>
                     {{-- Nama klien --}}
                     <div class="flex flex-col w-1/2 ml-4">
                         <label for="client_name" class="text-sm font-bold text-gray-700 mb-2">Nama Klien</label>
-                        <input type="text" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <input type="text" value="{{ old('client_name') }}" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('client_name')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>     
+                        @enderror
                     </div>
                 </div>
 
@@ -65,6 +75,11 @@
                     <div class="flex flex-col w-1/2">
                         <label for="start_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Mulai</label>
                         <input type="date" id="start_date" name="start_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('start_date')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
 
                     {{-- Tanda Strip --}}
@@ -74,6 +89,11 @@
                     <div class="flex flex-col w-1/2">
                         <label for="estimated_end_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Selesai (Perkiraan)</label>
                         <input type="date" id="estimated_end_date" name="estimated_end_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('estimated_end_date')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
 
@@ -102,7 +122,12 @@
                     {{-- Penanggungjawab --}}
                     <div class="flex flex-col w-1/3 ml-4">
                         <label for="person_in_charge" class="text-sm font-bold text-gray-700 mb-2">Penanggungjawab</label>
-                        <input type="text" id="person_in_charge" name="person_in_charge" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <input type="text" value="{{ old('person_in_charge') }}" id="person_in_charge" name="person_in_charge" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('person_in_charge')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
 
@@ -111,13 +136,18 @@
                     {{-- Deskripsi Proyek --}}
                     <label for="description" class="text-sm font-bold text-gray-700 mb-2">Keterangan Proyek</label>
                     <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required></textarea>
+                    @error('description')
+                        <p class="text-red-500 text-sm mt-2">
+                            {{ $message }}
+                        </p>
+                    @enderror
                 </div>
 
                 {{-- Form Baris #5 --}}
                 <div class="flex flex-row gap-4 mt-4">
                     {{-- Buat Multiple Attachments --}}
                     <div class="flex flex-col w-1/2">
-                        <label for="attachments" class="text-sm font-bold text-gray-700 mb-2">Lampiran</label>
+                        <label for="attachments" class="text-sm font-bold text-gray-700 mb-2">Lampiran (Opsional)</label>
                         <input 
                             type="file" 
                             id="attachments" 
@@ -131,7 +161,12 @@
                     {{-- Lokasi --}}
                     <div class="flex flex-col w-1/2">
                         <label for="location" class="text-sm font-bold text-gray-700 mb-2">Lokasi Proyek</label>
-                        <input type="text" id="location" name="location" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <input type="text" value="{{ old('location') }}" id="location" name="location" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        @error('location')
+                            <p class="text-red-500 text-sm mt-2">
+                                {{ $message }}
+                            </p>
+                        @enderror
                     </div>
                 </div>
 

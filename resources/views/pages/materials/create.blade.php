@@ -49,13 +49,17 @@
                         <select id="project_id" name="project_id" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                             <option value="">-- Pilih Proyek --</option>
                             @foreach ($projects as $project)
-                                <option value="{{ $project->project_id }}">{{ $project->project_name }}</option>
+                                <option 
+                                    value="{{ $project->project_id }}" 
+                                    data-client="{{ $project->client_name }}">
+                                    {{ $project->project_name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="flex flex-col w-1/2">
                         <label for="client_name" class="text-sm font-semibold mb-2">Nama Klien</label>
-                        <input type="text" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <input type="text" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" readonly required>
 
 
 
@@ -81,4 +85,21 @@
         </div>
     </section>
 
+@endsection
+
+{{-- Scripts --}}
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const projectSelect = document.getElementById('project_id');
+            const clientNameInput = document.getElementById('client_name');
+
+            projectSelect.addEventListener('change', function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const clientName = selectedOption.getAttribute('data-client');
+                
+                clientNameInput.value = clientName || '';
+            });
+        });
+    </script>
 @endsection
