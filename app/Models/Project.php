@@ -60,6 +60,12 @@ class Project extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    // Relasi ke Material
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'project_id');
+    }
+
     public function phases()
     {
         return $this->hasMany(ProjectPhase::class, 'project_id');

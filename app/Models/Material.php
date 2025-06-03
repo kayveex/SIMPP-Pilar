@@ -34,4 +34,9 @@ class Material extends Model
     {
         return $this->hasMany(MaterialRequestItem::class, 'material_id');
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
 }

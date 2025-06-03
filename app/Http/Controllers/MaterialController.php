@@ -7,6 +7,10 @@ use App\Models\MaterialRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 class MaterialController extends Controller
 {
@@ -18,7 +22,7 @@ class MaterialController extends Controller
     public function index()
     {
         $materials = Material::all();
-        return view('pages.material', compact('materials'));
+        return view('pages.materials.index', compact('materials'));
     }
 
     /**
@@ -36,6 +40,33 @@ class MaterialController extends Controller
     public function create() {
         $projects = Project::all();
         return view('pages.materials.create', compact('projects'));
+    }
+
+    // store a material 
+    public function storeMaterial(Request $request) 
+    {
+        $request->validate([
+            'material_title' => 'required|string|max:255|min:3',
+            'client_name' => 'required|string|max:255|min:3',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $material = Material::create([
+                'material_title' => $request->material_title,
+                'client_name' => $request->client_name,
+                'created_by' => Auth::id(),
+                'project_id' => $request->project_id,
+            ]);
+
+            DB::commit(); // Tambahkan ini
+            return redirect()->route('material.index')->with('success', 'Material berhasil diajukan.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            return redirect()->back()->withErrors(['error' => 'Gagal menyimpan material: ' . $th->getMessage()]);
+        }
     }
 
 

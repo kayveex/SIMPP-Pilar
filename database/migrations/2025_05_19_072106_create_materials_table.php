@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('purchasing_approval_date')->nullable();
 
             // Approval status
-            $table->enum('approval_status', ['diproses', 'dipesan', 'ditolak', 'diterima', 'disetujui'])->default('pending');
+            $table->enum('approval_status', ['diproses', 'dipesan', 'ditolak', 'diterima', 'disetujui'])->default('dipesan');
 
             // Bukti Invoice
             $table->string('invoice')->nullable(); 
