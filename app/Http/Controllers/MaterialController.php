@@ -19,10 +19,38 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $materials = Material::all();
+        $query = Material::with('project');
+
+        if ($request->filled('search')) {
+            $search = strtolower($request->search);
+            $query->whereHas('project', function ($q) use ($search) {
+                $q->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"]);
+            });
+        }
+
+        if ($request->filled('approval_status')) {
+            $status = $request->status;
+            $query->where('approval_status', $status);
+        }
+
+        if ($request->filled('sort')) {
+            if ($request->sort === 'latest') {
+                $query->orderBy('created_at', 'desc');
+            } elseif ($request->sort === 'oldest') {
+                $query->orderBy('created_at', 'asc');
+            }
+        } else {
+            // default urutan
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $materials = $query->paginate(5)->withQueryString();
+
         return view('pages.materials.index', compact('materials'));
+
+
     }
 
     /**
