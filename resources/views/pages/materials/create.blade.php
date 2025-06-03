@@ -41,7 +41,7 @@
 
         {{-- Submit form --}}
         <div class="flex flex-col p-6 bg-white rounded-lg shadow-md mt-4">
-            <form action="" method="POST">
+            <form action="{{ route('material.store') }}" method="POST">
                 @csrf
                 <div class="mb-4 flex flex-row gap-4">
                     <div class="flex flex-col w-1/2">
@@ -60,17 +60,12 @@
                     <div class="flex flex-col w-1/2">
                         <label for="client_name" class="text-sm font-semibold mb-2">Nama Klien</label>
                         <input type="text" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" readonly required>
-
-
-
                     </div>
-
-
                 </div>
 
                 <div class="mb-4">
-                    <label for="material_name" class="text-sm font-semibold mb-2">Judul Pengajuan Material</label>
-                    <input type="text" id="material_name" name="material_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                    <label for="material_title" class="text-sm font-semibold mb-2">Judul Pengajuan Material</label>
+                    <input type="text" id="material_title" name="material_title" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                 </div>
 
                 <div class="mb-4 flex flex-row justify-end">

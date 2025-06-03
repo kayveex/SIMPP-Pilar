@@ -55,10 +55,11 @@ Route::middleware('auth')->group(function() {
     // Material Routes
     Route::prefix('material')->group(function() {
         // Main material page
-        Route::get('/', [MaterialController::class, 'index'])->name('material');
+        Route::get('/', [MaterialController::class, 'index'])->name('material.index');
         
         // Additional material pages that have corresponding controller methods
         Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
+        Route::post('/material/store', [MaterialController::class, 'storeMaterial'])->name('material.store');
         Route::get('/view/{id?}', [MaterialController::class, 'view'])->name('material.view');
         Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
         Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
