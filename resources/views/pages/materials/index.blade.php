@@ -108,10 +108,10 @@
                                 </td>
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="#" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
+                                        <a href="#"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
-                                        <a href="#" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
+                                        <a href="{{ route('material.edit', $material->material_id) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
                                             <i class="ph-bold ph-pencil-simple-line"></i>
                                         </a>
                                         <div x-data="{ showModal: false }">

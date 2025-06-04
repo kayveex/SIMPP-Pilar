@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\MaterialRequest;
+use App\Models\MaterialRequestItem;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Project;
 use Illuminate\Http\Request;
@@ -60,6 +61,15 @@ class MaterialController extends Controller
      *
      * @return \Illuminate\View\View
      */
+
+    //Edit - Edit page for material
+    public function editPage($id)
+    {
+        $material = Material::findOrFail($id);
+        $materialRequests = MaterialRequestItem::where('material_id', $id)->get();
+
+        return view('pages.materials.edit', compact('material', 'materialRequests'));
+    }
 
 
     /**

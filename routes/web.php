@@ -60,7 +60,8 @@ Route::middleware('auth')->group(function() {
         // Additional material pages that have corresponding controller methods
         Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
         Route::post('/store', [MaterialController::class, 'storeMaterial'])->name('material.store');
-        Route::delete('/material/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
+        Route::delete('/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
+        Route::get('/edit/{id}', [MaterialController::class, 'editPage'])->name('material.edit');
         Route::get('/view/{id}', [MaterialController::class, 'view'])->name('material.view');
         Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
         Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');

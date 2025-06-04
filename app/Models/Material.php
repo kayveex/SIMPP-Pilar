@@ -19,6 +19,8 @@ class Material extends Model
         'client_name',
         'purchasing_approval',
         'purchasing_approval_date',
+        'estimated_arrival_date',
+        'actual_arrival_date',
         'approval_status',
         'invoice',
         'created_by',
