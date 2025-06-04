@@ -41,7 +41,7 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="ph-bold ph-magnifying-glass text-xl text-gray-400 w-5 h-5"></i>
                     </div>
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari menurut proyek..."
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari menurut nama/id proyek..."
                         class="block w-full pl-12 pr-3 py-2 border text-md border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </form>
@@ -103,13 +103,15 @@
                                 <td>{{ $material->material_title }}</td>
                                 <td>{{ $material->project->project_name }}</td>
                                 <td>{{ $material->client_name }}</td>
-                                <td>{{ $material->approval_status }}</td>
+                                <td>
+                                    @include('layouts.atoms.badges-material-status', ['material' => $material])
+                                </td>
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="#" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
+                                        <a href="#"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
-                                        <a href="#" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
+                                        <a href="{{ route('material.edit', $material->material_id) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
                                             <i class="ph-bold ph-pencil-simple-line"></i>
                                         </a>
                                         <div x-data="{ showModal: false }">
@@ -128,7 +130,7 @@
                                                     <div class="flex justify-end gap-4">
                                                         <button @click="showModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition">Batal</button>
 
-                                                        <form action="" method="POST">
+                                                        <form action="{{ route('material.delete', $material->material_id) }}" method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">Hapus</button>
@@ -137,21 +139,39 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </div>
-
-                                    
+                                    </div>  
                                 </td>
-                            </tr>
-                            
+                            </tr>   
                         @endforeach
-                        
                     @endif
 
+                    @if (isset($projects) && count($projects)=== 0)
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-gray-500">
+                                Tidak ada material yang ditemukan.
+                            </td>
+                        </tr> 
+                    @endif
                 </tbody>
-
-
             </table>
+
+            {{-- Info jumlah data + Pagination --}}
+            <div class="flex justify-between items-center mt-4 px-4 py-2 text-sm text-gray-600">
+                <div>
+                    Menampilkan
+                    <span class="font-semibold">{{ $materials->firstItem() }}</span>
+                    -
+                    <span class="font-semibold">{{ $materials->lastItem() }}</span>
+                    dari
+                    <span class="font-semibold">{{ $materials->total() }}</span>
+                    proyek
+                </div>
+                <div class="flex justify-end">
+                    {{ $materials->links('pagination::tailwind') }}
+                </div>
+
+            </div>
+
         </div>
     </section>
 

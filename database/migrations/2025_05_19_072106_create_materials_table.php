@@ -19,8 +19,12 @@ return new class extends Migration
             $table->boolean('purchasing_approval')->default(false);
             $table->date('purchasing_approval_date')->nullable();
 
+            // estimated arrival date
+            $table->date('estimated_arrival_date')->nullable(); // Tanggal perkiraan kedatangan material
+            $table->date('actual_arrival_date')->nullable(); // Tanggal kedatangan material yang sebenarnya
+
             // Approval status
-            $table->enum('approval_status', ['diproses', 'dipesan', 'ditolak', 'diterima', 'disetujui'])->default('dipesan');
+            $table->enum('approval_status', ['diproses', 'dipesan', 'ditolak', 'diterima', 'disetujui'])->default('diproses');
 
             // Bukti Invoice
             $table->string('invoice')->nullable(); 

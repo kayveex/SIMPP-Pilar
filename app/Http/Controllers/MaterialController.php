@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\MaterialRequest;
+use App\Models\MaterialRequestItem;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,14 +27,17 @@ class MaterialController extends Controller
 
         if ($request->filled('search')) {
             $search = strtolower($request->search);
-            $query->whereHas('project', function ($q) use ($search) {
-                $q->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"]);
+
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('project', function ($subQuery) use ($search) {
+                    $subQuery->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"])
+                            ->orWhereRaw('CAST(project_id AS TEXT) LIKE ?', ["%{$search}%"]);
+                });
             });
         }
 
         if ($request->filled('approval_status')) {
-            $status = $request->status;
-            $query->where('approval_status', $status);
+            $query->where('approval_status', $request->approval_status);
         }
 
         if ($request->filled('sort')) {
@@ -42,22 +47,29 @@ class MaterialController extends Controller
                 $query->orderBy('created_at', 'asc');
             }
         } else {
-            // default urutan
             $query->orderBy('created_at', 'desc');
         }
 
         $materials = $query->paginate(5)->withQueryString();
 
         return view('pages.materials.index', compact('materials'));
-
-
     }
+
 
     /**
      * Show the material status page.
      *
      * @return \Illuminate\View\View
      */
+
+    //Edit - Edit page for material
+    public function editPage($id)
+    {
+        $material = Material::findOrFail($id);
+        $materialRequests = MaterialRequestItem::where('material_id', $id)->get();
+
+        return view('pages.materials.edit', compact('material', 'materialRequests'));
+    }
 
 
     /**
@@ -86,6 +98,7 @@ class MaterialController extends Controller
                 'client_name' => $request->client_name,
                 'created_by' => Auth::id(),
                 'project_id' => $request->project_id,
+                'created_at' => Carbon::now(),
             ]);
 
             DB::commit(); // Tambahkan ini
@@ -147,4 +160,19 @@ class MaterialController extends Controller
         return redirect()->route('material.status')
             ->with('success', 'Material berhasil diproses!');
     }
+
+    // Delete a material
+    public function deleteMaterial($id) 
+    {
+        $material = Material::findOrFail($id);
+
+        if (!is_null($material->invoice) && Storage::disk('public')->exists($material->invoice)) {
+            Storage::disk('public')->delete($material->invoice);
+        }
+
+        $material->delete();
+
+        return redirect()->route('material.index')->with('success', 'Material berhasil dihapus.');
+    }
+
 }
