@@ -108,7 +108,7 @@
                                 </td>
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="#"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
+                                        <a href="{{ route('material.view', $material->material_id) }}"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
                                         <a href="{{ route('material.edit', $material->material_id) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
@@ -145,7 +145,7 @@
                         @endforeach
                     @endif
 
-                    @if (isset($projects) && count($projects)=== 0)
+                    @if (isset($materials) && count($materials)=== 0)
                         <tr>
                             <td colspan="7" class="text-center py-4 text-gray-500">
                                 Tidak ada material yang ditemukan.

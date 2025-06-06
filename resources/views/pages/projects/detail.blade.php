@@ -73,10 +73,20 @@
                     </div>
                     {{-- Detail content 1 --}}
                     <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
-                        <div class="mb-4">
-                            <h3 class="text-lg font-semibold">Lokasi Proyek:</h3>
-                            <p>{{ $project->location }}</p>
+                        <div class=" flex flex-row">
+                            <div class="flex flex-col w-1/2 mb-4">
+                                <h3 class="text-lg font-semibold">Lokasi Proyek:</h3>
+                                <p>{{ $project->location }}</p>
+                            </div>
+                            <div class="flex flex-col w-1/2 mb-4">
+                                <h3 class="text-lg font-semibold">ID Proyek:</h3>
+                                <p>{{ $project->project_id }}</p>
+                            </div>
                         </div>
+
+                        {{-- Divider --}}
+                        <div class="border-t border-blue-600 my-2"></div>
+                        
                         <div class="flex flex-row">
                             <div class="mb-4 w-1/3">
                                 <h3 class="text-lg font-semibold">Penanggungjawab:</h3>

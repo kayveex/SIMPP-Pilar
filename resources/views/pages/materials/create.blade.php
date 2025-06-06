@@ -23,10 +23,16 @@
     @include('layouts.molecules.topbar')
 @endsection
 
-{{-- Content --}}
+{{-- Content + AlpineJS --}}
 @section('page-content')
 
-    <section class="flex flex-col px-6 pt-6">
+    <section class="flex flex-col px-6 pt-6" 
+    x-data="{
+        clientName: '',
+        updateClientName(event) {
+            const selectedOption = event.target.options[event.target.selectedIndex];
+            this.clientName = selectedOption.dataset.client || '';
+        }}">
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800"> Pengajuan Material Baru</h1>
         </div>
@@ -46,7 +52,13 @@
                 <div class="mb-4 flex flex-row gap-4">
                     <div class="flex flex-col w-1/2">
                         <label for="project_id" class="text-sm font-semibold mb-2">Pengajuan Untuk Proyek</label>
-                        <select id="project_id" name="project_id" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                        <select 
+                            id="project_id" 
+                            name="project_id" 
+                            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" 
+                            required
+                            x-on:change="updateClientName($event)"
+                        >
                             <option value="">-- Pilih Proyek --</option>
                             @foreach ($projects as $project)
                                 <option 
@@ -59,7 +71,15 @@
                     </div>
                     <div class="flex flex-col w-1/2">
                         <label for="client_name" class="text-sm font-semibold mb-2">Nama Klien</label>
-                        <input type="text" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" readonly required>
+                        <input 
+                            type="text" 
+                            id="client_name" 
+                            name="client_name" 
+                            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" 
+                            readonly 
+                            required
+                            x-model="clientName"
+                        >
                     </div>
                 </div>
 
@@ -73,28 +93,10 @@
                         Lanjutkan Pengajuan
                     </button>
                 </div>
-
             </form>
-
-
         </div>
     </section>
 
+
 @endsection
 
-{{-- Scripts --}}
-@section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const projectSelect = document.getElementById('project_id');
-            const clientNameInput = document.getElementById('client_name');
-
-            projectSelect.addEventListener('change', function () {
-                const selectedOption = this.options[this.selectedIndex];
-                const clientName = selectedOption.getAttribute('data-client');
-                
-                clientNameInput.value = clientName || '';
-            });
-        });
-    </script>
-@endsection

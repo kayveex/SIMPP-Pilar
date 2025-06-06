@@ -18,9 +18,10 @@ class User extends Authenticatable
      */
     const ROLE_TEKNIKAL = 'Divisi Teknikal';
     const ROLE_PURCHASING = 'Divisi Purchasing';
-    const ROLE_ADMINISTRASI = 'Admin';
+    const ROLE_ADMINISTRASI = 'Divisi Admin';
     const ROLE_FINANCE = 'Divisi Finance';
     const ROLE_DIREKTUR = 'Direktur';
+    const ROLE_SUPER_ADMIN = 'Super Admin';
 
     /**
      * The attributes that are mass assignable.
@@ -132,13 +133,6 @@ class User extends Authenticatable
         return $this->hasMany(Task::class, 'assignee_id');
     }
 
-    /**
-     * Get the material requests created by the user.
-     */
-    public function materialRequests()
-    {
-        return $this->hasMany(MaterialRequest::class, 'requested_by');
-    }
 
     /**
      * Get the project expenses created by the user.

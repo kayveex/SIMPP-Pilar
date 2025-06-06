@@ -66,9 +66,25 @@ class MaterialController extends Controller
     public function editPage($id)
     {
         $material = Material::findOrFail($id);
-        $materialRequests = MaterialRequestItem::where('material_id', $id)->get();
 
+        // Make $materialRequests available to the view, ascending by created_at
+        $materialRequests = MaterialRequestItem::where('material_id', $id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
         return view('pages.materials.edit', compact('material', 'materialRequests'));
+    }
+
+    public function viewPage($id)
+    {
+        $material = Material::findOrFail($id);
+
+        // Make $materialRequests available to the view, ascending by created_at
+        $materialRequests = MaterialRequestItem::where('material_id', $id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
+        return view('pages.materials.view', compact('material', 'materialRequests'));
     }
 
 
@@ -102,12 +118,59 @@ class MaterialController extends Controller
             ]);
 
             DB::commit(); // Tambahkan ini
-            return redirect()->route('material.index')->with('success', 'Material berhasil diajukan.');
+            // Redirect to the edit page for the newly created material
+            return redirect()->route('material.edit', $material->material_id)
+                ->with('success', 'Material berhasil diajukan. Silakan tambahkan item material.');
+            // return redirect()->route('material.index')->with('success', 'Material berhasil diajukan.');
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);
             return redirect()->back()->withErrors(['error' => 'Gagal menyimpan material: ' . $th->getMessage()]);
         }
+    }
+
+    // edit PATCH a material
+    public function updateMaterial(Request $request, $id) 
+    {
+        $request->validate([
+            'material_title' =>  'required|string|max:255|min:3',
+            'material_notes' => 'nullable|string|max:1000',
+            'vendor' => 'nullable|string|max:255',
+            'invoice' => 'nullable|file|mimes:pdf,jpg,jpeg,png',
+            'estimated_arrival_date' => 'nullable|date',
+            'actual_arrival_date' => 'nullable|date',
+            'approval_status' => 'nullable|in:diproses,dipesan,disetujui,ditolak,diterima',
+        ]);
+
+        DB::beginTransaction();
+        
+        try {
+            $material = Material::findOrFail($id);
+
+            $data = $request->only([
+                'material_title', 'material_notes', 'vendor',
+                'estimated_arrival_date', 'actual_arrival_date', 'approval_status'
+            ]);
+
+            if ($request->hasFile('invoice')) {
+                if ($material->invoice && Storage::disk('public')->exists($material->invoice)) {
+                    Storage::disk('public')->delete($material->invoice);
+                }
+                $data['invoice'] = $request->file('invoice')->store('invoices', 'public');
+            }
+
+            $material->update($data);
+            DB::commit(); // Commit the transaction if everything is successful
+            return redirect()->route('material.index')->with('success', 'Material berhasil diperbarui.');
+
+        } catch (\Throwable $th) {
+            DB::rollBack(); // Rollback the transaction on error
+            dd($th);
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui material: ' . $th->getMessage()]);
+        }
+
+
+
     }
 
 

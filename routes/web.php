@@ -14,6 +14,7 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\AnggaranRealisasiController;
 use App\Http\Controllers\AnggaranRencanaController;
 use App\Http\Controllers\ArchiveViewController;
+use App\Http\Controllers\MaterialItemsController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
@@ -56,16 +57,28 @@ Route::middleware('auth')->group(function() {
     Route::prefix('material')->group(function() {
         // Main material page
         Route::get('/', [MaterialController::class, 'index'])->name('material.index');
+        // Show material details
+        Route::get('/view/{id}', [MaterialController::class, 'viewPage'])->name('material.view');
         
         // Additional material pages that have corresponding controller methods
         Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
         Route::post('/store', [MaterialController::class, 'storeMaterial'])->name('material.store');
         Route::delete('/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
         Route::get('/edit/{id}', [MaterialController::class, 'editPage'])->name('material.edit');
-        Route::get('/view/{id}', [MaterialController::class, 'view'])->name('material.view');
-        Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
-        Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
-        Route::post('/approval/process/{id}', [MaterialController::class, 'processApproval'])->name('material.process-approval');
+        Route::patch('update/{id}', [MaterialController::class, 'updateMaterial'])->name('material.update');
+
+    });
+
+    // Material Items
+    Route::prefix('material-items')->group(function() {
+        // Show material item details
+        Route::get('/view/{id}', [MaterialItemsController::class, 'showMaterialItem'])->name('material-items.view');
+        Route::get('/create/{id}', [MaterialItemsController::class, 'createMaterialItem'])->name('material-items.create');
+        Route::post('/store/{id}', [MaterialItemsController::class, 'storeMaterialItem'])->name('material-items.store');
+        Route::get('/edit/{id}', [MaterialItemsController::class, 'editMaterialItem'])->name('material-items.edit');
+        Route::patch('/update/{id}', [MaterialItemsController::class, 'updateMaterialItem'])->name('material-items.update');
+        Route::delete('/delete/{id}', [MaterialItemsController::class, 'deleteMaterialItem'])->name('material-items.delete');  
+
     });
     
     // Archive
