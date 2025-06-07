@@ -15,15 +15,19 @@ class ProjectPhase extends Model
     protected $fillable = [
         'project_id',
         'phase_name',
-        'start_date',
-        'end_date',
-        'status',
-        'description',
+        'estimated_start_date',
+        'estimated_end_date',
+        'actual_start_date',
+        'actual_end_date',
+        'is_completed',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'estimated_start_date' => 'date',
+        'estimated_end_date' => 'date',
+        'actual_start_date' => 'date',
+        'actual_end_date' => 'date',
+        'is_completed' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -31,10 +35,5 @@ class ProjectPhase extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');
-    }
-
-    public function tasks()
-    {
-        return $this->hasMany(Task::class, 'phase_id');
     }
 }

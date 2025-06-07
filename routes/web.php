@@ -44,7 +44,10 @@ Route::middleware('auth')->group(function() {
     });
     
     // Schedule
-    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
+    Route::prefix('schedules')->group(function() {
+        Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
+    });
+
     
     // Anggaran
     Route::get('/anggaran', [AnggaranController::class, 'index'])->name('anggaran');

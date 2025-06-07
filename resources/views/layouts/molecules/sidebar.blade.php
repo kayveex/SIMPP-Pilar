@@ -15,11 +15,11 @@
         {{-- Proyek Tab --}}
         <div class="mt-4 flex-col">
             <label for="proyek" class="font-bold">PROYEK</label>
-            <a href="/projects" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('projects.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-article"></i>
                 <span>Daftar Proyek</span>
             </a>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('schedules.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-calendar-blank"></i>
                 <span>Jadwal</span>
             </a>
@@ -36,7 +36,7 @@
         {{-- Material Tab --}}
         <div class="mt-4 flex-col">
             <label for="material" class="font-bold">MATERIAL</label>
-            <a href="/material" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('material.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-check-square-offset"></i>
                 <span>Pengajuan & Status</span>
             </a>
