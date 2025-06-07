@@ -173,55 +173,32 @@ class MaterialController extends Controller
 
     }
 
+    // Edit PATCH - Material Approval
+    public function updateApproval($id) {
+        if (Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') {
+            $material = Material::findOrFail($id);
+            $material->update([
+                'purchasing_approval' => true,
+                'purchasing_approval_date' => Carbon::now(),
+                'approval_status' => 'disetujui',
+            ]);
 
-    /**
-     * Show the material view page.
-     *
-     * @param  int|null  $id
-     * @return \Illuminate\View\View
-     */
-    public function view($id = null)
-    {
-        // Logic to fetch material request details
-        return view('pages.material_view');
+            return redirect()->route('material.index')->with('success', 'Material berhasil disetujui.');
+        }
     }
 
-    /**
-     * Show the material process page.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function process($id)
-    {
-        // Logic to fetch material request details
-        return view('pages.material_proses');
-    }
+    // Edit PATCH - Delete Material Approval
+    public function deleteApproval($id) {
+        if (Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') {
+            $material = Material::findOrFail($id);
+            $material->update([
+                'purchasing_approval' => false,
+                'purchasing_approval_date' => null,
+                'approval_status' => 'ditolak',
+            ]);
 
-    /**
-     * Show the material approval page.
-     *
-     * @param  int  $id
-     * @return \Illuminate\View\View
-     */
-    public function approval($id)
-    {
-        // Logic to fetch material request details
-        return view('pages.material_persetujuan');
-    }
-
-    /**
-     * Process a material approval request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function processApproval(Request $request, $id)
-    {
-        // Process approval logic
-        return redirect()->route('material.status')
-            ->with('success', 'Material berhasil diproses!');
+            return redirect()->route('material.index')->with('success', 'Persetujuan material berhasil dihapus.');
+        }
     }
 
     // Delete a material

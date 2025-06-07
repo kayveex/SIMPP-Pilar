@@ -253,21 +253,59 @@
                         </div>
                     </div>
                 </div>
-
-
-                </div>
                 {{-- Tab 3 --}}
                 <div x-show="tab === 'persetujuan'" xtransition>
                     {{-- Fill content here --}}
 
+                    <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
+                        <i class="ph-bold ph-list-checks"></i>
+                        <h2 class="text-lg font-bold">Edit Persetujuan</h2>
+                    </div>
+                    <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
+                        @if ((Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') && $material->purchasing_approval === false)
+                            <h3 class="text-lg font-semibold">
+                                Berikan Persetujuan Material Sebagai Perwakilan Divisi Purchasing?
+                            </h3>
+
+                            <form action="{{ route('material.approval', $material->material_id) }}" method="POST" class="mt-4">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="px-4 py-2 font-bold cursor-pointer rounded-lg bg-green-600 hover:bg-green-700 text-white">
+                                    Setujui
+                                </button>
+                            </form>
+
+                        @elseif ((Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') && $material->purchasing_approval === true)
+                            <h3 class="text-lg font-semibold">
+                                Material Sudah Disetujui Oleh Divisi Purchasing pada
+                                <span class="font-bold text-green-600">
+                                    {{ \Carbon\Carbon::parse($material->purchasing_approval_date)->translatedFormat('j F Y') }}.
+                                </span>
+                            </h3>
+
+                            <form action="{{ route('material.approval.delete', $material->material_id) }}" method="POST" class="mt-4">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="px-4 py-2 font-bold cursor-pointer rounded-lg bg-red-600 hover:bg-red-700 text-white">
+                                    Batalkan Persetujuan
+                                </button>
+                            </form>
+
+                        @else
+                            <h3 class="text-lg font-semibold">
+                                Material ini sudah disetujui oleh Divisi Purchasing pada
+                                <span class="font-bold text-green-600">
+                                    {{ \Carbon\Carbon::parse($material->purchasing_approval_date)->translatedFormat('j F Y') }}.
+                                </span>
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-2">
+                                Anda tidak dapat mengubah status persetujuan material ini karena sudah disetujui oleh Divisi Purchasing.
+                            </p>
+                        @endif
+                    </div>
                 </div>
             </div>
-
         </div>
-
-
-
-
     </section>
     
 @endsection

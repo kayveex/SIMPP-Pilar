@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,7 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\AnggaranRealisasiController;
 use App\Http\Controllers\AnggaranRencanaController;
 use App\Http\Controllers\ArchiveViewController;
+use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
 
 // Routes - Authenticated
@@ -67,6 +69,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{id}', [MaterialController::class, 'editPage'])->name('material.edit');
         Route::patch('update/{id}', [MaterialController::class, 'updateMaterial'])->name('material.update');
 
+        // Approval Material for Purchasing
+        Route::patch('/approval/{id}', [MaterialController::class, 'updateApproval'])->name('material.approval');
+        // Delete Approval Material for Purchasing
+        Route::patch('/approval/delete/{id}', [MaterialController::class, 'deleteApproval'])->name('material.approval.delete');
+
     });
 
     // Material Items
@@ -77,8 +84,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/store/{id}', [MaterialItemsController::class, 'storeMaterialItem'])->name('material-items.store');
         Route::get('/edit/{id}', [MaterialItemsController::class, 'editMaterialItem'])->name('material-items.edit');
         Route::patch('/update/{id}', [MaterialItemsController::class, 'updateMaterialItem'])->name('material-items.update');
-        Route::delete('/delete/{id}', [MaterialItemsController::class, 'deleteMaterialItem'])->name('material-items.delete');  
-
+        Route::delete('/delete/{id}', [MaterialItemsController::class, 'deleteMaterialItem'])->name('material-items.delete');
     });
     
     // Archive
@@ -91,13 +97,16 @@ Route::middleware('auth')->group(function() {
     Route::prefix('projectDocs')->group(function() {
         Route::post('/upload/{id}', [ProjectController::class, 'addDocuments'])->name('projectDocs.upload');
         Route::delete('/{id}', [ProjectController::class, 'deleteDocument'])->name('projectDocs.delete');
+    });
     
     // Persetujuan Project
     Route::patch('/approval/{id}', [ProjectController::class, 'updatePersetujuanProject'])->name('project.approval');
     // Hapus Persetujuan Project
     Route::patch('/approval/delete/{id}', [ProjectController::class, 'deletePersetujuanProject'])->name('project.approval.delete');
 
-
+    // Export Material Items
+    Route::prefix('export')->group(function() {
+        Route::get('material-items/{material}', [MaterialItemExportController::class, 'export'])->name('material-items.export');
     });
 });
 

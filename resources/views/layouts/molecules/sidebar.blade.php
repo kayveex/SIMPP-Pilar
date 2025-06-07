@@ -38,11 +38,7 @@
             <label for="material" class="font-bold">MATERIAL</label>
             <a href="/material" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-check-square-offset"></i>
-                <span>Pengajuan Material</span>
-            </a>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
-                <i class="ph-fill ph-align-left"></i>
-                <span>Status Material</span>
+                <span>Pengajuan & Status</span>
             </a>
         </div>
 
