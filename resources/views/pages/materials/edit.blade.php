@@ -291,7 +291,7 @@
                                 </button>
                             </form>
 
-                        @else
+                        @elseif ((Auth::user()->role !== 'Divisi Purchasing' && Auth::user()->role !== 'Super Admin') && $material->purchasing_approval === true)
                             <h3 class="text-lg font-semibold">
                                 Material ini sudah disetujui oleh Divisi Purchasing pada
                                 <span class="font-bold text-green-600">
@@ -301,7 +301,14 @@
                             <p class="text-sm text-gray-500 mt-2">
                                 Anda tidak dapat mengubah status persetujuan material ini karena sudah disetujui oleh Divisi Purchasing.
                             </p>
-                        @endif
+                            @elseif ((Auth::user()->role !== 'Divisi Purchasing' && Auth::user()->role !== 'Super Admin') && $material->purchasing_approval === false)
+                                <h3 class="text-lg font-semibold">
+                                    Material ini belum disetujui oleh Divisi Purchasing.
+                                </h3>
+                                <p class="text-sm text-gray-500 mt-2">
+                                    Anda tidak dapat mengubah status persetujuan material ini karena bukan merupakan Divisi Purchasing.
+                                </p>
+                            @endif
                     </div>
                 </div>
             </div>

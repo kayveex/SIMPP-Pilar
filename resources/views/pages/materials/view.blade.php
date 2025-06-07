@@ -234,14 +234,22 @@
                         <i class="ph-bold ph-list-checks"></i>
                         <h2 class="text-lg font-bold">Persetujuan Material</h2>
                     </div>
-                    <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
-                        <h3 class="text-lg font-semibold">
-                            Material <span class="font-bold">{{ $material->material_title }}</span> dari proyek <span class="font-bold">{{ $material->project->project_name }} </span> sudah disetujui oleh Divisi Purchasing pada
-                            <span class="font-bold text-green-600">
-                                {{ \Carbon\Carbon::parse($material->purchasing_approval_date)->translatedFormat('j F Y') }}.
-                            </span>
-                        </h3>  
-                    </div>
+                    @if ($material->purchasing_approval === false)
+                        <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
+                            <h3 class="text-lg font-semibold">
+                                Material <span class="font-bold">{{ $material->material_title }}</span> dari proyek <span class="font-bold">{{ $material->project->project_name }} </span> belum disetujui oleh Divisi Purchasing.
+                            </h3>
+                            <p class="mt-2 text-gray-600">Silakan tunggu persetujuan dari Divisi Purchasing.</p>
+                        </div>
+
+                    @elseif ($material->purchasing_approval === true)
+                        <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
+                            <h3 class="text-lg font-semibold">
+                                Material <span class="font-bold">{{ $material->material_title }}</span> dari proyek <span class="font-bold">{{ $material->project->project_name }} </span> telah disetujui oleh Divisi Purchasing.
+                            </h3>
+                            <p class="mt-2 text-gray-600">Anda dapat melanjutkan proses selanjutnya.</p>
+                        </div>     
+                    @endif
                 </div>
             </div>
         </div>

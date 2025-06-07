@@ -17,6 +17,8 @@ use App\Http\Controllers\AnggaranRencanaController;
 use App\Http\Controllers\ArchiveViewController;
 use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
+// Add Progress Controller import
+use App\Http\Controllers\ProgressController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
@@ -28,6 +30,32 @@ Route::middleware('auth')->group(function() {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
+    // Progress Routes
+    Route::prefix('progress')->group(function() {
+        // Main progress page
+        Route::get('/', [ProgressController::class, 'index'])->name('progress.index');
+        
+        // Progress detail pages
+        Route::get('/detail', [ProgressController::class, 'detail'])->name('progress.detail.general');
+        Route::get('/detail/{id}', [ProgressController::class, 'detail'])->name('progress.detail');
+        
+        // Add progress
+        Route::get('/add', [ProgressController::class, 'create'])->name('progress.create');
+
+        // View progress (with ID)
+        Route::get('/{id}/view', [ProgressController::class, 'show'])->name('progress.show');
+        
+        // Edit progress (with ID)
+        Route::get('/{id}/edit', [ProgressController::class, 'edit'])->name('progress.edit');
+        Route::put('/{id}', [ProgressController::class, 'update'])->name('progress.update');
+        
+        // Alternative routes without ID for general views
+        Route::get('/view', [ProgressController::class, 'generalView'])->name('progress.view.general');
+        Route::get('/edit', [ProgressController::class, 'generalEdit'])->name('progress.edit.general');
+        Route::get('/notes', [ProgressController::class, 'notes'])->name('progress.notes');
+        Route::get('/list', [ProgressController::class, 'list'])->name('progress.list');
+    });
     
     // Project Routes
     Route::prefix('projects')->group(function() {
