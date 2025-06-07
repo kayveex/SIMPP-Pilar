@@ -121,7 +121,7 @@
 
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="#" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Jadwal Proyek">
+                                        <a href="{{ route('schedules.view', $project->project_id) }}" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Jadwal Proyek">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
                                     </div>

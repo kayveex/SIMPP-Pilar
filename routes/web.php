@@ -46,6 +46,7 @@ Route::middleware('auth')->group(function() {
     // Schedule
     Route::prefix('schedules')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
+        Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
     });
 
     

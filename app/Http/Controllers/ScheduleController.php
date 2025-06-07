@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\ProjectPhase;
 use Carbon\Carbon;
 
 class ScheduleController extends Controller
@@ -57,6 +58,20 @@ class ScheduleController extends Controller
 
         return view('pages.schedules.index', compact('projects'));
 
+    }
+
+    // Display the schedule dashboard (project phase) from the project.
+    public function viewSchedule($id) 
+    {
+        $project = Project::where('project_id', $id)->firstOrFail();
+        $phasesEst = ProjectPhase::where('project_id', $id)
+            ->orderBy('estimated_start_date', 'asc')
+            ->get();
+        $phasesAct = ProjectPhase::where('project_id', $id)
+            ->orderBy('actual_start_date', 'asc')
+            ->get();
+
+        return view('pages.schedules.view-schedule', compact('project', 'phasesEst', 'phasesAct'));   
     }
     
 }
