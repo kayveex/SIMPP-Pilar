@@ -37,6 +37,7 @@ class Project extends Model
         'purchasing_approval_date',
         'finance_approval',
         'finance_approval_date',
+        'progress_percentage',
         'created_by',
     ];
 
@@ -70,17 +71,6 @@ class Project extends Model
     {
         return $this->hasMany(ProjectPhase::class, 'project_id');
     }
-
-    public function tasks()
-    {
-        return $this->hasMany(Task::class, 'project_id');
-    }
-
-    public function team()
-    {
-        return $this->hasMany(ProjectTeam::class, 'project_id');
-    }
-
 
     public function expenses()
     {
@@ -117,29 +107,4 @@ class Project extends Model
         return $this->hasOne(FinalProjectReport::class, 'project_id');
     }
 
-    // Helper methods for project status
-    public function isPending()
-    {
-        return $this->status === 'pending';
-    }
-
-    public function isApproved()
-    {
-        return $this->status === 'approved';
-    }
-
-    public function isInProgress()
-    {
-        return $this->status === 'in_progress';
-    }
-
-    public function isCompleted()
-    {
-        return $this->status === 'completed';
-    }
-
-    public function isCanceled()
-    {
-        return $this->status === 'canceled';
-    }
 }

@@ -62,7 +62,7 @@
 
                 {{-- Input dropdown - Berdasarkan approval_status --}}
                 <select name="approval_status" class="block w-64 min-w-fit pl-3 pr-10 py-2 border border-gray-300 text-md rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                    <option value="" disabled {{ request('approval_status') == '' ? 'selected' : '' }}>Status Persetujuan</option>
+                    <option value="" disabled {{ request('approval_status') == '' ? 'selected' : '' }}>Status Pengajuan</option>
                     <option value="diproses" {{ request('approval_status') == 'diproses' ? 'selected' : '' }}>Diproses</option>
                     <option value="dipesan" {{ request('approval_status') == 'dipesan' ? 'selected' : '' }}>Dipesan</option>
                     <option value="ditolak" {{ request('approval_status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
@@ -108,7 +108,7 @@
                                 </td>
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="#"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
+                                        <a href="{{ route('material.view', $material->material_id) }}"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
                                         <a href="{{ route('material.edit', $material->material_id) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
@@ -145,7 +145,7 @@
                         @endforeach
                     @endif
 
-                    @if (isset($projects) && count($projects)=== 0)
+                    @if (isset($materials) && count($materials)=== 0)
                         <tr>
                             <td colspan="7" class="text-center py-4 text-gray-500">
                                 Tidak ada material yang ditemukan.

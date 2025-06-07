@@ -17,6 +17,8 @@ class MaterialRequestItem extends Model
         'item_name', // nama item, misal: "Paralon PVC"
         'quantity',
         'unit', // unit of measurement
+        'price_per_unit', // harga per unit, bisa dikosongkan jika tidak ada
+        'total_price', // total harga, bisa dikosongkan jika tidak ada
         'required_date', // tanggal item dibutuhkan, bisa dikosongkan jika tidak ada batas waktu
         'received_quantity',
         'received_date',

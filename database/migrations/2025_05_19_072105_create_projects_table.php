@@ -40,6 +40,8 @@ return new class extends Migration
             // Persetujuan Tim Finance
             $table->boolean('finance_approval')->default(false);
             $table->date('finance_approval_date')->nullable();
+            // Fitur menyimpan persentase progres proyek
+            $table->integer('progress_percentage')->default(0); // 0-100%
 
             // Fitur tambahan, untuk menyimpan informasi tentang siapa yang membuat  & kapan proyek dibuat
             $table->unsignedBigInteger('created_by');

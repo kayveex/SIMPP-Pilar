@@ -18,13 +18,37 @@ class UsersSeeder extends Seeder
                 'name' => 'admin001',
                 'email' => 'admin001@gmail.com',
                 'password' => bcrypt('admin001'),
-                'role' => 'Admin',
+                'role' => 'Divisi Admin',
             ],
             [
                 'name' => 'technical001',
                 'email' => 'technical001@gmail.com',
                 'password' => bcrypt('technical001'),
                 'role' => 'Divisi Teknikal',
+            ],
+            [
+                'name' => 'purchasing001',
+                'email' => 'purchasing001@gmail.com',
+                'password' => bcrypt('purchasing001'),
+                'role' => 'Divisi Purchasing',
+            ],
+            [
+                'name' => 'finance001',
+                'email' => 'finance001@gmail.com',
+                'password' => bcrypt('finance001'),
+                'role' => 'Divisi Finance',
+            ],
+            [
+                'name' => 'director001',
+                'email' => 'director001@gmail.com',
+                'password' => bcrypt('director001'),
+                'role' => 'Direktur',
+            ],
+            [
+                'name' => 'superadmin01',
+                'email' => 'superadmin01@gmail.com',
+                'password' => bcrypt('superadmin01'),
+                'role' => 'Super Admin',
             ]
         ];
 

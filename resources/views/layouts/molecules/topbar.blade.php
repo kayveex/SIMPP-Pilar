@@ -48,12 +48,9 @@
                         <label for="home" class="font-bold">MATERIAL</label>
                         <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 ">
                             <i class="ph-bold ph-check-square-offset"></i>
-                            <span>Pengajuan Material</span>
+                            <span>Pengajuan & Status</span>
                         </a>
-                        <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 ">
-                            <i class="ph-fill ph-align-left"></i>
-                            <span>Status Material</span>
-                        </a>
+
                     </div>
 
                     {{-- Keuangan Tab --}}

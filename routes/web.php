@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,8 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\AnggaranRealisasiController;
 use App\Http\Controllers\AnggaranRencanaController;
 use App\Http\Controllers\ArchiveViewController;
+use App\Http\Controllers\MaterialItemExportController;
+use App\Http\Controllers\MaterialItemsController;
 // Add Progress Controller import
 use App\Http\Controllers\ProgressController;
 
@@ -69,7 +72,11 @@ Route::middleware('auth')->group(function() {
     });
     
     // Schedule
-    Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule.index');
+    Route::prefix('schedules')->group(function() {
+        Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
+        Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
+    });
+
     
     // Anggaran
     Route::get('/anggaran', [AnggaranController::class, 'index'])->name('anggaran');
@@ -84,16 +91,32 @@ Route::middleware('auth')->group(function() {
     Route::prefix('material')->group(function() {
         // Main material page
         Route::get('/', [MaterialController::class, 'index'])->name('material.index');
+        // Show material details
+        Route::get('/view/{id}', [MaterialController::class, 'viewPage'])->name('material.view');
         
         // Additional material pages that have corresponding controller methods
         Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
         Route::post('/store', [MaterialController::class, 'storeMaterial'])->name('material.store');
         Route::delete('/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
         Route::get('/edit/{id}', [MaterialController::class, 'editPage'])->name('material.edit');
-        Route::get('/view/{id}', [MaterialController::class, 'view'])->name('material.view');
-        Route::get('/process/{id}', [MaterialController::class, 'process'])->name('material.process');
-        Route::get('/approval/{id}', [MaterialController::class, 'approval'])->name('material.approval');
-        Route::post('/approval/process/{id}', [MaterialController::class, 'processApproval'])->name('material.process-approval');
+        Route::patch('update/{id}', [MaterialController::class, 'updateMaterial'])->name('material.update');
+
+        // Approval Material for Purchasing
+        Route::patch('/approval/{id}', [MaterialController::class, 'updateApproval'])->name('material.approval');
+        // Delete Approval Material for Purchasing
+        Route::patch('/approval/delete/{id}', [MaterialController::class, 'deleteApproval'])->name('material.approval.delete');
+
+    });
+
+    // Material Items
+    Route::prefix('material-items')->group(function() {
+        // Show material item details
+        Route::get('/view/{id}', [MaterialItemsController::class, 'showMaterialItem'])->name('material-items.view');
+        Route::get('/create/{id}', [MaterialItemsController::class, 'createMaterialItem'])->name('material-items.create');
+        Route::post('/store/{id}', [MaterialItemsController::class, 'storeMaterialItem'])->name('material-items.store');
+        Route::get('/edit/{id}', [MaterialItemsController::class, 'editMaterialItem'])->name('material-items.edit');
+        Route::patch('/update/{id}', [MaterialItemsController::class, 'updateMaterialItem'])->name('material-items.update');
+        Route::delete('/delete/{id}', [MaterialItemsController::class, 'deleteMaterialItem'])->name('material-items.delete');
     });
     
     // Archive
@@ -106,13 +129,16 @@ Route::middleware('auth')->group(function() {
     Route::prefix('projectDocs')->group(function() {
         Route::post('/upload/{id}', [ProjectController::class, 'addDocuments'])->name('projectDocs.upload');
         Route::delete('/{id}', [ProjectController::class, 'deleteDocument'])->name('projectDocs.delete');
+    });
     
     // Persetujuan Project
     Route::patch('/approval/{id}', [ProjectController::class, 'updatePersetujuanProject'])->name('project.approval');
     // Hapus Persetujuan Project
     Route::patch('/approval/delete/{id}', [ProjectController::class, 'deletePersetujuanProject'])->name('project.approval.delete');
 
-
+    // Export Material Items
+    Route::prefix('export')->group(function() {
+        Route::get('material-items/{material}', [MaterialItemExportController::class, 'export'])->name('material-items.export');
     });
 });
 

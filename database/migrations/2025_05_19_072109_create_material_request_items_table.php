@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('item_name'); //nama item, misal: "Paralon PVC"
             $table->decimal('quantity', 15, 2);
             $table->enum('unit', ['pcs', 'kg', 'm', 'cm', 'liter', 'set'])->default('pcs'); //unit of measurement
+            $table->bigInteger('price_per_unit')->nullable(); //harga per unit, bisa dikosongkan jika tidak ada
+            $table->decimal('total_price', 15, 2)->nullable(); //total harga, bisa dikosongkan jika tidak ada
             $table->date('required_date')->nullable(); //tanggal item dibutuhkan, bisa dikosongkan jika tidak ada batas waktu
             $table->decimal('received_quantity', 15, 2)->nullable();
             $table->date('received_date')->nullable();
