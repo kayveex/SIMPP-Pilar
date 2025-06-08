@@ -73,5 +73,26 @@ class ScheduleController extends Controller
 
         return view('pages.schedules.view-schedule', compact('project', 'phasesEst', 'phasesAct'));   
     }
+
+    // Store a new project phase
+    public function storePhase(Request $request, $id) 
+    {
+        $request->validate([
+            'phase_name' => 'required|string|max:255',
+            'estimated_start_date' => 'required|date',
+            'estimated_end_date' => 'required|date|after_or_equal:estimated_start_date',
+        ]);
+
+        $phase = ProjectPhase::create([
+            'phase_name' => $request->phase_name,
+            'project_id' => $id,
+            'estimated_start_date' => $request->estimated_start_date,
+            'estimated_end_date' => $request->estimated_end_date,
+            'is_completed' => false,
+        ]);
+
+        return redirect()->route('schedules.view', $id)
+            ->with('success', 'Project phase created successfully!');
+    }
     
 }

@@ -74,6 +74,7 @@ Route::middleware('auth')->group(function() {
     // Schedule
     Route::prefix('schedules')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
+        Route::post('/store/{id}', [ScheduleController::class, 'storePhase'])->name('schedules.store');
         Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
     });
 
