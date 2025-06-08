@@ -14,4 +14,18 @@
     font-family: "Nunito Sans", sans-serif;
 }
 
+@layer utilities {
+  .custom-progress::-webkit-progress-bar {
+    @apply bg-gray-200 rounded-full;
+  }
+
+  .custom-progress::-webkit-progress-value {
+    @apply bg-blue-600 rounded-full;
+  }
+
+  .custom-progress::-moz-progress-bar {
+    @apply bg-blue-600 rounded-full;
+  }
+}
+
 

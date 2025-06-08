@@ -19,6 +19,7 @@ use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
 // Add Progress Controller import
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\ProgressProyekController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
@@ -74,7 +75,14 @@ Route::middleware('auth')->group(function() {
     // Schedule
     Route::prefix('schedules')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
+        Route::post('/store/{id}', [ScheduleController::class, 'storePhase'])->name('schedules.store');
         Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
+    });
+
+    // Progress Proyek
+    Route::prefix('progress-proyek')->group(function() {
+        Route::get('/', [ProgressProyekController::class, 'index'])->name('progress-proyek.index');
+        Route::get('/view/{id}', [ProgressProyekController::class, 'viewProgress'])->name('progress-proyek.view');
     });
 
     
