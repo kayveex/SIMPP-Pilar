@@ -23,7 +23,7 @@
                 <i class="ph-bold ph-calendar-blank"></i>
                 <span>Jadwal</span>
             </a>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('progress-proyek.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-circle-notch"></i>
                 <span>Progress Proyek</span>
             </a>
