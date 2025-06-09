@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectPhase;
+use App\Models\ReportFiles;
 use App\Models\ReportLists;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class ProgressProyekController extends Controller
 {
@@ -89,5 +94,81 @@ class ProgressProyekController extends Controller
         // Return the view with phase and reports
         return view('pages.progress-proyek.detail-progress', compact('phase', 'reports'));
 
+    }
+
+    // View Detail Report
+    public function viewDetailReport($reportId)
+    {
+        //Find the report by ID
+        $report = ReportLists::findOrFail($reportId);
+
+        // Get the files associated with this report
+        $files = ReportFiles::where('report_id', $reportId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        
+        // Return the view with report and files
+        return view('pages.progress-proyek.detail-catatan', compact('report', 'files'));
+
+    }
+
+    // POST store a new report from the project phase
+    public function storeReport(Request $request, $id) 
+    {
+        // Validate the request
+        $request->validate([
+            'report_title' => 'required|string|max:255',
+            'report_type' => 'required|in:harian,mingguan,bulanan,kendala,penyelesaian',
+            'activity' => 'nullable|string|min:3',
+            'trouble' => 'nullable|string|min:3',
+            'solution' => 'nullable|string|min:3',
+        ]);
+
+        DB::beginTransaction();
+
+        // Create a new report
+        try {
+            $report = ReportLists::create([
+                'phase_id' => $id,
+                'report_title' => $request->report_title,
+                'report_type' => $request->report_type,
+                'activity' => $request->activity,
+                'trouble' => $request->trouble,
+                'solution' => $request->solution,
+                'report_date' => Carbon::now(), 
+            ]);
+
+            if ($request->hasFile('report_files')) {
+                foreach ($request->file('report_files') as $file) {
+                    $filename = time() . '_' . Str::random(8) . '_' . $file->getClientOriginalName();
+                    $filePath = $file->storeAs('reports', $filename, 'public');
+
+                    ReportFiles::create([
+                        'report_id' => $report->report_id,
+                        'file_name' => $filename,
+                        'file_path' => $filePath,
+                        'file_type' => $file->getClientMimeType(),
+                        'description' => 'Lampiran untuk laporan ' . $report->report_title,
+                    ]);
+                }
+            }
+    
+            DB::commit();
+
+            // Back to the report view with success message
+            return redirect()->route('progress-proyek.report', $id)
+                ->with('success', 'Laporan berhasil dibuat dan file berhasil diunggah.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            dd($th);
+            // Back to the report view with error message
+            return redirect()->route('progress-proyek.report', $id)
+                ->withErrors(['error' => 'Gagal membuat laporan: ' . $th->getMessage()]);
+        }
+
+
+
+
+        // Check if there are any files to upload 
     }
 }

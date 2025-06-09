@@ -84,6 +84,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [ProgressProyekController::class, 'index'])->name('progress-proyek.index');
         Route::get('/view/{id}', [ProgressProyekController::class, 'viewProgress'])->name('progress-proyek.view');
         Route::get('/report/{id}', [ProgressProyekController::class, 'viewReport'])->name('progress-proyek.report');
+        Route::get('/report/detail/{reportId}', [ProgressProyekController::class, 'viewDetailReport'])->name('progress-proyek.report.detail');
+        Route::post('/report/store/{id}', [ProgressProyekController::class, 'storeReport'])->name('progress-proyek.report.store');
     });
 
     

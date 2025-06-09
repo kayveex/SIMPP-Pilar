@@ -9,8 +9,8 @@ class ReportFiles extends Model
 {
     use HasFactory;
 
-    protected $table = 'projects';
-    protected $primaryKey = 'project_id';
+    protected $table = 'report_files';
+    protected $primaryKey = 'report_file_id';
     public $incrementing = true;
 
     protected $fillable = [

@@ -60,14 +60,57 @@
                         <h2 class="text-xl font-bold mb-4 border-b border-gray-200 pb-2">
                             List Catatan Pada Fase <a class="hover:text-blue-500 hover:underline" href="#">{{ $phase->phase_name }}</a>
                         </h2>
-                        <p class="text-gray-600 text-md">
+                        <p class="text-gray-600 text-md mb-2">
                             Catatan proyek tersimpan di dalam tiap fase proyek. 
                             Anda dapat melihat catatan-catatan tersebut dengan mengeklik tombol <i class="ph-bold mx-1.5 ph-eye text-blue-500"></i> pada salah satu catatan.
                         </p>
                         {{-- Divider border --}}
 
-
                         {{-- Notes Table --}}
+                        <div class="overflow-x-auto bg-white rounded-lg border border-gray-300">
+                            <table class="table w-full table-zebra">
+                                <thead class="bg-gray-50 border-b text-center border-gray-200">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Judul Laporan</th>
+                                        <th>Jenis Laporan</th>
+                                        <th>Dibuat Pada</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody class="text-center">
+                                    @if (isset($reports) && count($reports) > 0)
+                                        @foreach ($reports as $index => $report)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $report->report_title }}</td>
+                                                <td>
+                                                    <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800">
+                                                        {{ ucfirst($report->report_type) }}
+                                                    </span>
+                                                </td>
+                                                <td>{{ $report->created_at->format('d M Y') }}</td>
+                                                <td class="flex flex-row justify-center items-center gap-2">
+                                                    <div class="flex flex-row gap-2 text-lg">
+                                                        <a href="{{ route('progress-proyek.report.detail', $report->report_id) }}" class="py-2 text-blue-600 hover:text-blue-700 transition duration-200" title="Lihat Catatan">
+                                                            <i class="ph-bold ph-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            
+                                        @endforeach
+                                        
+                                    @endif
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+
 
 
                     </div>
@@ -85,7 +128,8 @@
                         </p>
 
                         {{-- Form to add new note --}}
-                        <form action="" method="POST">
+                        <form action="{{ route('progress-proyek.report.store', $phase->phase_id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="mb-4">
                                 <label for="report_title" class="block text-sm font-medium text-gray-700 mb-2">Judul Catatan</label>
                                 <input type="text" id="report_title" name="report_title" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
