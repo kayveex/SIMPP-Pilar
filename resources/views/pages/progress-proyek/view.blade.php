@@ -27,13 +27,13 @@
     <section class="flex flex-col p-6">
         {{-- Page Header --}}
         <div class="flex flex-row justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Catatan Progress Proyek</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Daftar Fase Catatan Progress</h1>
         </div>
         {{-- Breadcrumb --}}
         <div class="breadcrumbs text-md font-bold mb-4">
             <ul>
                 <li class="text-[#4880FF]"><a href="{{ route('progress-proyek.index') }}">Progress Proyek</a></li>
-                <li>Catatan Progress Proyek</li>
+                <li>Daftar Fase Catatan Progress</li>
             </ul>
         </div>
 
@@ -100,7 +100,7 @@
 
                                 <td>
                                     <div class="flex flex-row justify-center text-lg items-center gap-2">
-                                        <a href="#" class="py-2 text-blue-500 hover:text-blue-600 transition duration-200" title="Lihat Catatan Proyek">
+                                        <a href="{{ route('progress-proyek.report', $phase->phase_id) }}" class="py-2 text-blue-500 hover:text-blue-600 transition duration-200" title="Lihat Catatan Proyek">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
                                     </div>

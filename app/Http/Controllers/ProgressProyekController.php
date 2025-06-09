@@ -72,6 +72,22 @@ class ProgressProyekController extends Controller
             
         // Return the view with project, phases, and reports
         return view('pages.progress-proyek.view', compact('project', 'phases'));
+    }
+
+    // Display the report list for a specific project_phases
+
+    public function viewReport($id)  
+    {
+        // Find the project phase by ID
+        $phase = ProjectPhase::findOrFail($id);
+
+        // Get the reports for this phase
+        $reports = ReportLists::where('phase_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Return the view with phase and reports
+        return view('pages.progress-proyek.detail-progress', compact('phase', 'reports'));
 
     }
 }
