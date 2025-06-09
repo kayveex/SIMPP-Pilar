@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('progress-proyek')->group(function() {
         Route::get('/', [ProgressProyekController::class, 'index'])->name('progress-proyek.index');
         Route::get('/view/{id}', [ProgressProyekController::class, 'viewProgress'])->name('progress-proyek.view');
+        Route::get('/report/{id}', [ProgressProyekController::class, 'viewReport'])->name('progress-proyek.report');
     });
 
     
