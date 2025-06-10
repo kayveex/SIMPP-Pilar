@@ -170,7 +170,7 @@
                                                             <a href="" class="text-yellow-500 hover:text-yellow-600" title="Edit Jadwal">
                                                                 <i class="ph-bold ph-pencil-simple-line"></i>
                                                             </a>
-                                                            <form class="flex items-center justify-center" action="" method="POST">
+                                                            <form class="flex items-center justify-center" action="{{ route('schedules.phase.destroy', $phase->phase_id) }}" method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" class="text-red-500 cursor-pointer hover:text-red-600" title="Hapus Jadwal" >

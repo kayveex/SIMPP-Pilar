@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function() {
         Route::patch('/phase/{id}/complete', [ScheduleController::class, 'updateIsCompleted'])->name('schedules.phase.complete');
         // undo completion
         Route::patch('/phase/{id}/undo', [ScheduleController::class, 'undoIsCompleted'])->name('schedules.phase.undo');
+        // delete project phase
+        Route::delete('/phase/{id}', [ScheduleController::class, 'destroyPhase'])->name('schedules.phase.destroy');
     });
 
     // Progress Proyek

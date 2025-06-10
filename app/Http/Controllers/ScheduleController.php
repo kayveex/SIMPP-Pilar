@@ -93,6 +93,16 @@ class ScheduleController extends Controller
             'is_completed' => false,
         ]);
 
+        // After create, count the progress_percentage from Project
+        $project = Project::findOrFail($id);
+        $isCompletePhase = ProjectPhase::where('project_id', $id)
+            ->where('is_completed', true)
+            ->count();
+        $totalPhases = ProjectPhase::where('project_id', $id)->count();
+        $progressPercentage = $totalPhases > 0 ? ($isCompletePhase / $totalPhases) * 100 : 0;
+        $project->update(['progress_percentage' => $progressPercentage]);
+        // Commit the transaction
+        DB::commit();
         return redirect()->route('schedules.view', $id)
             ->with('success', 'Project phase created successfully!');
     }
@@ -160,6 +170,36 @@ class ScheduleController extends Controller
             return redirect()->back()
                 ->with('error', 'Failed to undo project phase update: ' . $th->getMessage());
         } 
+    }
+
+    // Delete project phase
+    public function destroyPhase($id) 
+    {
+        $phase = ProjectPhase::findOrFail($id);
+        $projectId = $phase->project_id;
+
+        DB::beginTransaction();
+
+        try {
+            $phase->delete();
+
+            // After delete, count the progress_percentage from Project
+            $project = Project::findOrFail($projectId);
+            $isCompletePhase = ProjectPhase::where('project_id', $projectId)
+                ->where('is_completed', true)
+                ->count();
+            $totalPhases = ProjectPhase::where('project_id', $projectId)->count();
+            $progressPercentage = $totalPhases > 0 ? ($isCompletePhase / $totalPhases) * 100 : 0;
+            $project->update(['progress_percentage' => $progressPercentage]);
+
+            DB::commit();
+            return redirect()->route('schedules.view', $projectId)
+                ->with('success', 'Project phase deleted successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('schedules.view', $projectId)
+                ->with('error', 'Failed to delete project phase: ' . $th->getMessage());
+        }
     }
     
 }
