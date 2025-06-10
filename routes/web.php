@@ -77,6 +77,13 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
         Route::post('/store/{id}', [ScheduleController::class, 'storePhase'])->name('schedules.store');
         Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
+
+        // Update project phase completion status
+        Route::patch('/phase/{id}/complete', [ScheduleController::class, 'updateIsCompleted'])->name('schedules.phase.complete');
+        // undo completion
+        Route::patch('/phase/{id}/undo', [ScheduleController::class, 'undoIsCompleted'])->name('schedules.phase.undo');
+        // delete project phase
+        Route::delete('/phase/{id}', [ScheduleController::class, 'destroyPhase'])->name('schedules.phase.destroy');
     });
 
     // Progress Proyek

@@ -33,8 +33,8 @@
         <div class="breadcrumbs text-md font-bold mb-4">
             <ul>
                 <li class="text-[#4880FF]"><a href="{{ route('progress-proyek.index') }}">Progress Proyek</a></li>
-                <li class="text-[#4880FF]"><a href="#">Daftar Fase Catatan Progress</a></li>
-                <li class="text-[#4880FF]"><a href="#">List Catatan Progress</a></li>
+                <li class="text-[#4880FF]"><a href="{{ route('progress-proyek.view', $report->phase->project_id) }}">Daftar Fase Catatan Progress</a></li>
+                <li class="text-[#4880FF]"><a href="{{ route('progress-proyek.report', $report->phase->phase_id) }}">List Catatan Progress</a></li>
                 <li>Detail Catatan Proyek</li>
             </ul>
         </div>
@@ -106,12 +106,6 @@
                                     <p class="text-md text-gray-500">Tidak ada solusi yang ditambahkan.</p>
                                 </div>
                             @endif
-                            
-
-                        
-
-
-
                         </div>
 
 
@@ -119,6 +113,7 @@
                 </div>
                 <div x-show="tab === 'edit_notes'" class="space-y-4">
                     <div class="flex flex-col p-4" >
+                        
 
                     </div>
                 </div>

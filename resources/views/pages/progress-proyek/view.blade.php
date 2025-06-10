@@ -4,7 +4,7 @@
 
 {{-- Page Title --}}
 @section('page_title')
-    Catatan Progress - SIMPP Pillar Presisi
+    Daftar Fase Progress - SIMPP Pillar Presisi
 @endsection
 
 {{-- Head - Styles --}}
@@ -50,6 +50,10 @@
                 <p>
                     Catatan Proyek tersimpan di dalam tiap fase proyek. 
                     Anda dapat melihat catatan-catatan tersebut dengan mengeklik tombol <i class="ph-bold mx-1.5 ph-eye text-blue-500"></i> pada salah satu fase.
+                </p>
+                {{-- Untuk mengubah status fase, gunakan tombol di bawah ini --}}
+                <p>
+                    Untuk mengubah status fase/tambah jadwal, silahkan klik <a href="{{ route('schedules.view', $project->project_id) }}" class="text-blue-500 hover:underline">disini</a>
                 </p>
             </div>
                 

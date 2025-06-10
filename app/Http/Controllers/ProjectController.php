@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectDocument;
+use App\Models\ProjectPhase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -271,23 +272,38 @@ class ProjectController extends Controller
         try {
             $project = Project::findOrFail($id);
 
-            // Hapus semua dokumen terkait
-            $documents = $project->documents; // asumsi relasi `documents()` sudah didefinisikan di model Project
-            foreach ($documents as $document) {
-                // Hapus file fisik dari storage
+            // Hapus semua ProjectPhases dan relasi ke ReportLists dan ReportFiles
+            foreach ($project->phases as $phase) {
+                foreach ($phase->reportLists as $report) {
+                    foreach ($report->files as $file) {
+                        if (Storage::disk('public')->exists($file->file_path)) {
+                            Storage::disk('public')->delete($file->file_path);
+                        }
+                        $file->delete();
+                    }
+                    $report->delete();
+                }
+                $phase->delete();
+            }
+
+            // Hapus semua Materials dan relasi ke MaterialRequestItems
+            foreach ($project->materials as $material) {
+                $material->requestItems()->delete();
+                $material->delete();
+            }
+
+            // Hapus semua ProjectDocuments dan file fisiknya
+            foreach ($project->documents as $document) {
                 if (Storage::disk('public')->exists($document->file_path)) {
                     Storage::disk('public')->delete($document->file_path);
                 }
-
-                // Hapus data dari database
                 $document->delete();
             }
 
-            // Hapus data proyek
+            // Terakhir, hapus Project itu sendiri
             $project->delete();
 
             DB::commit();
-
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dihapus!');
         } catch (\Throwable $th) {
             DB::rollBack();

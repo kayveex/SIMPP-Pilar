@@ -93,7 +93,7 @@
                                                 <td>{{ $report->created_at->format('d M Y') }}</td>
                                                 <td class="flex flex-row justify-center items-center gap-2">
                                                     <div class="flex flex-row gap-2 text-lg">
-                                                        <a href="{{ route('progress-proyek.report.detail', $report->report_id) }}" class="py-2 text-blue-600 hover:text-blue-700 transition duration-200" title="Lihat Catatan">
+                                                        <a href="{{ route('progress-proyek.report.detail', $report->report_id) }}" class="py-2 text-blue-600 hover:text-blue-700 transition duration-200" title="Lihat/Edit Catatan">
                                                             <i class="ph-bold ph-eye"></i>
                                                         </a>
                                                     </div>
@@ -148,17 +148,17 @@
 
                             <div class="mb-4">
                                 <label for="activity" class="block text-sm font-medium text-gray-700 mb-2">Aktivitas</label>
-                                <textarea id="activity" name="activity" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan aktivitas atau catatan Anda di sini..." required></textarea>
+                                <textarea id="activity" name="activity" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan aktivitas atau catatan Anda di sini..." ></textarea>
                             </div>
 
                             <div class="mb-4">
                                 <label for="trouble" class="block text-sm font-medium text-gray-700 mb-2">Kendala</label>
-                                <textarea id="trouble" name="trouble" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan kendala yang dihadapi di sini..." required></textarea>
+                                <textarea id="trouble" name="trouble" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan kendala yang dihadapi di sini..." ></textarea>
                             </div>
 
                             <div class="mb-4">
                                 <label for="solution" class="block text-sm font-medium text-gray-700 mb-2">Solusi</label>
-                                <textarea id="solution" name="solution" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan solusi yang diambil di sini..." required></textarea>
+                                <textarea id="solution" name="solution" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Deskripsikan solusi yang diambil di sini..."></textarea>
                             </div>
 
                             <div class="mb-4">

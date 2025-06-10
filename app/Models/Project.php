@@ -72,39 +72,9 @@ class Project extends Model
         return $this->hasMany(ProjectPhase::class, 'project_id');
     }
 
-    public function expenses()
-    {
-        return $this->hasMany(ProjectExpense::class, 'project_id');
-    }
-
-    public function payments()
-    {
-        return $this->hasMany(ProjectPayment::class, 'project_id');
-    }
-
-    public function progressReports()
-    {
-        return $this->hasMany(ProgressReport::class, 'project_id');
-    }
-
     public function documents()
     {
         return $this->hasMany(ProjectDocument::class, 'project_id');
-    }
-
-    public function approvalLogs()
-    {
-        return $this->hasMany(ApprovalLog::class, 'project_id');
-    }
-
-    public function activityLogs()
-    {
-        return $this->hasMany(ActivityLog::class, 'project_id');
-    }
-
-    public function finalReport()
-    {
-        return $this->hasOne(FinalProjectReport::class, 'project_id');
     }
 
 }
