@@ -149,13 +149,17 @@
                                                         </td>
                                                         <td class="flex justify-center items-center gap-2 text-xl">
                                                             @if ($phase->is_completed === false)
-                                                                <form action="" method="POST">
+                                                                <form action="{{ route('schedules.phase.complete', $phase->phase_id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PATCH')
                                                                     <button class="text-green-500 cursor-pointer hover:text-green-600" title="Tandai Sudah Selesai">
                                                                         <i class="ph-bold ph-check-square-offset"></i>
                                                                     </button>
                                                                 </form>
                                                             @elseif ($phase->is_completed === true)
-                                                                <form action="" method="POST">
+                                                                <form action="{{ route('schedules.phase.undo', $phase->phase_id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('PATCH')
                                                                     <button class="text-red-500 cursor-pointer" title="Batalkan Penyelesaian">
                                                                         <i class="ph-bold ph-x-circle"></i>
                                                                     </button>

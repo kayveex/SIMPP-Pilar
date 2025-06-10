@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class ScheduleController extends Controller
 {
@@ -93,6 +95,71 @@ class ScheduleController extends Controller
 
         return redirect()->route('schedules.view', $id)
             ->with('success', 'Project phase created successfully!');
+    }
+
+    // PATCH update project phase
+    public function updateIsCompleted($id)  
+    {
+        $phase = ProjectPhase::findOrFail($id);
+
+
+        DB::beginTransaction();
+
+        try {
+            $phase->update([
+                'is_completed' => true,
+                'actual_end_date' => Carbon::now(),
+            ]);
+
+            // After update, count the progress_percentage from Project
+            $project = Project::findOrFail($phase->project_id);
+            $isCompletePhase = ProjectPhase::where('project_id', $phase->project_id)
+                ->where('is_completed', true)
+                ->count();
+            $totalPhases = ProjectPhase::where('project_id', $phase->project_id)->count();
+            $progressPercentage = $totalPhases > 0 ? ($isCompletePhase / $totalPhases) * 100 : 0;
+            $project->update(['progress_percentage' => $progressPercentage]);
+
+            DB::commit();
+            return redirect()->back()
+                ->with('success', 'Project phase updated successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Failed to update project phase: ' . $th->getMessage());
+        } 
+    }
+
+    // PATCH undo update project phase
+    public function undoIsCompleted($id)  
+    {
+        $phase = ProjectPhase::findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            $phase->update([
+                'is_completed' => false,
+                'actual_end_date' => null,
+            ]);
+
+            // After undo, count the progress_percentage from Project
+            $project = Project::findOrFail($phase->project_id);
+            $isCompletePhase = ProjectPhase::where('project_id', $phase->project_id)
+                ->where('is_completed', true)
+                ->count();
+            $totalPhases = ProjectPhase::where('project_id', $phase->project_id)->count();
+            $progressPercentage = $totalPhases > 0 ? ($isCompletePhase / $totalPhases) * 100 : 0;
+            $project->update(['progress_percentage' => $progressPercentage]);
+            
+            DB::commit();
+            return redirect()->back()
+                ->with('success', 'Project phase update undone successfully!');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->with('error', 'Failed to undo project phase update: ' . $th->getMessage());
+        } 
     }
     
 }
