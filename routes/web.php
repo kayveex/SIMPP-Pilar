@@ -77,6 +77,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
         Route::post('/store/{id}', [ScheduleController::class, 'storePhase'])->name('schedules.store');
         Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
+        // Edit project phase
+        Route::get('/phase/{id}/edit', [ScheduleController::class, 'editJadwal'])->name('schedules.phase.edit');
+
+        // PATCH Project Phase
+        Route::patch('/phase/{id}', [ScheduleController::class, 'updatePhase'])->name('schedules.phase.update');
 
         // Update project phase completion status
         Route::patch('/phase/{id}/complete', [ScheduleController::class, 'updateIsCompleted'])->name('schedules.phase.complete');

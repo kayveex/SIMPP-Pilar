@@ -101,7 +101,7 @@
                                         <thead class="bg-gray-50 border-b text-center border-gray-200">
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Nama Kegiatan</th>
+                                                <th>Nama Fase</th>
                                                 <th>Tanggal</th>
                                                 <th>Status</th>
                                                 <th>Aksi</th>
@@ -167,7 +167,7 @@
                                                                 
                                                             @endif
 
-                                                            <a href="" class="text-yellow-500 hover:text-yellow-600" title="Edit Jadwal">
+                                                            <a href="{{ route('schedules.phase.edit', $phase->phase_id) }}" class="text-yellow-500 hover:text-yellow-600" title="Edit Jadwal">
                                                                 <i class="ph-bold ph-pencil-simple-line"></i>
                                                             </a>
                                                             <form class="flex items-center justify-center" action="{{ route('schedules.phase.destroy', $phase->phase_id) }}" method="POST">
@@ -203,7 +203,7 @@
                                         <thead class="bg-gray-50 border-b text-center border-gray-200">
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Nama Kegiatan</th>
+                                                <th>Nama Fase</th>
                                                 <th>Tanggal Mulai</th>
                                                 <th>Tanggal Selesai</th>
                                                 <th>Status</th>
@@ -235,21 +235,6 @@
                                                                 <span class="bg-red-500 font-bold text-white px-2 py-1 rounded-xl">Belum Selesai</span>
                                                             @elseif ($phase->is_completed === true)
                                                                 <span class="bg-green-500 font-bold text-white px-2 py-1 rounded-xl">Selesai</span>
-                                                            @endif
-                                                        </td>
-                                                        <td class="flex justify-center items-center gap-2 text-xl">
-                                                            @if ($phase->is_completed === false)
-                                                                <form action="" method="POST">
-                                                                    <button class="text-green-500 cursor-pointer hover:text-green-600" title="Tandai Sudah Selesai">
-                                                                        <i class="ph-bold ph check-square-offset"></i>
-                                                                    </button>
-                                                                </form>
-                                                            @elseif ($phase->is_completed === true)
-                                                                <form action="" method="POST">
-                                                                    <button class="text-red-500 cursor-pointer" title="Batalkan Penyelesaian">
-                                                                        <i class="ph-bold ph-x-circle"></i>
-                                                                    </button>           
-                                                                </form>
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -294,7 +279,7 @@
                             {{-- CSRF Token --}}
                             @csrf
                             <div class="mb-4">
-                                <label for="phase_name" class="block text-gray-700 text-sm font-bold mb-2">Nama Kegiatan <span class="text-red-500">*</span></label>
+                                <label for="phase_name" class="block text-gray-700 text-sm font-bold mb-2">Nama Fase <span class="text-red-500">*</span></label>
                                 <input type="text" id="phase_name" name="phase_name" class="appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-blue-500 focus:shadow-outline" required>
                             </div>
 
