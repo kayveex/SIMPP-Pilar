@@ -210,6 +210,73 @@ class ProgressProyekController extends Controller
         }
     }
 
+    // add report files
+    public function addReportFiles(Request $request, $reportId) 
+    {
+        // Validate the request
+        $request->validate([
+            'report_files.*' => 'required|file|mimes:pdf,jpg,jpeg,png', // max 2MB
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Find the report by ID
+            $report = ReportLists::findOrFail($reportId);
+
+            // Process each file
+            foreach ($request->file('report_files') as $file) {
+                $filename = time() . '_' . Str::random(8) . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('reports', $filename, 'public');
+
+                ReportFiles::create([
+                    'report_id' => $report->report_id,
+                    'file_name' => $filename,
+                    'file_path' => $filePath,
+                    'file_type' => $file->getClientMimeType(),
+                    'description' => 'Lampiran untuk laporan ' . $report->report_title,
+                ]);
+            }
+
+            DB::commit();
+
+            // Redirect back with success message
+            return redirect()->back()
+                ->with('success', 'File berhasil diunggah.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withErrors(['error' => 'Gagal mengunggah file: ' . $th->getMessage()]);
+        }
+    }
+
+    // Delete report files
+    public function deleteReportFile($fileId) 
+    {
+        // Find the file by ID
+        $file = ReportFiles::findOrFail($fileId);
+
+        DB::beginTransaction();
+
+        try {
+            // Delete the file from storage
+            Storage::disk('public')->delete($file->file_path);
+
+            // Delete the file record from the database
+            $file->delete();
+
+            DB::commit();
+
+            // Redirect back with success message
+            return redirect()->back()
+                ->with('success', 'File berhasil dihapus.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withErrors(['error' => 'Gagal menghapus file: ' . $th->getMessage()]);
+        }
+    }
+
     // Delete a Report List and its associated files
     public function deleteReport($reportId) 
     {

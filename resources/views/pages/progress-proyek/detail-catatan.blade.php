@@ -135,12 +135,14 @@
                             <!-- Gambar -->
                             <div class="w-full max-w-2xl overflow-hidden rounded-lg shadow-lg">
                                 <template x-for="(slide, index) in slides" :key="index">
-                                <img 
-                                    :src="slide" 
-                                    x-show="currentSlide === index" 
-                                    class="w-full object-cover transition duration-500 rounded-lg]"
-                                    x-transition
-                                />
+                                    <img 
+                                        :src="slide" 
+                                        x-show="currentSlide === index" 
+                                        class="w-full object-cover transition duration-500 rounded-lg]"
+                                        x-transition
+                                    />
+
+                                    
                                 </template>
                             </div>
 
@@ -164,7 +166,7 @@
                             @method('PATCH')
 
                             <div class="mb-4">
-                                <label for="report_title" class="block text-md font-bold text-gray-800 my-2">Judul Catatan</label>
+                                <label for="report_title" class="block text-md font-bold text-gray-800 my-2">Judul Catatan <span class="text-red-500">*</span></label>
                                 <input type="text" id="report_title" name="report_title" value="{{ old('report_title', $report->report_title) }}" 
                                 class="border border-gray-300 text-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                             </div>
@@ -202,7 +204,7 @@
                                     <i class="ph-bold ph-download-simple"></i>
                                 </a>
 
-                                <form action="" method="POST" class="inline-block ml-2">
+                                <form action="{{ route('progress-proyek.report.files.delete', $file->report_file_id) }}" method="POST" class="inline-block ml-2">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" title="Hapus Lampiran" class="text-white bg-red-600 hover:bg-red-700 px-2 py-1 cursor-pointer rounded-lg text-sm">
@@ -224,7 +226,7 @@
                             <div x-show="showModal" x-cloak class="fixed inset-0 z-30 flex items-center justify-center backdrop-blur-sm bg-black/30">
                                 <div @click.away="showModal = false" class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
                                     <h3 class="text-lg font-semibold mb-4">Tambahkan Dokumentasi Baru</h3>
-                                    <form action="" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('progress-proyek.report.upload', $report->report_id) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input 
                                             type="file" 
