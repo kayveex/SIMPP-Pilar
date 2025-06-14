@@ -97,10 +97,16 @@
                                                             <i class="ph-bold ph-eye"></i>
                                                         </a>
                                                     </div>
+                                                    {{-- Delete Button --}}
+                                                    <form action="{{ route('progress-proyek.report.delete', $report->report_id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 hover:text-red-700 transition duration-200 cursor-pointer text-lg" title="Hapus Catatan">
+                                                            <i class="ph-bold ph-trash"></i>
+                                                        </button>
+                                                    </form>
                                                 </td>
-
-                                            </tr>
-                                            
+                                            </tr>  
                                         @endforeach
                                         
                                     @endif

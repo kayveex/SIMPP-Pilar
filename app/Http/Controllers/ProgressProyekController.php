@@ -171,4 +171,73 @@ class ProgressProyekController extends Controller
 
         // Check if there are any files to upload 
     }
+
+    // PATCH edit a Report List
+    public function editReport(Request $request, $reportId) 
+    {
+        // Validate the request
+        $request->validate([
+            'report_title' => 'required|string|max:255',
+            'activity' => 'nullable|string|min:3',
+            'trouble' => 'nullable|string|min:3',
+            'solution' => 'nullable|string|min:3',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // Find the report by ID
+            $report = ReportLists::findOrFail($reportId);
+
+            // Update the report details
+            $report->update([
+                'report_title' => $request->report_title,
+                'activity' => $request->activity,
+                'trouble' => $request->trouble,
+                'solution' => $request->solution,
+                'report_date' => Carbon::now(), 
+            ]);
+
+            DB::commit();
+
+            // Redirect back with success message
+            return redirect()->back()
+                ->with('success', 'Laporan berhasil diperbarui.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withErrors(['error' => 'Gagal memperbarui laporan: ' . $th->getMessage()]);
+        }
+    }
+
+    // Delete a Report List and its associated files
+    public function deleteReport($reportId) 
+    {
+        // Find the report by ID
+        $report = ReportLists::findOrFail($reportId);
+
+        DB::beginTransaction();
+
+        try {
+            // Delete associated files
+            $files = ReportFiles::where('report_id', $reportId)->get();
+            foreach ($files as $file) {
+                Storage::disk('public')->delete($file->file_path);
+                $file->delete();
+            }
+
+            // Delete the report
+            $report->delete();
+
+            DB::commit();
+
+            // Redirect back with success message
+            return redirect()->back()
+                ->with('success', 'Laporan berhasil dihapus.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+                ->withErrors(['error' => 'Gagal menghapus laporan: ' . $th->getMessage()]);
+        }
+    }
 }
