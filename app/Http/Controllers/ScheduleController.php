@@ -191,7 +191,6 @@ class ScheduleController extends Controller
             'estimated_end_date' => 'required|date|after_or_equal:estimated_start_date',
             'actual_start_date' => 'nullable|date|after_or_equal:estimated_start_date',
             'actual_end_date' => 'nullable|date|after_or_equal:actual_start_date',
-            'is_completed' => 'required|boolean',
         ]);
 
         $phase = ProjectPhase::findOrFail($id);

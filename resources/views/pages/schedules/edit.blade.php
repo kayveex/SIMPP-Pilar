@@ -66,14 +66,6 @@
                     <label for="actual_end_date" class="block text-sm font-medium text-gray-700 my-2">Tanggal Selesai (Realisasi)</label>
                     <input type="date" id="actual_end_date" name="actual_end_date" value="{{ old('actual_end_date', $phase->actual_end_date ? $phase->actual_end_date->format('Y-m-d') : '') }}"
                     class="border border-gray-300 text-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                {{-- is_completed (true or false) --}}
-                <div class="mb-4">
-                    <label for="is_completed" class="block text-sm font-medium text-gray-700 my-2">Status Fase</label>
-                    <select id="is_completed" name="is_completed" class="border border-gray-300 text-gray-600 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
-                        <option value="0" {{ old('is_completed', $phase->is_completed) == 0 ? 'selected' : '' }}>Belum Selesai</option>
-                        <option value="1" {{ old('is_completed', $phase->is_completed) == 1 ? 'selected' : '' }}>Selesai</option>
-                    </select>
-                </div>
 
                 <div class="my-2 flex flex-row justify-end">
                     <button type="submit" class="bg-blue-500 text-white font-bold cursor-pointer px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-200">Simpan</button>

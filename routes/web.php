@@ -98,6 +98,10 @@ Route::middleware('auth')->group(function() {
         Route::get('/report/{id}', [ProgressProyekController::class, 'viewReport'])->name('progress-proyek.report');
         Route::get('/report/detail/{reportId}', [ProgressProyekController::class, 'viewDetailReport'])->name('progress-proyek.report.detail');
         Route::post('/report/store/{id}', [ProgressProyekController::class, 'storeReport'])->name('progress-proyek.report.store');
+        Route::delete('/report/delete/{reportId}', [ProgressProyekController::class, 'deleteReport'])->name('progress-proyek.report.delete');
+        Route::patch('/report/update/{reportId}', [ProgressProyekController::class, 'editReport'])->name('progress-proyek.report.update');
+        Route::post('/report/upload/{reportId}', [ProgressProyekController::class, 'addReportFiles'])->name('progress-proyek.report.upload');
+        Route::delete('/report/files/delete/{fileId}', [ProgressProyekController::class, 'deleteReportFile'])->name('progress-proyek.report.files.delete');
     });
 
     
