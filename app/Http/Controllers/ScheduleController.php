@@ -119,6 +119,7 @@ class ScheduleController extends Controller
             $phase->update([
                 'is_completed' => true,
                 'actual_end_date' => Carbon::now(),
+                'actual_start_date' => $phase->estimated_start_date,
             ]);
 
             // After update, count the progress_percentage from Project
@@ -150,6 +151,7 @@ class ScheduleController extends Controller
         try {
             $phase->update([
                 'is_completed' => false,
+                'actual_start_date' => null,
                 'actual_end_date' => null,
             ]);
 
@@ -170,6 +172,33 @@ class ScheduleController extends Controller
             return redirect()->back()
                 ->with('error', 'Failed to undo project phase update: ' . $th->getMessage());
         } 
+    }
+
+    // Edit page for project phase
+    public function editJadwal($id) 
+    {
+        $phase = ProjectPhase::findOrFail($id);
+
+        return view('pages.schedules.edit', compact('phase')); 
+    }
+
+    // Edit PATCH project phase
+    public function updatePhase(Request $request, $id)
+    {
+        $request->validate([
+            'phase_name' => 'required|string|max:255',
+            'estimated_start_date' => 'required|date',
+            'estimated_end_date' => 'required|date|after_or_equal:estimated_start_date',
+            'actual_start_date' => 'nullable|date|after_or_equal:estimated_start_date',
+            'actual_end_date' => 'nullable|date|after_or_equal:actual_start_date',
+            'is_completed' => 'required|boolean',
+        ]);
+
+        $phase = ProjectPhase::findOrFail($id);
+        $phase->update($request->all());
+
+        return redirect()->route('schedules.view', $phase->project_id)
+            ->with('success', 'Project phase updated successfully!');
     }
 
     // Delete project phase

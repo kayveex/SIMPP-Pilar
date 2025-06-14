@@ -71,12 +71,12 @@
                             {{-- Tampilkan Activity --}}
                             @if ($report->activity != null)
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Aktivitas:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Aktivitas</h3>
                                     <p class="text-md">{{ $report->activity }}</p>
                                 </div>
                             @else
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Aktivitas:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Aktivitas</h3>
                                     <p class="text-md text-gray-500">Tidak ada aktivitas yang ditambahkan.</p>
                                 </div>  
                             @endif
@@ -84,12 +84,12 @@
                             {{-- Tampilkan trouble --}}
                             @if ($report->trouble != null)
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Trouble:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Trouble</h3>
                                     <p class="text-md">{{ $report->trouble }}</p>
                                 </div>
                             @else
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Trouble:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Trouble</h3>
                                     <p class="text-md text-gray-500">Tidak ada trouble yang ditambahkan.</p>
                                 </div>
                             @endif
@@ -97,15 +97,62 @@
                             {{-- Tampilkan solution --}}
                             @if ($report->solution != null)
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Solution:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Solution</h3>
                                     <p class="text-md">{{ $report->solution }}</p>
                                 </div>
                             @else
                                 <div class="flex flex-col my-3">
-                                    <h3 class="text-lg font-semibold mb-2">Solution:</h3>
+                                    <h3 class="text-lg font-semibold mb-2">Solution</h3>
                                     <p class="text-md text-gray-500">Tidak ada solusi yang ditambahkan.</p>
                                 </div>
                             @endif
+
+                            {{-- Tampilkan Dokumentasi --}}
+                            <h3 class="text-lg font-semibold mb-2">Dokumentasi</h3>
+                            <div x-data="{
+                                currentSlide: 0,
+                                slides: [
+                                'https://img.daisyui.com/images/stock/photo-1625726411847-8cbb60cc71e6.webp',
+                                'https://img.daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.webp',
+                                'https://img.daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.webp'
+                                ]
+                            }" 
+                            class="flex items-center justify-center space-x-4 max-w-4xl mx-auto"
+                            >
+
+                            <!-- Tombol kiri -->
+                            <button 
+                                @click="currentSlide = (currentSlide === 0) ? slides.length - 1 : currentSlide - 1"
+                                class="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 transition"
+                            >
+                                <i class="ph-bold ph-caret-left"></i>
+                            </button>
+
+                            <!-- Gambar -->
+                            <div class="w-full max-w-2xl overflow-hidden rounded-lg shadow-lg">
+                                <template x-for="(slide, index) in slides" :key="index">
+                                <img 
+                                    :src="slide" 
+                                    x-show="currentSlide === index" 
+                                    class="w-full object-cover transition duration-500"
+                                    x-transition
+                                />
+                                </template>
+                            </div>
+
+                            <!-- Tombol kanan -->
+                            <button 
+                                @click="currentSlide = (currentSlide === slides.length - 1) ? 0 : currentSlide + 1"
+                                class="bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 transition"
+                            >
+                                <i class="ph-bold ph-caret-right"></i>
+                            </button>
+
+                            </div>
+
+
+
+
                         </div>
 
 
