@@ -76,6 +76,49 @@
     </div>
     {{-- Right side  --}}
     <div class="flex flex-row w-1/2 h-fit items-center justify-end">
+        {{-- Make dropdown for notification --}}
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+                <i class="ph-fill ph-bell text-lg"></i>
+                @if ($countMyNotif > 0)
+                    <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                        {{ $countMyNotif }}
+                    </span> 
+                @elseif ($countMyNotif > 99)
+                    <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                        99 +
+                    </span>    
+                @endif
+            </label>
+            <ul tabindex="0" class="menu menu-sm dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 min-w-52 w-72 py-2 px-4 shadow">
+                <div class="flex flex-row items-center justify-between mb-2">
+                    <h2 class="font-bold text-lg ">Notifikasi Saya</h2>
+                    <a class="text-md font-semibold bg-[#3D42DF] text-white px-2 rounded-xl hover:cursor-pointer" href="">Lihat Semua</a>
+                </div>
+
+                {{-- Loop the $myNotif --}}
+                @foreach ($myNotif as $notif)
+                    <li class="bg-gray-100 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
+                        <div class="flex flex-row">
+                            <i class="ph-bold ph-bell"></i>
+                            <h3 class="font-bold">{{ $notif->title }}</h3>
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="text-xs font-normal text-gray-700">
+                                {{ $notif->message }}
+                            </p>
+                        </div>
+                    </li>
+                @endforeach
+
+                {{-- Button for Mark All As Read --}}
+                <a class="px-3 py-2 items-center flex flex-row text-center my-2 font-bold rounded-lg bg-[#3D42DF] text-white " href="#">
+                    <i class="ph-bold ph-broom"></i>
+                    <span class="ml-2"> Tandai Semua Sudah Dibaca</span>
+
+                </a>
+            </ul>
+        </div>
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="avatar btn border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
                 <div class="w-10 rounded-full flex flex-col items-center justify-center border-2 border-[#3D42DF] hover:cursor-pointer">

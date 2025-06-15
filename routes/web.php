@@ -9,16 +9,10 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScheduleController;
 // Import controllers
 use App\Http\Controllers\MaterialController;
-use App\Http\Controllers\AnggaranController;
 use App\Http\Controllers\ArchiveController;
-// New controllers for detailed pages
-use App\Http\Controllers\AnggaranRealisasiController;
-use App\Http\Controllers\AnggaranRencanaController;
 use App\Http\Controllers\ArchiveViewController;
 use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
-// Add Progress Controller import
-use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\ProgressProyekController;
 
 // Routes - Authenticated
@@ -31,33 +25,7 @@ Route::middleware('auth')->group(function() {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Progress Routes
-    Route::prefix('progress')->group(function() {
-        // Main progress page
-        Route::get('/', [ProgressController::class, 'index'])->name('progress.index');
         
-        // Progress detail pages
-        Route::get('/detail', [ProgressController::class, 'detail'])->name('progress.detail.general');
-        Route::get('/detail/{id}', [ProgressController::class, 'detail'])->name('progress.detail');
-        
-        // Add progress
-        Route::get('/add', [ProgressController::class, 'create'])->name('progress.create');
-
-        // View progress (with ID)
-        Route::get('/{id}/view', [ProgressController::class, 'show'])->name('progress.show');
-        
-        // Edit progress (with ID)
-        Route::get('/{id}/edit', [ProgressController::class, 'edit'])->name('progress.edit');
-        Route::put('/{id}', [ProgressController::class, 'update'])->name('progress.update');
-        
-        // Alternative routes without ID for general views
-        Route::get('/view', [ProgressController::class, 'generalView'])->name('progress.view.general');
-        Route::get('/edit', [ProgressController::class, 'generalEdit'])->name('progress.edit.general');
-        Route::get('/notes', [ProgressController::class, 'notes'])->name('progress.notes');
-        Route::get('/list', [ProgressController::class, 'list'])->name('progress.list');
-    });
-    
     // Project Routes
     Route::prefix('projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index'])->name('projects.index');
@@ -103,16 +71,6 @@ Route::middleware('auth')->group(function() {
         Route::post('/report/upload/{reportId}', [ProgressProyekController::class, 'addReportFiles'])->name('progress-proyek.report.upload');
         Route::delete('/report/files/delete/{fileId}', [ProgressProyekController::class, 'deleteReportFile'])->name('progress-proyek.report.files.delete');
     });
-
-    
-    // Anggaran
-    Route::get('/anggaran', [AnggaranController::class, 'index'])->name('anggaran');
-    
-    // Anggaran Realisasi (only if page exists)
-    Route::get('/anggaran/realisasi/{id}', [AnggaranRealisasiController::class, 'index'])->name('anggaran.realisasi');
-    
-    // Anggaran Rencana (only if page exists)
-    Route::get('/anggaran/rencana/{id}', [AnggaranRencanaController::class, 'index'])->name('anggaran.rencana');
     
     // Material Routes
     Route::prefix('material')->group(function() {
@@ -157,11 +115,6 @@ Route::middleware('auth')->group(function() {
         Route::post('/upload/{id}', [ProjectController::class, 'addDocuments'])->name('projectDocs.upload');
         Route::delete('/{id}', [ProjectController::class, 'deleteDocument'])->name('projectDocs.delete');
     });
-    
-    // Persetujuan Project
-    Route::patch('/approval/{id}', [ProjectController::class, 'updatePersetujuanProject'])->name('project.approval');
-    // Hapus Persetujuan Project
-    Route::patch('/approval/delete/{id}', [ProjectController::class, 'deletePersetujuanProject'])->name('project.approval.delete');
 
     // Export Material Items
     Route::prefix('export')->group(function() {

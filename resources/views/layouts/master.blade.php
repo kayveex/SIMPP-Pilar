@@ -68,5 +68,9 @@
 
     {{-- Import Scripts --}}
     @yield('scripts')
+
+    {{-- Import SweetAlert --}}
+    @include('sweetalert::alert')
+    
 </body>
 </html>
