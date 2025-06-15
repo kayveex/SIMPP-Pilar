@@ -117,36 +117,15 @@ class User extends Authenticatable
         return $this->hasMany(Project::class, 'created_by');
     }
 
+    
     /**
-     * Get the project teams the user belongs to.
+     * Get the notification created by the user.
      */
-    public function teams()
-    {
-        return $this->hasMany(ProjectTeam::class, 'user_id');
-    }
 
-    /**
-     * Get the tasks assigned to the user.
-     */
-    public function assignedTasks()
+    public function notifications()
     {
-        return $this->hasMany(Task::class, 'assignee_id');
+        return $this->hasMany(Notification::class, 'user_id');
     }
 
 
-    /**
-     * Get the project expenses created by the user.
-     */
-    public function expenses()
-    {
-        return $this->hasMany(ProjectExpense::class, 'created_by');
-    }
-
-    /**
-     * Get the progress reports submitted by the user.
-     */
-    public function progressReports()
-    {
-        return $this->hasMany(ProgressReport::class, 'submitted_by');
-    }
 }

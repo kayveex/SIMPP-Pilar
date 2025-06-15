@@ -18,7 +18,7 @@
 
 {{-- Topbar --}}
 @section('topbar')
-    @include('layouts.molecules.topbar')
+    @include('layouts.molecules.topbar', compact('myNotif', 'countMyNotif'))
 @endsection
 
 @section('page-content')
@@ -115,8 +115,10 @@
                                 <td>
                                     {{ $project->start_date->format('d M Y') }} {{-- Format tanggal --}}
                                     {{-- Tampilkan tanggal selesai jika ada --}}
-                                    @if ($project->estimated_end_date)
-                                        <span class="text-red-500">– {{ $project->estimated_end_date->format('d M Y') }}</span>
+                                    @if ($project->actual_end_date === null)
+                                        <span class="text-red-500">– {{ $project->estimated_end_date->format('d M Y') }} (Est.)</span>
+                                    @elseif ($project->actual_end_date !== null)
+                                        <span class="text-red-500">– {{ $project->actual_end_date->format('d M Y') }}</span> 
                                     @endif
                                 </td>
                                 <td>

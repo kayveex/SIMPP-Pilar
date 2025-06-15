@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\Project;
 use App\Models\ProjectDocument;
-use App\Models\ProjectPhase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+// Import SweetAlerts
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 
 class ProjectController extends Controller
@@ -62,8 +65,17 @@ class ProjectController extends Controller
         }
 
         $projects = $query->orderBy('created_at', 'desc')->paginate(5)->withQueryString();
+        
+        $myNotif = Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->orderBy('created_at', 'desc')
+            ->paginate(3);
+        
+        $countMyNotif = Notification::where('user_id', Auth::id())
+            ->where('is_read', false)
+            ->count();
 
-        return view('pages.projects.index', compact('projects'));
+        return view('pages.projects.index', compact('projects', 'myNotif', 'countMyNotif'));
     }
 
 
@@ -139,6 +151,18 @@ class ProjectController extends Controller
                 }
             }
 
+            // Simpan Notifikasi ke model Notification
+            $notif = Notification::create([
+                'user_id' => Auth::user()->id,
+                'title' => 'Proyek Baru Telah Dibuat',
+                'message' => 'Proyek baru "' . $project->project_name . '" telah berhasil dibuat.',
+                'type' => 'success',
+                'is_read' => false,
+            ]);
+
+            // Use Toast for success message, take some from $notif
+            toast($notif->message, 'success');
+            
             DB::commit();
 
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
@@ -213,6 +237,18 @@ class ProjectController extends Controller
                 'description' => $request->description,
                 'location' => $request->location,
             ]);
+
+            // Simpan Notifikasi ke model Notification
+            $notif = Notification::create([
+                'user_id' => Auth::user()->id,
+                'title' => 'Detail Proyek Telah Diperbarui',
+                'message' => 'Detail proyek "' . $project->project_name . '" telah berhasil diperbarui.',
+                'type' => 'success',
+                'is_read' => false,
+            ]);
+
+            //Use Toast for success message, take some from $notif
+            toast($notif->message, 'success');
 
             DB::commit();
             return redirect()->route('projects.index')->with('success', 'Detail Proyek berhasil diperbarui!');
