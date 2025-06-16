@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-// Import SweetAlerts
-use RealRashid\SweetAlert\Facades\Alert;
-
-
 
 class ProjectController extends Controller
 {
@@ -66,16 +62,7 @@ class ProjectController extends Controller
 
         $projects = $query->orderBy('created_at', 'desc')->paginate(5)->withQueryString();
         
-        $myNotif = Notification::where('user_id', Auth::id())
-            ->where('is_read', false)
-            ->orderBy('created_at', 'desc')
-            ->paginate(3);
-        
-        $countMyNotif = Notification::where('user_id', Auth::id())
-            ->where('is_read', false)
-            ->count();
-
-        return view('pages.projects.index', compact('projects', 'myNotif', 'countMyNotif'));
+        return view('pages.projects.index', compact('projects'));
     }
 
 
@@ -109,7 +96,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'project_name' => 'required|max:255|min:3',
-            'project_type' => 'required|in:bengkel,onsite',
+            'project_type' => 'required|in:workshop,onsite',
             'status' => 'required|in:belum_dimulai,berlangsung,tertunda,selesai,dibatalkan',
             'person_in_charge' => 'required|max:255|min:3',
             'client_name' => 'required|max:255|min:3',
@@ -151,17 +138,13 @@ class ProjectController extends Controller
                 }
             }
 
-            // Simpan Notifikasi ke model Notification
-            $notif = Notification::create([
-                'user_id' => Auth::user()->id,
-                'title' => 'Proyek Baru Telah Dibuat',
-                'message' => 'Proyek baru "' . $project->project_name . '" telah berhasil dibuat.',
-                'type' => 'success',
-                'is_read' => false,
-            ]);
-
-            // Use Toast for success message, take some from $notif
-            toast($notif->message, 'success');
+            // Create a notification using the helper function
+            create_notification(
+                'Proyek Baru Telah Dibuat',
+                'Proyek baru "' . $project->project_name . '" telah berhasil dibuat.',
+                'success',
+                Auth::id()
+            );
             
             DB::commit();
 
@@ -183,7 +166,6 @@ class ProjectController extends Controller
         $project = Project::with('documents')->findOrFail($id);
         return view('pages.projects.detail', compact('project'));
     }
-
 
     /**
      * Show the form for editing the specified project.
@@ -209,7 +191,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'project_name' => 'required|max:255',
-            'project_type' => 'required|in:bengkel,onsite',
+            'project_type' => 'required|in:workshop,onsite',
             'status' => 'required|in:belum_dimulai,berlangsung,tertunda,selesai,dibatalkan',
             'person_in_charge' => 'required|max:255',
             'client_name' => 'required|max:255',

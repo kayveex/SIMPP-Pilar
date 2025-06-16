@@ -104,7 +104,7 @@
                         <label for="project_type"  class="text-sm font-bold text-gray-700 mb-2">Jenis Proyek</label>
                         <select name="project_type" id="project_type" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                             <option value="onsite">On-Site</option>
-                            <option value="bengkel">Bengkel</option>
+                            <option value="workshop">Workshop</option>
                         </select>
                     </div>
                     {{-- Status --}}

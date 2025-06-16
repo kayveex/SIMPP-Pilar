@@ -37,10 +37,6 @@
                             <i class="ph-bold ph-circle-notch"></i>
                             <span>Progress Proyek</span>
                         </a>
-                        <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 ">
-                            <i class="ph-bold ph-user-check"></i>
-                            <span>Persetujuan Klien</span>
-                        </a>
                     </div>
 
                     {{-- Material Tab --}}
@@ -96,27 +92,43 @@
                     <a class="text-md font-semibold bg-[#3D42DF] text-white px-2 rounded-xl hover:cursor-pointer" href="">Lihat Semua</a>
                 </div>
 
-                {{-- Loop the $myNotif --}}
-                @foreach ($myNotif as $notif)
-                    <li class="bg-gray-100 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
+                @if ($countMyNotif == 0)
+                    <li class="bg-gray-100 mb-3 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
                         <div class="flex flex-row">
                             <i class="ph-bold ph-bell"></i>
-                            <h3 class="font-bold">{{ $notif->title }}</h3>
+                            <h3 class="font-bold">Tidak ada notifikasi</h3>     
                         </div>
                         <div class="flex flex-col">
                             <p class="text-xs font-normal text-gray-700">
-                                {{ $notif->message }}
+                                Anda tidak memiliki notifikasi baru.
                             </p>
                         </div>
                     </li>
-                @endforeach
 
+                @elseif ($countMyNotif > 0)
+                    {{-- Loop the $myNotif --}}
+                    @foreach ($myNotif as $notif)
+                        <li class="bg-gray-100 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
+                            <div class="flex flex-row">
+                                <i class="ph-bold ph-bell"></i>
+                                <h3 class="font-bold">{{ $notif->title }}</h3>
+                            </div>
+                            <div class="flex flex-col">
+                                <p class="text-xs font-normal text-gray-700">
+                                    {{ $notif->message }}
+                                </p>
+                            </div>
+                        </li>
+                    @endforeach    
+                @endif
                 {{-- Button for Mark All As Read --}}
-                <a class="px-3 py-2 items-center flex flex-row text-center my-2 font-bold rounded-lg bg-[#3D42DF] text-white " href="#">
-                    <i class="ph-bold ph-broom"></i>
-                    <span class="ml-2"> Tandai Semua Sudah Dibaca</span>
+                @if ($countMyNotif > 0)
+                    <a class="px-3 py-2 items-center flex flex-row text-center my-2 font-bold rounded-lg bg-[#3D42DF] text-white " href="#">
+                        <i class="ph-bold ph-broom"></i>
+                        <span class="ml-2"> Tandai Semua Sudah Dibaca</span>
+                    </a>          
+                @endif
 
-                </a>
             </ul>
         </div>
         <div class="dropdown dropdown-end">

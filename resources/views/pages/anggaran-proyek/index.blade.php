@@ -4,7 +4,7 @@
 
 {{-- Page Title --}}
 @section('page_title')
-    Jadwal Proyek - SIMPP Pillar Presisi
+    Anggaran Proyek - SIMPP Pillar Presisi
 @endsection
 
 {{-- Head - Styles --}}
@@ -18,20 +18,21 @@
 
 {{-- Topbar --}}
 @section('topbar')
-    @include('layouts.molecules.topbar')
+    @include('layouts.molecules.topbar', compact('myNotif', 'countMyNotif'))
 @endsection
 
+{{-- Page Content --}}
 @section('page-content')
     <section class="flex flex-col p-6">
         {{-- Page Header --}}
         <div class="flex flex-row items-center justify-between mb-4">
-            <h1 class="text-2xl font-bold text-gray-800">Jadwal Proyek</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Anggaran Proyek</h1>
         </div>
 
         {{-- Bagian Filter Tabel --}}
         <div class="flex flex-row w-full gap-4 bg-white shadow-sm rounded-lg p-4 mb-6 border-gray-200">
             {{-- Search Bar --}}
-            <form class="flex flex-row w-1/3" action="{{ route('schedules.index') }}" method="GET">
+            <form class="flex flex-row w-1/3" action="{{ route('anggaran-proyek.index') }}" method="GET">
                 <div class="relative flex-1 min-w-64">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="ph-bold ph-magnifying-glass text-xl text-gray-400 w-5 h-5"></i>
@@ -42,7 +43,7 @@
             </form>
 
             {{-- Filter Controls --}}
-            <form class="flex flex-row w-2/3 items-center gap-2" action="{{ route('schedules.index') }}" method="GET">
+            <form class="flex flex-row w-2/3 items-center gap-2" action="{{ route('anggaran-proyek.index') }}" method="GET">
                 <button class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" type="submit">
                     <i class="ph-bold ph-funnel"></i>                    
                     <span class="ml-2">Filter</span>
@@ -74,7 +75,7 @@
 
 
                 {{-- Make reset button --}}
-                <a href="{{ route('schedules.index') }}" class="px-4 py-2 bg-white text-red-600 flex flex-row items-center cursor-pointer rounded-lg hover:bg-red-600 hover:text-white transition duration-200">
+                <a href="{{ route('anggaran-proyek.index') }}" class="px-4 py-2 bg-white text-red-600 flex flex-row items-center cursor-pointer rounded-lg hover:bg-red-600 hover:text-white transition duration-200">
                     <i class="ph-bold ph-arrows-counter-clockwise"></i>
                     <span class="ml-2">Reset</span>
                 </a>
@@ -123,7 +124,7 @@
 
                                 <td class="flex flex-row justify-center items-center gap-2">
                                     <div class="flex flex-row gap-2 text-lg">
-                                        <a href="{{ route('schedules.view', $project->project_id) }}" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Jadwal Proyek">
+                                        <a href="{{ route('anggaran-proyek.detail', $project->project_id) }}" class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Anggaran Proyek">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
                                     </div>
@@ -161,6 +162,5 @@
             </div>
         </div>
 
-    </section>
-
+    </section> 
 @endsection

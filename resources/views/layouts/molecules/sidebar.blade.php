@@ -27,10 +27,6 @@
                 <i class="ph-bold ph-circle-notch"></i>
                 <span>Progress Proyek</span>
             </a>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
-                <i class="ph-bold ph-user-check"></i>
-                <span>Persetujuan Klien</span>
-            </a>
         </div>
 
         {{-- Material Tab --}}
@@ -45,7 +41,7 @@
         {{-- Keuangan Tab --}}
         <div class="mt-4 flex-col">
             <label for="keuangan" class="font-bold">KEUANGAN</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('anggaran-proyek.index') }}" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-coins"></i>
                 <span>Anggaran Proyek</span>
             </a>
