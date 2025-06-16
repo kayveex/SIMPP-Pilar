@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\ProjectPhase;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
@@ -103,6 +104,15 @@ class ScheduleController extends Controller
         $project->update(['progress_percentage' => $progressPercentage]);
         // Commit the transaction
         DB::commit();
+
+        // Use helper function to create notification
+        create_notification(
+            'Fase Proyek Baru Dibuat',
+            "Fase proyek baru '{$phase->phase_name}' telah dibuat untuk proyek '{$project->project_name}'.",
+            'success',
+            Auth::id() // Assuming the creator is the one who should receive the notification
+        );
+
         return redirect()->route('schedules.view', $id)
             ->with('success', 'Project phase created successfully!');
     }
@@ -132,6 +142,14 @@ class ScheduleController extends Controller
             $project->update(['progress_percentage' => $progressPercentage]);
 
             DB::commit();
+            // Use helper function to create notification
+            create_notification(
+                'Fase Proyek Selesai',
+                "Fase proyek '{$phase->phase_name}' telah ditandai selesai pada proyek '{$project->project_name}'.",
+                'success',
+                Auth::id() // Assuming the creator is the one who should receive the notification
+            );
+            
             return redirect()->back()
                 ->with('success', 'Project phase updated successfully!');
         } catch (\Throwable $th) {
@@ -165,6 +183,15 @@ class ScheduleController extends Controller
             $project->update(['progress_percentage' => $progressPercentage]);
             
             DB::commit();
+
+            // Use helper function to create notification
+            create_notification(
+                'Fase Proyek Tidak Selesai',
+                "Fase proyek '{$phase->phase_name}' telah ditandai tidak selesai pada proyek '{$project->project_name}'.",
+                'warning',
+                Auth::id() // Assuming the creator is the one who should receive the notification
+            );
+
             return redirect()->back()
                 ->with('success', 'Project phase update undone successfully!');
         } catch (\Throwable $th) {
@@ -196,6 +223,14 @@ class ScheduleController extends Controller
         $phase = ProjectPhase::findOrFail($id);
         $phase->update($request->all());
 
+        // Use helper function to create notification
+        create_notification(
+            'Fase Proyek Diperbarui',
+            "Fase proyek '{$phase->phase_name}' telah diperbarui untuk proyek '{$phase->project->project_name}'.",
+            'success',
+            Auth::id() // Assuming the creator is the one who should receive the notification
+        );
+
         return redirect()->route('schedules.view', $phase->project_id)
             ->with('success', 'Project phase updated successfully!');
     }
@@ -221,6 +256,15 @@ class ScheduleController extends Controller
             $project->update(['progress_percentage' => $progressPercentage]);
 
             DB::commit();
+
+            // Use helper function to create notification
+            create_notification(
+                'Fase Proyek Dihapus',  
+                "Fase proyek '{$phase->phase_name}' telah dihapus dari proyek '{$project->project_name}'.",
+                'warning',
+                Auth::id() // Assuming the creator is the one who should receive the notification
+            );
+            
             return redirect()->route('schedules.view', $projectId)
                 ->with('success', 'Project phase deleted successfully!');
         } catch (\Throwable $th) {

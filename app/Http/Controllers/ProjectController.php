@@ -229,8 +229,13 @@ class ProjectController extends Controller
                 'is_read' => false,
             ]);
 
-            //Use Toast for success message, take some from $notif
-            toast($notif->message, 'success');
+            // Pakai helper untuk membuat notifikasi
+            create_notification(
+                'Detail Proyek Diperbarui',
+                'Detail proyek "' . $project->project_name . '" telah berhasil diperbarui.',
+                'success',
+                Auth::id()
+            );
 
             DB::commit();
             return redirect()->route('projects.index')->with('success', 'Detail Proyek berhasil diperbarui!');
@@ -321,6 +326,14 @@ class ProjectController extends Controller
             // Terakhir, hapus Project itu sendiri
             $project->delete();
 
+            // Buat notifikasi menggunakan helper
+            create_notification(
+                'Proyek Dihapus',
+                'Proyek "' . $project->project_name . '" telah berhasil dihapus.',
+                'warning',
+                Auth::id()
+            );
+
             DB::commit();
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dihapus!');
         } catch (\Throwable $th) {
@@ -358,6 +371,14 @@ class ProjectController extends Controller
 
             DB::commit();
 
+            // Buat notifikasi menggunakan helper
+            create_notification(
+                'Dokumen Proyek Ditambahkan',
+                'Dokumen baru telah berhasil ditambahkan ke proyek "' . $project->project_name . '".',
+                'success',
+                Auth::id()
+            );
+
             return redirect()->route('projects.show', ['id' => $id])->with('success', 'Dokumen berhasil ditambahkan!');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -383,6 +404,14 @@ class ProjectController extends Controller
             $document->delete();
 
             DB::commit();
+
+            // Buat notifikasi menggunakan helper
+            create_notification(
+                'Dokumen Proyek Dihapus',
+                'Dokumen "' . $document->document_name . '" telah berhasil dihapus dari proyek.',
+                'warning',
+                Auth::id()
+            );
 
             return redirect()->back()->with('success', 'Dokumen berhasil dihapus!');
         } catch (\Throwable $th) {
