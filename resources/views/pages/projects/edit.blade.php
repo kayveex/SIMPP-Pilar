@@ -156,17 +156,14 @@
                 </div>
 
                 <!-- Tab 2 -->
-                <div x-show="tab === 'persetujuan'" x-transition>
+                {{-- <div x-show="tab === 'persetujuan'" x-transition>
                     <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
                         <i class="ph-bold ph-check-circle text-xl"></i>
                         <h2 class="text-lg font-bold">Persetujuan Proyek</h2>
                     </div>
 
-                    {{-- Edit Konten 2 --}}
                     <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
                         
-                        {{-- Persetujuan Divisi Teknikal --}}
-
                             @if (Auth::user()->role === 'Divisi Teknikal' && $project->technical_approval === false)
                                 <h3 class="text-lg font-semibold">Berikan Persetujuan Sebagai Perwakilan {{ Auth::user()->role }} ? </h3>
                                 <form action="{{ route('project.approval', $project->project_id) }}" method="POST">
@@ -182,20 +179,8 @@
                                     <button type="submit" class="px-4 py-2 my-2 font-bold cursor-pointer rounded-lg bg-red-600 hover:bg-red-700 text-white">Batalkan Persetujuan</button>
                                 </form>
                             @endif
-
-                        {{-- Persetujuan Divisi Finance --}}
-
-
-                        {{-- Persetujuan Divisi Purchasing --}}
-
-
-                        {{-- Persetujuan Direktur --}}
-
-  
-
                     </div>
-
-                </div>
+                </div> --}}
 
                 <!-- Tab 3 -->
                 <div x-show="tab === 'lampiran'" x-transition>
