@@ -47,13 +47,6 @@
                 >
                     Detail Proyek
                 </button>
-                {{-- <button
-                    class="tab border-2 font-bold text-lg"
-                    :class="{ 'tab-active text-[#4880FF] underline underline-offset-6 decoration-2': tab === 'persetujuan' }"
-                    @click="tab = 'persetujuan'"
-                >
-                    Persetujuan
-                </button> --}}
                 <button
                     class="tab border-2 font-bold text-lg"
                     :class="{ 'tab-active text-[#4880FF] underline underline-offset-6 decoration-2': tab === 'lampiran' }"
@@ -94,7 +87,7 @@
                             </div>
                             <div class="mb-4 w-1/3">
                                 <h3 class="text-lg font-semibold">Jenis Proyek:</h3>
-                                <p>{{ $project->project_type === 'onsite' ? 'On-site' : 'Bengkel' }}</p>
+                                <p>{{ $project->project_type === 'onsite' ? 'On-site' : 'Workshop' }}</p>
                             </div>
                             <div class="mb-4 w-1/3">
                                 <h3 class="text-lg font-semibold">Status Proyek:</h3>
@@ -138,48 +131,6 @@
                 </div>
 
                 <!-- Tab 2 -->
-                {{-- <div x-show="tab === 'persetujuan'" x-transition>
-                    <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
-                        <i class="ph-bold ph-check-circle text-xl"></i>
-                        <h2 class="text-lg font-bold">Persetujuan Proyek</h2>
-                    </div>
-                    <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
-                        <div class="mb-4">
-                            <h3 class="text-lg font-semibold">Persetujuan Direktur:</h3>
-                            @if ($project->director_approval === true)
-                                <p class="text-green-600">Disetujui</p>
-                            @else
-                                <p class="text-red-600">Belum Disetujui</p> 
-                            @endif
-                        </div>
-                        <div class="mb-4">
-                            <h3 class="text-lg font-semibold">Persetujuan Divisi Teknikal:</h3>
-                            @if ($project->technical_approval === true)
-                                <p class="text-green-600">Disetujui</p>
-                            @else
-                                <p class="text-red-600">Belum Disetujui</p> 
-                            @endif
-                        </div>
-                        <div class="mb-4">
-                            <h3 class="text-lg font-semibold">Persetujuan Divisi Purchasing:</h3>
-                            @if ($project->purchasing_approval === true)
-                                <p class="text-green-600">Disetujui</p>
-                            @else
-                                <p class="text-red-600">Belum Disetujui</p>
-                            @endif
-                        </div>
-                        <div class="mb-4">
-                            <h3 class="text-lg font-semibold">Persetujuan Divisi Keuangan:</h3>
-                            @if ($project->finance_approval === true)
-                                <p class="text-green-600">Disetujui</p>
-                            @else
-                                <p class="text-red-600">Belum Disetujui</p>
-                            @endif
-                        </div>
-                    </div>
-                </div> --}}
-
-                <!-- Tab 3 -->
                 <div x-show="tab === 'lampiran'" x-transition>
                     <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
                         <i class="ph-bold ph-file-text text-xl"></i>

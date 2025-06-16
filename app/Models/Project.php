@@ -27,16 +27,6 @@ class Project extends Model
         'status',
         'budget',
         'actual_cost',
-        'director_approval',
-        'director_approval_date',
-        'technical_approval',
-        'technical_approval_date',
-        'admin_approval',
-        'admin_approval_date',
-        'purchasing_approval',
-        'purchasing_approval_date',
-        'finance_approval',
-        'finance_approval_date',
         'progress_percentage',
         'created_by',
     ];
@@ -47,11 +37,6 @@ class Project extends Model
         'actual_end_date' => 'date',
         'budget' => 'decimal:2',
         'actual_cost' => 'decimal:2',
-        'director_approval' => 'boolean',
-        'technical_approval' => 'boolean',
-        'admin_approval' => 'boolean',
-        'purchasing_approval' => 'boolean',
-        'finance_approval' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -75,6 +60,11 @@ class Project extends Model
     public function documents()
     {
         return $this->hasMany(ProjectDocument::class, 'project_id');
+    }
+
+    public function budget()
+    {
+        return $this->hasMany(Anggaran::class, 'project_id');
     }
 
 }

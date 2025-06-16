@@ -50,13 +50,6 @@
                 </button>
                 <button
                     class="tab border-2 font-bold text-lg"
-                    :class="{ 'tab-active text-[#4880FF]': tab === 'persetujuan' }"
-                    @click="tab = 'persetujuan'"
-                >
-                    Persetujuan
-                </button>
-                <button
-                    class="tab border-2 font-bold text-lg"
                     :class="{ 'tab-active text-[#4880FF]': tab === 'lampiran' }"
                     @click="tab = 'lampiran'"
                 >
@@ -98,7 +91,7 @@
                                     <h3 class="text-lg font-semibold mb-2">Jenis Proyek</h3>
                                     <select id="project_type" name="project_type" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                                         <option value="onsite" {{ $project->project_type === 'onsite' ? 'selected' : '' }}>On-site</option>
-                                        <option value="bengkel" {{ $project->project_type === 'bengkel' ? 'selected' : '' }}>Bengkel</option>
+                                        <option value="workshop" {{ $project->project_type === 'workshop' ? 'selected' : '' }}>Workshop</option>
                                     </select>
                                 </div>
                                 <div class="mb-4 w-1/3">
@@ -156,33 +149,6 @@
                 </div>
 
                 <!-- Tab 2 -->
-                {{-- <div x-show="tab === 'persetujuan'" x-transition>
-                    <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
-                        <i class="ph-bold ph-check-circle text-xl"></i>
-                        <h2 class="text-lg font-bold">Persetujuan Proyek</h2>
-                    </div>
-
-                    <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
-                        
-                            @if (Auth::user()->role === 'Divisi Teknikal' && $project->technical_approval === false)
-                                <h3 class="text-lg font-semibold">Berikan Persetujuan Sebagai Perwakilan {{ Auth::user()->role }} ? </h3>
-                                <form action="{{ route('project.approval', $project->project_id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="px-4 py-2 my-2 font-bold cursor-pointer rounded-lg bg-green-600 hover:bg-green-700 text-white">Setujui Proyek</button>
-                                </form>
-                            @elseif (Auth::user()->role === 'Divisi Teknikal' && $project->technical_approval === true)
-                                <p class="font-semibold">Proyek telah disetujui oleh Divisi Teknikal. Batalkan persetujuan?</p>
-                                <form action="{{ route('project.approval.delete', $project->project_id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="px-4 py-2 my-2 font-bold cursor-pointer rounded-lg bg-red-600 hover:bg-red-700 text-white">Batalkan Persetujuan</button>
-                                </form>
-                            @endif
-                    </div>
-                </div> --}}
-
-                <!-- Tab 3 -->
                 <div x-show="tab === 'lampiran'" x-transition>
                     <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
                         <i class="ph-bold ph-file-text text-xl"></i>

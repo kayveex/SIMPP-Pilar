@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\AnggaranProyekController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -104,6 +104,14 @@ Route::middleware('auth')->group(function() {
         Route::delete('/delete/{id}', [MaterialItemsController::class, 'deleteMaterialItem'])->name('material-items.delete');
     });
     
+    // Anggaran Proyek
+    Route::prefix('anggaran-proyek')->group(function() {
+        Route::get('/', [AnggaranProyekController::class, 'index'])->name('anggaran-proyek.index');
+        Route::get('/detail/{projectId}', [AnggaranProyekController::class, 'detailAnggaran'])->name('anggaran-proyek.detail');
+        
+
+    });
+
     // Archive
     Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');
     

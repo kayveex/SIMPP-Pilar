@@ -61,7 +61,7 @@
                 <select name="project_type" value="{{ request('project_type') }}" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
                     <option value="">Jenis Proyek</option>
                     <option value="onsite" {{ request('project_type') == 'onsite' ? 'selected' : '' }}>On-Site</option>
-                    <option value="bengkel" {{ request('project_type') == 'bengkel' ? 'selected' : '' }}>Bengkel</option>
+                    <option value="workshop" {{ request('project_type') == 'workshop' ? 'selected' : '' }}>Workshop</option>
                 </select>
 
                 {{-- Input Dropdown - Status --}}
