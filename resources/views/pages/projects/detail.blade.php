@@ -47,13 +47,13 @@
                 >
                     Detail Proyek
                 </button>
-                <button
+                {{-- <button
                     class="tab border-2 font-bold text-lg"
                     :class="{ 'tab-active text-[#4880FF] underline underline-offset-6 decoration-2': tab === 'persetujuan' }"
                     @click="tab = 'persetujuan'"
                 >
                     Persetujuan
-                </button>
+                </button> --}}
                 <button
                     class="tab border-2 font-bold text-lg"
                     :class="{ 'tab-active text-[#4880FF] underline underline-offset-6 decoration-2': tab === 'lampiran' }"
@@ -138,12 +138,11 @@
                 </div>
 
                 <!-- Tab 2 -->
-                <div x-show="tab === 'persetujuan'" x-transition>
+                {{-- <div x-show="tab === 'persetujuan'" x-transition>
                     <div class="flex gap-2 items-center bg-blue-600 text-white w-fit px-4 py-2 rounded-t-lg rounded-tr-lg">
                         <i class="ph-bold ph-check-circle text-xl"></i>
                         <h2 class="text-lg font-bold">Persetujuan Proyek</h2>
                     </div>
-                    {{-- Detail Content 2  --}}
                     <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
                         <div class="mb-4">
                             <h3 class="text-lg font-semibold">Persetujuan Direktur:</h3>
@@ -178,7 +177,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Tab 3 -->
                 <div x-show="tab === 'lampiran'" x-transition>
@@ -205,11 +204,7 @@
                         @endif
 
                     </div>
-
-
                 </div>
             </div>
         </div>
-
-
 @endsection
