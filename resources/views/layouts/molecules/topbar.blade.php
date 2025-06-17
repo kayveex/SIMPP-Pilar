@@ -89,7 +89,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 min-w-52 w-72 py-2 px-4 shadow">
                 <div class="flex flex-row items-center justify-between mb-2">
                     <h2 class="font-bold text-lg ">Notifikasi Saya</h2>
-                    <a class="text-md font-semibold bg-[#3D42DF] text-white px-2 rounded-xl hover:cursor-pointer" href="">Lihat Semua</a>
+                    <a class="text-md font-semibold bg-[#3D42DF] text-white px-2 rounded-xl hover:cursor-pointer" href="{{ route('notif.index') }}">Lihat Semua</a>
                 </div>
 
                 @if ($countMyNotif == 0)
