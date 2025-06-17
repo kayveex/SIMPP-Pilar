@@ -115,7 +115,8 @@ Route::middleware('auth')->group(function() {
     // Notifikasi
     Route::prefix('notif')->group(function() {
         Route::get('/', [NotifController::class, 'index'])->name('notif.index');
-
+        Route::patch('/mark-as-read/{id}', [NotifController::class, 'markAsRead'])->name('notif.mark-as-read');
+        Route::patch('/mark-all-as-read', [NotifController::class, 'markAllAsRead'])->name('notif.mark-all-as-read');
     });
 
     // Archive

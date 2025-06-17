@@ -22,6 +22,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register SweetAlert view namespace
+        $this->loadViewsFrom(resource_path('views/vendor/sweetalert'), 'sweetalert');
+        
         // View composer global untuk semua view ('*')
         View::composer('*', function ($view) {
             if (Auth::check()) {
