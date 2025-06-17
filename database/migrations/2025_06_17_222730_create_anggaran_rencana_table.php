@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anggaran', function (Blueprint $table) {
-            $table->id('anggaran_id')->primary();
-            $table->unsignedBigInteger('project_id'); 
+        Schema::create('anggaran_rencana', function (Blueprint $table) {
+            $table->id('anggaran_rencana_id')->primary();
+            $table->unsignedBigInteger('project_id');
             $table->string('title');
             $table->bigInteger('total_budget')->default(0); // Total anggaran untuk proyek
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anggaran');
+        Schema::dropIfExists('anggaran_rencana');
     }
 };
