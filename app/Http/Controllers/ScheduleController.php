@@ -107,11 +107,12 @@ class ScheduleController extends Controller
 
         // Use helper function to create notification
         create_notification(
-            'Fase Proyek Baru Dibuat',
-            "Fase proyek baru '{$phase->phase_name}' telah dibuat untuk proyek '{$project->project_name}'.",
+            'Fase Proyek Dibuat',
+            "Fase proyek '{$phase->phase_name}' telah dibuat untuk proyek '{$project->project_name}'.",
             'success',
             Auth::id() // Assuming the creator is the one who should receive the notification
         );
+
 
         return redirect()->route('schedules.view', $id)
             ->with('success', 'Project phase created successfully!');

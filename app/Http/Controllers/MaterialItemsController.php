@@ -57,6 +57,14 @@ class MaterialItemsController extends Controller
             ]);
             DB::commit();
 
+            // use helper
+            create_notification(
+                'Item Material Baru',
+                'Item material baru telah ditambahkan: ' . $itemForMaterial->item_name,
+                'success',
+                Auth::id()
+            );
+
             return redirect()->route('material.edit', $id)->with('success', 'Item material berhasil ditambahkan.');
 
 
@@ -108,6 +116,15 @@ class MaterialItemsController extends Controller
             );
 
             DB::commit();
+
+            // use helper
+            create_notification(
+                'Item Material Diperbarui',
+                'Item material telah diperbarui: ' . $materialItem->item_name,
+                'success',
+                Auth::id()
+            );
+
             return redirect()->route('material.edit', $materialItem->material_id)->with('success', 'Item material berhasil diperbarui.');
 
         } catch (\Throwable $th) {
@@ -129,6 +146,15 @@ class MaterialItemsController extends Controller
         try {
             $item->delete();
             DB::commit();
+
+            // use helper
+            create_notification(
+                'Item Material Dihapus',
+                'Item material telah dihapus: ' . $item->item_name,
+                'warning',
+                Auth::id()
+            );
+
             return redirect()->route('material.edit', $materialId)->with('success', 'Item material berhasil dihapus.');
         } catch (\Throwable $th) {
             DB::rollBack();

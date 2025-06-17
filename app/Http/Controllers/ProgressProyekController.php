@@ -8,6 +8,7 @@ use App\Models\ReportFiles;
 use App\Models\ReportLists;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -155,6 +156,14 @@ class ProgressProyekController extends Controller
     
             DB::commit();
 
+            // Use helper
+            create_notification(
+                'Laporan Progres Baru',
+                'Laporan progres baru telah dibuat untuk proyek: ' . $report->report_title,
+                'success',
+                Auth::id()
+            );
+
             // Back to the report view with success message
             return redirect()->route('progress-proyek.report', $id)
                 ->with('success', 'Laporan berhasil dibuat dan file berhasil diunggah.');
@@ -200,6 +209,14 @@ class ProgressProyekController extends Controller
 
             DB::commit();
 
+            // Use helper
+            create_notification(
+                'Laporan Progres Diperbarui',
+                'Laporan progres telah diperbarui untuk proyek: ' . $report->report_title,
+                'success',
+                Auth::id()
+            );
+
             // Redirect back with success message
             return redirect()->back()
                 ->with('success', 'Laporan berhasil diperbarui.');
@@ -240,6 +257,14 @@ class ProgressProyekController extends Controller
 
             DB::commit();
 
+            // Use helper
+            create_notification(
+                'File Laporan Diupload',
+                'File baru telah diunggah untuk laporan: ' . $report->report_title,
+                'success',
+                Auth::id()
+            );
+
             // Redirect back with success message
             return redirect()->back()
                 ->with('success', 'File berhasil diunggah.');
@@ -266,6 +291,14 @@ class ProgressProyekController extends Controller
             $file->delete();
 
             DB::commit();
+
+            // Use helper
+            create_notification(
+                'File Laporan Dihapus',
+                'File telah dihapus dari laporan: ' . $file->report->report_title,
+                'warning',
+                Auth::id()
+            );
 
             // Redirect back with success message
             return redirect()->back()
@@ -297,6 +330,14 @@ class ProgressProyekController extends Controller
             $report->delete();
 
             DB::commit();
+
+            // Use helper
+            create_notification(
+                'Laporan Dihapus',
+                'Laporan telah dihapus: ' . $report->report_title,
+                'warning',
+                Auth::id()
+            );
 
             // Redirect back with success message
             return redirect()->back()

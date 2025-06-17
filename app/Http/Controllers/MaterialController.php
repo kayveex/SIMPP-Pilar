@@ -118,6 +118,15 @@ class MaterialController extends Controller
             ]);
 
             DB::commit(); // Tambahkan ini
+
+            // use helper
+            create_notification(
+                'Material Diajukan',
+                'Material baru telah diajukan: ' . $material->material_title,
+                'success',
+                Auth::id()
+            );
+
             // Redirect to the edit page for the newly created material
             return redirect()->route('material.edit', $material->material_id)
                 ->with('success', 'Material berhasil diajukan. Silakan tambahkan item material.');
@@ -161,6 +170,14 @@ class MaterialController extends Controller
 
             $material->update($data);
             DB::commit(); // Commit the transaction if everything is successful
+            // use helper
+            create_notification(
+                'Material Diperbarui',
+                'Material telah diperbarui: ' . $material->material_title,
+                'success',
+                Auth::id()
+            );
+
             return redirect()->route('material.index')->with('success', 'Material berhasil diperbarui.');
 
         } catch (\Throwable $th) {
@@ -183,6 +200,14 @@ class MaterialController extends Controller
                 'approval_status' => 'disetujui',
             ]);
 
+            // use helper
+            create_notification(
+                'Material Disetujui',
+                'Material telah disetujui: ' . $material->material_title,
+                'success',
+                Auth::id()
+            );
+
             return redirect()->route('material.index')->with('success', 'Material berhasil disetujui.');
         }
     }
@@ -196,6 +221,14 @@ class MaterialController extends Controller
                 'purchasing_approval_date' => null,
                 'approval_status' => 'ditolak',
             ]);
+
+            // use helper
+            create_notification(
+                'Material Ditolak',
+                'Material telah ditolak: ' . $material->material_title,
+                'warning',
+                Auth::id()
+            );
 
             return redirect()->route('material.index')->with('success', 'Persetujuan material berhasil dihapus.');
         }
@@ -211,6 +244,14 @@ class MaterialController extends Controller
         }
 
         $material->delete();
+
+        // use helper
+        create_notification(
+            'Material Dihapus',
+            'Material telah dihapus: ' . $material->material_title,
+            'warning',
+            Auth::id()
+        );
 
         return redirect()->route('material.index')->with('success', 'Material berhasil dihapus.');
     }
