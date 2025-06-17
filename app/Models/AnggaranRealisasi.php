@@ -3,25 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-
-class Anggaran extends Model
+class AnggaranRealisasi extends Model
 {
-    use HasFactory;
-
-    protected $table = 'anggaran';
-    protected $primaryKey = 'anggaran_id';
-    public $incrementing = true;
-
+    protected $table = 'anggaran_realisasi';
+    protected $primaryKey = 'anggaran_realisasi_id';
     protected $fillable = [
         'project_id',
         'title',
         'total_budget',
-    ];
+    ];  
 
     protected $casts = [
-        'total_budget' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function project()
@@ -31,6 +26,6 @@ class Anggaran extends Model
 
     public function items()
     {
-        return $this->hasMany(AnggaranItems::class, 'anggaran_id');
+        return $this->hasMany(AnggaranRealisasiItems::class, 'anggaran_realisasi_id');
     }
 }

@@ -13,6 +13,7 @@ use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ArchiveViewController;
 use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
+use App\Http\Controllers\NotifController;
 use App\Http\Controllers\ProgressProyekController;
 
 // Routes - Authenticated
@@ -109,6 +110,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [AnggaranProyekController::class, 'index'])->name('anggaran-proyek.index');
         Route::get('/detail/{projectId}', [AnggaranProyekController::class, 'detailAnggaran'])->name('anggaran-proyek.detail');
         
+    });
+
+    // Notifikasi
+    Route::prefix('notif')->group(function() {
+        Route::get('/', [NotifController::class, 'index'])->name('notif.index');
 
     });
 

@@ -60,15 +60,15 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
 
-        // Ambil semua anggaran dan relasi anggaranItems sekaligus
-        $anggaran = Anggaran::with('anggaranItems')
-            ->where('project_id', $projectId)
-            ->get();
+        // // Ambil semua anggaran dan relasi anggaranItems sekaligus
+        // $anggaran = Anggaran::with('anggaranItems')
+        //     ->where('project_id', $projectId)
+        //     ->get();
 
-        // Flatten semua anggaranItems jadi satu collection
-        $anggaranItems = $anggaran->pluck('anggaranItems')->flatten();
+        // // Flatten semua anggaranItems jadi satu collection
+        // $anggaranItems = $anggaran->pluck('anggaranItems')->flatten();
 
-        return view('pages.anggaran-proyek.detail', compact('project', 'anggaran', 'anggaranItems'));
+        return view('pages.anggaran-proyek.detail', compact('project'));
     }
 
     
