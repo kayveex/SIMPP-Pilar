@@ -86,20 +86,20 @@
                     </span>    
                 @endif
             </label>
-            <ul tabindex="0" class="menu menu-sm dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 min-w-52 w-72 py-2 px-4 shadow">
-                <div class="flex flex-row items-center justify-between mb-2">
-                    <h2 class="font-bold text-lg ">Notifikasi Saya</h2>
-                    <a class="text-md font-semibold bg-[#3D42DF] text-white px-2 rounded-xl hover:cursor-pointer" href="{{ route('notif.index') }}">Lihat Semua</a>
+            <ul tabindex="0" class="menu dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-80 py-4 px-4 shadow-lg">
+                <div class="flex flex-row items-center justify-between mb-3">
+                    <h2 class="font-bold text-lg">Notifikasi Saya</h2>
+                    <a class="text-sm font-semibold bg-[#3D42DF] text-white px-3 py-1 rounded-lg hover:bg-[#3D42DF]/90 transition-colors" href="{{ route('notif.index') }}">Lihat Semua</a>
                 </div>
 
                 @if ($countMyNotif == 0)
-                    <li class="bg-gray-100 mb-3 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
-                        <div class="flex flex-row">
-                            <i class="ph-bold ph-bell"></i>
-                            <h3 class="font-bold">Tidak ada notifikasi</h3>     
+                    <li class="bg-gray-50 mb-3 border border-gray-200 p-3 hover:bg-[#3D42DF]/10 hover:border-[#3D42DF] rounded-lg">
+                        <div class="flex flex-row items-center gap-2 mb-1">
+                            <i class="ph-bold ph-bell text-gray-400"></i>
+                            <h3 class="font-semibold text-gray-600">Tidak ada notifikasi</h3>     
                         </div>
-                        <div class="flex flex-col">
-                            <p class="text-xs font-normal text-gray-700">
+                        <div>
+                            <p class="text-sm text-gray-500 ml-6">
                                 Anda tidak memiliki notifikasi baru.
                             </p>
                         </div>
@@ -108,13 +108,13 @@
                 @elseif ($countMyNotif > 0)
                     {{-- Loop the $myNotif --}}
                     @foreach ($myNotif as $notif)
-                        <li class="bg-gray-100 border-gray-300 border-2 mt-1 hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] rounded-lg flex flex-col items-start">
-                            <div class="flex flex-row">
-                                <i class="ph-bold ph-bell"></i>
-                                <h3 class="font-bold">{{ $notif->title }}</h3>
+                        <li class="bg-gray-50 border border-gray-200 mb-2 p-3 hover:bg-[#3D42DF]/10 hover:border-[#3D42DF] rounded-lg transition-all duration-200">
+                            <div class="flex flex-row items-start gap-2 mb-2">
+                                <i class="ph-bold ph-bell text-[#3D42DF] mt-0.5"></i>
+                                <h3 class="font-semibold text-gray-800 text-sm leading-tight">{{ $notif->title }}</h3>
                             </div>
-                            <div class="flex flex-col">
-                                <p class="text-xs font-normal text-gray-700">
+                            <div class="ml-6">
+                                <p class="text-sm text-gray-600 leading-relaxed">
                                     {{ $notif->message }}
                                 </p>
                             </div>
@@ -123,10 +123,16 @@
                 @endif
                 {{-- Button for Mark All As Read --}}
                 @if ($countMyNotif > 0)
-                    <a class="px-3 py-2 items-center flex flex-row text-center my-2 font-bold rounded-lg bg-[#3D42DF] text-white " href="#">
-                        <i class="ph-bold ph-broom"></i>
-                        <span class="ml-2"> Tandai Semua Sudah Dibaca</span>
-                    </a>          
+                    <div class="mt-3 pt-3 border-t border-gray-200">
+                        <form action="{{ route('notif.mark-all-as-read') }}" method="POST" class="w-full">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="w-full px-4 py-2.5 flex items-center justify-center gap-2 font-semibold rounded-lg bg-[#3D42DF] text-white hover:bg-[#3D42DF]/90 transition-colors duration-200">
+                                <i class="ph-bold ph-broom"></i>
+                                <span>Tandai Semua Sudah Dibaca</span>
+                            </button>
+                        </form>
+                    </div>         
                 @endif
 
             </ul>

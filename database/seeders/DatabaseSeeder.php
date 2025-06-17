@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             AnggaranSeeder::class,
             MaterialSeeder::class,
             ScheduleSeeder::class,
+            NotificationSeeder::class,
         ]);
     }
 }

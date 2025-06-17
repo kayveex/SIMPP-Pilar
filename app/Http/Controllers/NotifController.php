@@ -38,4 +38,43 @@ class NotifController extends Controller
             'divisionNotif'
         ));
     }
+
+    public function markAsRead(Request $request, $id)
+    {
+        $user = Auth::user();
+        
+        $notification = Notification::where('notif_id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+            
+        if (!$notification) {
+            return response()->json(['error' => 'Notification not found'], 404);
+        }
+        
+        $notification->update(['is_read' => true]);
+        
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Notification marked as read']);
+        }
+        
+        return redirect()->back()->with('success', 'Notifikasi berhasil ditandai sebagai sudah dibaca');
+    }
+
+    public function markAllAsRead(Request $request)
+    {
+        $user = Auth::user();
+        
+        $updatedCount = Notification::where('user_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+            
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => 'All notifications marked as read',
+                'count' => $updatedCount
+            ]);
+        }
+        
+        return redirect()->back()->with('success', "Sebanyak {$updatedCount} notifikasi berhasil ditandai sebagai sudah dibaca");
+    }
 }

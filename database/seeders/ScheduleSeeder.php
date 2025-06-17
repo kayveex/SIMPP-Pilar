@@ -19,8 +19,7 @@ class ScheduleSeeder extends Seeder
             'Instalasi Utilitas', 'Finishing Interior', 'Finishing Eksterior',
             'Pemasangan MEP', 'Testing & Commissioning', 'Serah Terima'
         ];
-        
-        foreach ($projectIds as $projectId) {
+          foreach ($projectIds as $projectId) {
             // Get project start and end dates
             $project = DB::table('projects')->where('project_id', $projectId)->first();
             $startDate = Carbon::parse($project->start_date);
@@ -28,36 +27,35 @@ class ScheduleSeeder extends Seeder
             
             // Calculate duration in days
             $projectDuration = $startDate->diffInDays($endDate);
-            $segmentDuration = $projectDuration / count($activities);
+            $segmentDuration = max(1, $projectDuration / count($activities));
             
             // Create schedule for each activity
             for ($i = 0; $i < count($activities); $i++) {
                 $activityStart = $startDate->copy()->addDays($i * $segmentDuration);
                 $activityEnd = $activityStart->copy()->addDays($segmentDuration);
                 
-                // Progress status
-                $progress = 0;
+                // Determine completion status
+                $isCompleted = false;
                 if ($activityEnd->isPast()) {
-                    $progress = 100; // Completed
+                    $isCompleted = true;
                 } elseif ($activityStart->isPast() && $activityEnd->isFuture()) {
-                    $progress = rand(10, 90); // In progress
+                    $isCompleted = rand(0, 1); // 50% chance for in-progress phases
                 }
                 
                 $schedules[] = [
                     'project_id' => $projectId,
-                    'task_name' => $activities[$i],
-                    'description' => 'Pengerjaan ' . $activities[$i],
-                    'start_date' => $activityStart,
-                    'due_date' => $activityEnd,
-                    'status' => $progress == 100 ? 'completed' : ($progress > 0 ? 'in_progress' : 'pending'),
-                    'priority' => rand(1, 3),
-                    'created_by' => 1,
+                    'phase_name' => $activities[$i],
+                    'estimated_start_date' => $activityStart,
+                    'estimated_end_date' => $activityEnd,
+                    'actual_start_date' => $isCompleted ? $activityStart : null,
+                    'actual_end_date' => $isCompleted ? $activityEnd : null,
+                    'is_completed' => $isCompleted,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ];
             }
         }
         
-        DB::table('tasks')->insert($schedules);
+        DB::table('project_phases')->insert($schedules);
     }
 }

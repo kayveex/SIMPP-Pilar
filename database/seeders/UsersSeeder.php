@@ -53,7 +53,10 @@ class UsersSeeder extends Seeder
         ];
 
         foreach ($userData as $key => $val) {
-            User::create($val);
+            User::updateOrCreate(
+                ['email' => $val['email']], // Search criteria
+                $val // Data to update or create
+            );
         }
     }
 }
