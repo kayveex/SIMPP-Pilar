@@ -48,26 +48,103 @@
                     <i class="ph-bold ph-hand-coins"></i>
                     <span>Realisasi Anggaran</span>
                 </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'tab3'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'tab3', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'tab3'}" class="px-4 py-2 focus:outline-none">
-                    <i class="ph-bold ph-list-plus"></i>
-                    <span>Tambah Anggaran</span>
-                </button>
             </div>
 
             {{-- Tab Content --}}
             <div class="p-6">
-                <div x-show="tab === 'tab1'">
+                <div x-show="tab === 'tab1'" class="mt-4">
                     <div class="flex flex-col p-4" >
+                        <div class="flex flex-row items-center justify-between gap-2">
+                            <h2 class="text-2xl font-bold">Rencana Anggaran</h2>
+                            <div class="flex flex-row items-center gap-2">
+                                <button class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                    <i class="ph-bold ph-microsoft-excel-logo"></i>
+                                    <span class="ml-2 font-bold">Export Excel</span>
+                                </button>
+                                <a href="{{ route('anggaran-proyek.add', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" >
+                                    <i class="ph-bold ph-plus"></i>
+                                    <span class="ml-2 font-bold">Tambahkan</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        {{-- Display project name --}}
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold">Proyek: <span class="font-normal">{{ $project->project_name }}</span></h3>
+                        {{-- hr line --}}
+                        <hr class="my-4 border-gray-300">
+                        {{-- Rencana Anggaran Table --}}
+                        <table class="table w-full table-zebra">
+                            {{-- Table Header --}}
+                            <thead class="bg-gray-50 border-b text-center border-gray-200">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Uraian Anggaran</th>
+                                    <th>Qty</th>
+                                    <th>Satuan</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Total</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="text-center">
+                                @if (isset($anggaranRencana) && count($anggaranRencana) > 0)
+                                    @foreach ($anggaranRencana as $index => $aren)
+                                        <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
+                                            <td>{{ chr(65 + $index) }}.</td>
+                                            <td>{{ $aren->title }}</td> 
+
+                                            @foreach ($aren->items as $index2 => $item)
+                                                <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
+                                                    <td>{{ $index2 + 1 }}</td>
+                                                    <td>{{ $item->item_name }}</td>
+                                                    <td>{{ $item->quantity }}</td>
+                                                    {{-- Capitalize it on first --}}
+                                                    <td>{{ ucfirst($item->unit) }}</td>
+                                                    {{-- Format to Rupiah --}}
+                                                    <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
+                                                    <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                                    {{-- Ini untuk Perintah Aksi`` --}}
+                                                    <td></td>
+                                                </tr>
+                                            @endforeach
+                                                                                    <tr>
+                                            <td colspan="7" class="text-right">
+                                                {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
+                                                <strong>Total: </strong> Rp {{ number_format($aren->items->sum('total_price'), 0, ',', '.') }}
+                                            </td>
+                                                
+                                        </tr>
+                                    @endforeach
+                                    
+                                @endif
+
+                            </tbody>
+
+
+
+                        </table>
                         
                     </div>
                 </div>
                 <div x-show="tab === 'tab2'" class="mt-4">
                     <div class="flex flex-col p-4" >
-                        
-                    </div>
-                </div>
-                <div x-show="tab === 'tab3'" class="mt-4">
-                    <div class="flex flex-col p-4" >
+                        <div class="flex flex-row items-center justify-between gap-2">
+                            <h2 class="text-2xl font-bold">Realisasi Anggaran</h2>
+                            <div class="flex flex-row items-center gap-2">
+                                <button class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                    <i class="ph-bold ph-microsoft-excel-logo"></i>
+                                    <span class="ml-2 font-bold">Export Excel</span>
+                                </button>
+                                <button class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                    <i class="ph-bold ph-plus"></i>
+                                    <span class="ml-2 font-bold">Tambahkan</span>
+                                </button>
+                            </div>
+                        </div>
+                        {{-- hr line --}}
+                        <hr class="my-4 border-gray-300">
                         
                     </div>
                 </div>

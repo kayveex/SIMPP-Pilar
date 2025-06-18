@@ -41,7 +41,7 @@
         {{-- Keuangan Tab --}}
         <div class="mt-4 flex-col">
             <label for="keuangan" class="font-bold">KEUANGAN</label>
-            <a href="{{ route('anggaran-proyek.index') }}" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('anggaran-proyek.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-coins"></i>
                 <span>Anggaran Proyek</span>
             </a>
@@ -50,7 +50,7 @@
         {{-- Arsip --}}
         <div class="mt-4 flex-col">
             <label for="arsip" class="font-bold">ARSIP</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2 hover:text-[#3D42DF]">
+            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-box-arrow-down"></i>
                 <span>Arsip Proyek</span>
             </a>

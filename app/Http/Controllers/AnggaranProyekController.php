@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggaran;
+use App\Models\AnggaranRealisasi;
+use App\Models\AnggaranRencana;
+use App\Models\AnggaranRencanaItems;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class AnggaranProyekController extends Controller
 {
@@ -59,16 +62,140 @@ class AnggaranProyekController extends Controller
     public function detailAnggaran($projectId)
     {
         $project = Project::findOrFail($projectId);
+        $anggaranRencana = AnggaranRencana::where('project_id', $project->project_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+        $anggaranRealisasi = AnggaranRealisasi::where('project_id', $project->project_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
 
-        // // Ambil semua anggaran dan relasi anggaranItems sekaligus
-        // $anggaran = Anggaran::with('anggaranItems')
-        //     ->where('project_id', $projectId)
-        //     ->get();
+        return view('pages.anggaran-proyek.detail', compact('project', 'anggaranRencana', 'anggaranRealisasi'));
+    }
 
-        // // Flatten semua anggaranItems jadi satu collection
-        // $anggaranItems = $anggaran->pluck('anggaranItems')->flatten();
+    public function addAnggaranRencana($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $anggaranRencana = AnggaranRencana::where('project_id', $project->project_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
 
-        return view('pages.anggaran-proyek.detail', compact('project'));
+        return view('pages.anggaran-proyek.add-anggara-rencana', compact('project', 'anggaranRencana'));
+    }
+    
+    // Store Anggaran Rencana
+    public function storeAnggaranRencana(Request $request, $projectId) 
+    {
+        $project = Project::findOrFail($projectId);
+        // Validasi input
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $newAnggaranRencana = AnggaranRencana::create([
+            'project_id' => $projectId,
+            'title' => $request->title,
+        ]);
+
+        create_notification(
+            'Uraian Anggaran Rencana Baru',
+            'Uraian anggaran rencana baru telah ditambahkan pada proyek ' . $project->project_name,
+            'success',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $projectId)
+            ->with('success', 'Anggaran rencana berhasil ditambahkan.');
+    }
+
+    // Store Anggaran Realisasi
+    public function storeAnggaranRealisasi(Request $request, $projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        // Validasi input
+        $request->validate([
+            'title' => 'required|string|max:255',
+        ]);
+
+        $newAnggaranRealisasi = AnggaranRealisasi::create([
+            'project_id' => $projectId,
+            'title' => $request->title,
+        ]);
+
+        create_notification(
+            'Anggaran Realisasi Baru',
+            'Anggaran realisasi baru telah ditambahkan pada proyek ' . $project->project_name,
+            'success',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $projectId)
+            ->with('success', 'Anggaran realisasi berhasil ditambahkan.');
+    }
+    
+    // Store Anggaran Rencana Items
+    public function storeAnggaranRencanaItems(Request $request)
+    {
+        $request->validate([
+            'anggaran_rencana_id' => 'required',
+            'item_name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:1',
+            'unit' => 'required|string|max:50',
+            'price_per_unit' => 'required|numeric|min:0',
+        ]);
+
+        $anggaranRencana = AnggaranRencana::findOrFail($request->anggaran_rencana_id);
+
+        $anggaranRencanaItem = AnggaranRencanaItems::create([
+            'anggaran_rencana_id' => $request->anggaran_rencana_id,
+            'item_name' => $request->item_name,
+            'quantity' => $request->quantity,
+            'unit' => $request->unit,
+            'price_per_unit' => $request->price_per_unit,
+            'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
+        ]);
+
+        create_notification(
+            'Item Anggaran Rencana Baru ',
+            'Item Anggaran Rencana Baru Telah ditambahkan pada proyek ' . $anggaranRencana->project->project_name,
+            'success',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $anggaranRencana->project_id)
+            ->with('success', 'Item anggaran rencana berhasil ditambahkan.');
+    }
+
+    // Store Anggaran Realisasi Items
+    public function storeAnggaranRealisasiItems(Request $request)
+    {
+        $request->validate([
+            'anggaran_realisasi_id' => 'required',
+            'item_name' => 'required|string|max:255',
+            'quantity' => 'required|numeric|min:1',
+            'unit' => 'required|string|max:50',
+            'price_per_unit' => 'required|numeric|min:0',
+        ]);
+
+        $anggaranRealisasi = AnggaranRealisasi::findOrFail($request->anggaran_realisasi_id);
+
+        $anggaranRealisasiItem = AnggaranRencanaItems::create([
+            'anggaran_rencana_id' => $request->anggaran_realisasi_id,
+            'item_name' => $request->item_name,
+            'quantity' => $request->quantity,
+            'unit' => $request->unit,
+            'price_per_unit' => $request->price_per_unit,
+            'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
+        ]);
+
+        create_notification(
+            'Item Anggaran Realisasi Baru ',
+            'Item Anggaran Realisasi Baru Telah ditambahkan pada proyek ' . $anggaranRealisasi->project->project_name,
+            'success',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $anggaranRealisasi->project_id)
+            ->with('success', 'Item anggaran realisasi berhasil ditambahkan.');
     }
 
     
