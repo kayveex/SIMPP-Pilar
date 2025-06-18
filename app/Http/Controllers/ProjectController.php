@@ -138,6 +138,8 @@ class ProjectController extends Controller
                 }
             }
 
+            DB::commit();
+
             // Create a notification using the helper function
             create_notification(
                 'Proyek Baru Telah Dibuat',
@@ -146,8 +148,6 @@ class ProjectController extends Controller
                 Auth::id()
             );
             
-            DB::commit();
-
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -326,6 +326,8 @@ class ProjectController extends Controller
             // Terakhir, hapus Project itu sendiri
             $project->delete();
 
+            DB::commit();
+
             // Buat notifikasi menggunakan helper
             create_notification(
                 'Proyek Dihapus',
@@ -333,8 +335,6 @@ class ProjectController extends Controller
                 'warning',
                 Auth::id()
             );
-
-            DB::commit();
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dihapus!');
         } catch (\Throwable $th) {
             DB::rollBack();

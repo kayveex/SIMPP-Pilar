@@ -27,6 +27,12 @@ class UsersSeeder extends Seeder
                 'role' => 'Divisi Teknikal',
             ],
             [
+                'name' => 'technical002',
+                'email' => 'technical002@gmail.com',
+                'password' => bcrypt('technical002'),
+                'role' => 'Divisi Teknikal',
+            ],
+            [
                 'name' => 'purchasing001',
                 'email' => 'purchasing001@gmail.com',
                 'password' => bcrypt('purchasing001'),

@@ -109,6 +109,12 @@ Route::middleware('auth')->group(function() {
     Route::prefix('anggaran-proyek')->group(function() {
         Route::get('/', [AnggaranProyekController::class, 'index'])->name('anggaran-proyek.index');
         Route::get('/detail/{projectId}', [AnggaranProyekController::class, 'detailAnggaran'])->name('anggaran-proyek.detail');
+        Route::get('/add/{projectId}', [AnggaranProyekController::class, 'addAnggaranRencana'])->name('anggaran-proyek.add');
+        //Store API
+        Route::post('/store-anggaran-rencana/{projectId}', [AnggaranProyekController::class, 'storeAnggaranRencana'])->name('anggaran-proyek.rencana.store');
+        Route::post('/store-anggaran-rencana-items', [AnggaranProyekController::class, 'storeAnggaranRencanaItems'])->name('anggaran-proyek.rencana.items.store');
+
+
         
     });
 

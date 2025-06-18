@@ -109,12 +109,12 @@
                     {{-- Loop the $myNotif --}}
                     @foreach ($myNotif as $notif)
                         <li class="bg-gray-50 border border-gray-200 mb-2 p-3 hover:bg-[#3D42DF]/10 hover:border-[#3D42DF] rounded-lg transition-all duration-200">
-                            <div class="flex flex-row items-start gap-2 mb-2">
+                            <div class="flex flex-row items-start gap-2">
                                 <i class="ph-bold ph-bell text-[#3D42DF] mt-0.5"></i>
                                 <h3 class="font-semibold text-gray-800 text-sm leading-tight">{{ $notif->title }}</h3>
                             </div>
                             <div class="ml-6">
-                                <p class="text-sm text-gray-600 leading-relaxed">
+                                <p class="text-sm text-gray-600 leading-tight">
                                     {{ $notif->message }}
                                 </p>
                             </div>
@@ -127,7 +127,7 @@
                         <form action="{{ route('notif.mark-all-as-read') }}" method="POST" class="w-full">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="w-full px-4 py-2.5 flex items-center justify-center gap-2 font-semibold rounded-lg bg-[#3D42DF] text-white hover:bg-[#3D42DF]/90 transition-colors duration-200">
+                            <button type="submit" class="w-full px-4 py-2.5 flex items-center cursor-pointer justify-center gap-2 font-semibold rounded-lg bg-[#3D42DF] text-white hover:bg-[#3D42DF]/90 transition-colors duration-200">
                                 <i class="ph-bold ph-broom"></i>
                                 <span>Tandai Semua Sudah Dibaca</span>
                             </button>

@@ -103,11 +103,13 @@
                                             {{ $notification->created_at->format('d M Y, H:i') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <button onclick="markAsRead({{ $notification->notif_id }})" 
-                                                    class="text-indigo-600 hover:text-indigo-900 transition-colors duration-200"
-                                                    title="Tandai sebagai sudah dibaca">
-                                                <i class="ph ph-check-circle text-lg"></i>
-                                            </button>
+                                            <form action="{{ route('notif.mark-as-read', $notification->notif_id) }}" method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="text-blue-600  hover:text-blue-900 transition-colors duration-200 cursor-pointer" title="Tandai sebagai sudah dibaca">
+                                                    <i class="ph ph-check-circle text-lg"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty
@@ -115,7 +117,7 @@
                                         <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                             <div class="flex flex-col items-center justify-center py-8">
                                                 <i class="ph ph-bell-slash text-4xl text-gray-400 mb-2"></i>
-                                                <p>Tidak ada notifikasi yang belum dibaca</p>
+                                                <p>Seluruh notifikasi telah dibaca</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -194,7 +196,7 @@
                                         <td colspan="6" class="px-6 py-4 text-center text-gray-500">
                                             <div class="flex flex-col items-center justify-center py-8">
                                                 <i class="ph ph-users-three text-4xl text-gray-400 mb-2"></i>
-                                                <p>Tidak ada notifikasi dari divisi</p>
+                                                <p>Tidak ada notifikasi dari divisi {{ Auth::user()->role }}</p>
                                             </div>
                                         </td>
                                     </tr>
