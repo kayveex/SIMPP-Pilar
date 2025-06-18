@@ -84,8 +84,43 @@
                                     <th>Satuan</th>
                                     <th>Harga Satuan</th>
                                     <th>Total</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
+
+                            <tbody class="text-center">
+                                @if (isset($anggaranRencana) && count($anggaranRencana) > 0)
+                                    @foreach ($anggaranRencana as $index => $aren)
+                                        <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
+                                            <td>{{ chr(65 + $index) }}.</td>
+                                            <td>{{ $aren->title }}</td> 
+
+                                            @foreach ($aren->items as $index2 => $item)
+                                                <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
+                                                    <td>{{ $index2 + 1 }}</td>
+                                                    <td>{{ $item->item_name }}</td>
+                                                    <td>{{ $item->quantity }}</td>
+                                                    {{-- Capitalize it on first --}}
+                                                    <td>{{ ucfirst($item->unit) }}</td>
+                                                    {{-- Format to Rupiah --}}
+                                                    <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
+                                                    <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                                    {{-- Ini untuk Perintah Aksi`` --}}
+                                                    <td></td>
+                                                </tr>
+                                            @endforeach
+                                                                                    <tr>
+                                            <td colspan="7" class="text-right">
+                                                {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
+                                                <strong>Total: </strong> Rp {{ number_format($aren->items->sum('total_price'), 0, ',', '.') }}
+                                            </td>
+                                                
+                                        </tr>
+                                    @endforeach
+                                    
+                                @endif
+
+                            </tbody>
 
 
 

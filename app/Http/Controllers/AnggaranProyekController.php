@@ -63,10 +63,10 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $anggaranRencana = AnggaranRencana::where('project_id', $project->project_id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
         $anggaranRealisasi = AnggaranRealisasi::where('project_id', $project->project_id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         return view('pages.anggaran-proyek.detail', compact('project', 'anggaranRencana', 'anggaranRealisasi'));
