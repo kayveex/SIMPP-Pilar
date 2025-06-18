@@ -11,6 +11,7 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\ArchiveViewController;
+use App\Http\Controllers\ArsipProyekController;
 use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
 use App\Http\Controllers\NotifController;
@@ -137,11 +138,11 @@ Route::middleware('auth')->group(function() {
         Route::patch('/mark-all-as-read', [NotifController::class, 'markAllAsRead'])->name('notif.mark-all-as-read');
     });
 
-    // Archive
-    Route::get('/archive', [ArchiveController::class, 'index'])->name('archive');
-    
-    // Archive View (only if page exists)
-    Route::get('/archive/{id}/view', [ArchiveViewController::class, 'index'])->name('archive.view');
+    // Arsip Proyek
+    Route::prefix('arsip-proyek')->group(function() {
+        Route::get('/', [ArsipProyekController::class, 'index'])->name('arsip-proyek.index');
+        Route::get('/{id}', [ArsipProyekController::class, 'showArsip'])->name('arsip-proyek.show');
+    });
 
     // Project Documents
     Route::prefix('projectDocs')->group(function() {
