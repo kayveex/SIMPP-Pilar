@@ -110,9 +110,21 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [AnggaranProyekController::class, 'index'])->name('anggaran-proyek.index');
         Route::get('/detail/{projectId}', [AnggaranProyekController::class, 'detailAnggaran'])->name('anggaran-proyek.detail');
         Route::get('/add/{projectId}', [AnggaranProyekController::class, 'addAnggaranRencana'])->name('anggaran-proyek.add');
+        Route::get('/add-realisasi/{projectId}', [AnggaranProyekController::class, 'addAnggaranRealisasi'])->name('anggaran-proyek.add.realisasi');
         //Store API
         Route::post('/store-anggaran-rencana/{projectId}', [AnggaranProyekController::class, 'storeAnggaranRencana'])->name('anggaran-proyek.rencana.store');
         Route::post('/store-anggaran-rencana-items', [AnggaranProyekController::class, 'storeAnggaranRencanaItems'])->name('anggaran-proyek.rencana.items.store');
+        Route::post('/store-anggaran-realisasi/{projectId}', [AnggaranProyekController::class, 'storeAnggaranRealisasi'])->name('anggaran-proyek.realisasi.store');
+        Route::post('/store-anggaran-realisasi-items', [AnggaranProyekController::class, 'storeAnggaranRealisasiItems'])->name('anggaran-proyek.realisasi.items.store');
+
+        // Delete Anggaran Rencana
+        Route::delete('/delete-anggaran-rencana/{id}', [AnggaranProyekController::class, 'deleteAnggaranRencana'])->name('anggaran-proyek.rencana.delete');
+        // Delete Anggaran Rencana Items
+        Route::delete('/delete-anggaran-rencana-items/{id}', [AnggaranProyekController::class, 'deleteAnggaranRencanaItem'])->name('anggaran-proyek.rencana.items.delete');
+        // Delete Anggaran Realisasi
+        Route::delete('/delete-anggaran-realisasi/{id}', [AnggaranProyekController::class, 'deleteAnggaranRealisasi'])->name('anggaran-proyek.realisasi.delete');
+        // Delete Anggaran Realisasi Items
+        Route::delete('/delete-anggaran-realisasi-items/{id}', [AnggaranProyekController::class, 'deleteAnggaranRealisasiItem'])->name('anggaran-proyek.realisasi.items.delete');
 
 
         

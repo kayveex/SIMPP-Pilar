@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AnggaranRealisasi;
+use App\Models\AnggaranRealisasiItems;
 use App\Models\AnggaranRencana;
 use App\Models\AnggaranRencanaItems;
 use App\Models\Project;
@@ -79,7 +80,17 @@ class AnggaranProyekController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
 
-        return view('pages.anggaran-proyek.add-anggara-rencana', compact('project', 'anggaranRencana'));
+        return view('pages.anggaran-proyek.add-anggaran-rencana', compact('project', 'anggaranRencana'));
+    }
+
+    public function addAnggaranRealisasi($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $anggaranRealisasi = AnggaranRealisasi::where('project_id', $project->project_id)
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        return view('pages.anggaran-proyek.add-anggaran-realisasi', compact('project', 'anggaranRealisasi'));
     }
     
     // Store Anggaran Rencana
@@ -178,8 +189,8 @@ class AnggaranProyekController extends Controller
 
         $anggaranRealisasi = AnggaranRealisasi::findOrFail($request->anggaran_realisasi_id);
 
-        $anggaranRealisasiItem = AnggaranRencanaItems::create([
-            'anggaran_rencana_id' => $request->anggaran_realisasi_id,
+        $anggaranRealisasiItem = AnggaranRealisasiItems::create([
+            'anggaran_realisasi_id' => $request->anggaran_realisasi_id,
             'item_name' => $request->item_name,
             'quantity' => $request->quantity,
             'unit' => $request->unit,
@@ -198,6 +209,83 @@ class AnggaranProyekController extends Controller
             ->with('success', 'Item anggaran realisasi berhasil ditambahkan.');
     }
 
+    // Delete Anggaran Rencana
+    public function deleteAnggaranRencana($id)
+    {
+        // Hapus Anggaran Rencana dan semua item terkait
+        $anggaranRencana = AnggaranRencana::findOrFail($id);
+        $projectId = $anggaranRencana->project_id;
+        $anggaranRencana->items()->delete(); // Hapus semua item terkait
+        $anggaranRencana->delete(); // Hapus Anggaran Rencana
+
+        create_notification(
+            'Anggaran Rencana Dihapus',
+            'Anggaran rencana telah dihapus dari proyek ' . $anggaranRencana->project->project_name,
+            'warning',
+            Auth::id()
+        );
+        return redirect()->route('anggaran-proyek.detail', $projectId)
+            ->with('success', 'Anggaran rencana berhasil dihapus.');
+  
+    }
+
+    // Hapus Anggaran Realisasi dan semua item terkait
+    public function deleteAnggaranRealisasi($id)
+    {
+        $anggaranRealisasi = AnggaranRealisasi::findOrFail($id);
+        $projectId = $anggaranRealisasi->project_id;
+        $anggaranRealisasi->items()->delete(); // Hapus semua item terkait
+        $anggaranRealisasi->delete(); // Hapus Anggaran Realisasi
+
+        create_notification(
+            'Anggaran Realisasi Dihapus',
+            'Anggaran realisasi telah dihapus dari proyek ' . $anggaranRealisasi->project->project_name,
+            'warning',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $projectId)
+            ->with('success', 'Anggaran realisasi berhasil dihapus.');
+        
+    }
     
+    // Delete Anggaran Rencana Item
+    public function deleteAnggaranRencanaItem($id)
+    {
+        // Hapus Anggaran Rencana Item
+        $anggaranRencanaItem = AnggaranRencanaItems::findOrFail($id);
+        $anggaranRencanaId = $anggaranRencanaItem->anggaran_rencana_id;
+        $anggaranRencanaItem->delete();
+
+        create_notification(
+            'Item Anggaran Rencana Dihapus',
+            'Item ' . $anggaranRencanaItem->item_name . ' pada anggaran rencana telah dihapus',
+            'warning',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $anggaranRencanaId)
+            ->with('success', 'Item anggaran rencana berhasil dihapus.');
+    }
+    
+    // Delete Anggaran Realisasi Item
+    public function deleteAnggaranRealisasiItem($id)
+    {
+        // Hapus Anggaran Realisasi Item
+        $anggaranRealisasiItem = AnggaranRencanaItems::findOrFail($id);
+        $anggaranRealisasiId = $anggaranRealisasiItem->anggaran_rencana_id;
+        $anggaranRealisasiItem->delete();
+
+        create_notification(
+            'Item Anggaran Realisasi Dihapus',
+            'Item ' . $anggaranRealisasiItem->item_name . ' pada anggaran realisasi telah dihapus',
+            'warning',
+            Auth::id()
+        );
+
+        return redirect()->route('anggaran-proyek.detail', $anggaranRealisasiId)
+            ->with('success', 'Item anggaran realisasi berhasil dihapus.');
+    }
+
 
 }

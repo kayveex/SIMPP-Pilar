@@ -71,6 +71,7 @@
                         {{-- Display project name --}}
                         <div class="mt-4">
                             <h3 class="text-lg font-bold">Proyek: <span class="font-normal">{{ $project->project_name }}</span></h3>
+                        </div>
                         {{-- hr line --}}
                         <hr class="my-4 border-gray-300">
                         {{-- Rencana Anggaran Table --}}
@@ -93,7 +94,20 @@
                                     @foreach ($anggaranRencana as $index => $aren)
                                         <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
                                             <td>{{ chr(65 + $index) }}.</td>
-                                            <td>{{ $aren->title }}</td> 
+                                            <td>{{ $aren->title }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <form action="{{ route('anggaran-proyek.rencana.delete', $aren->anggaran_rencana_id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                        <i class="ph-bold ph-minus-circle"></i>
+                                                    </button>
+                                                </form>
+                                            </td> 
 
                                             @foreach ($aren->items as $index2 => $item)
                                                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
@@ -106,24 +120,45 @@
                                                     <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
                                                     <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                     {{-- Ini untuk Perintah Aksi`` --}}
-                                                    <td></td>
+                                                    <td>
+                                                        <form action="{{ route('anggaran-proyek.rencana.items.delete', $item->anggaran_rencana_item_id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                                <i class="ph-bold ph-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             @endforeach
-                                                                                    <tr>
+                                        <tr>
                                             <td colspan="7" class="text-right">
                                                 {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
                                                 <strong>Total: </strong> Rp {{ number_format($aren->items->sum('total_price'), 0, ',', '.') }}
                                             </td>
-                                                
                                         </tr>
                                     @endforeach
+
+
                                     
                                 @endif
 
+                                <tr>
+                                    <td colspan="7" class="text-right font-bold text-gray-700">
+                                        {{-- Total keseluruhan dari semua rencana anggaran --}}
+                                        Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRencana->sum(function($item) {
+                                            return $item->items->sum('total_price');
+                                        }), 0, ',', '.') }}</span> 
+                                    </td>
+                                </tr>
+
+                                {{-- Jika tidak ada data --}}
+                                @if (isset($anggaranRencana) && count($anggaranRencana) == 0)
+                                    <tr>
+                                        <td colspan="7" class="text-center text-gray-500">Tidak ada data rencana anggaran.</td>
+                                    </tr>
+                                @endif
                             </tbody>
-
-
-
                         </table>
                         
                     </div>
@@ -132,20 +167,104 @@
                     <div class="flex flex-col p-4" >
                         <div class="flex flex-row items-center justify-between gap-2">
                             <h2 class="text-2xl font-bold">Realisasi Anggaran</h2>
+
                             <div class="flex flex-row items-center gap-2">
                                 <button class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </button>
-                                <button class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                     <i class="ph-bold ph-plus"></i>
                                     <span class="ml-2 font-bold">Tambahkan</span>
-                                </button>
+                                </a>
                             </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold">Proyek: <span class="font-normal">{{ $project->project_name }}</span></h3>
                         </div>
                         {{-- hr line --}}
                         <hr class="my-4 border-gray-300">
-                        
+                        {{-- Realisasi Anggaran Table --}}
+                        <table class="table w-full table-zebra">
+                            {{-- Table Header --}}
+                            <thead class="bg-gray-50 border-b text-center border-gray-200">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Uraian Anggaran</th>
+                                    <th>Qty</th>
+                                    <th>Satuan</th>
+                                    <th>Harga Satuan</th>
+                                    <th>Total</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="text-center">
+                                @if (isset($anggaranRealisasi) && count($anggaranRealisasi) > 0)
+                                    @foreach ($anggaranRealisasi as $index => $are)
+                                        {{-- Row untuk kategori --}}
+                                        <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
+                                            <td>{{ chr(65 + $index) }}.</td>
+                                            <td>{{ $are->title }}</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                <form action="{{ route('anggaran-proyek.realisasi.delete', $aren->anggaran_rencana_id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                        <i class="ph-bold ph-minus-circle"></i>
+                                                    </button>
+                                                </form>
+                                            </td>  
+                                        </tr>
+
+                                        {{-- Rows untuk item per kategori --}}
+                                        @foreach ($are->items as $index2 => $item)
+                                            <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
+                                                <td>{{ $index2 + 1 }}</td>
+                                                <td>{{ $item->item_name }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                                <td>{{ ucfirst($item->unit) }}</td>
+                                                <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
+                                                <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                                <td>
+                                                    <form action="{{ route('anggaran-proyek.realisasi.items.delete', $item->anggaran_realisasi_item_id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                            <i class="ph-bold ph-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td colspan="7" class="text-right">
+                                                {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
+                                                <strong>Total: </strong> Rp {{ number_format($are->items->sum('total_price'), 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td colspan="7" class="text-right font-bold text-gray-700">
+                                            {{-- Total keseluruhan dari semua rencana anggaran --}}
+                                            Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRealisasi->sum(function($item) {
+                                                return $item->items->sum('total_price');
+                                            }), 0, ',', '.') }}</span> 
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td colspan="7" class="text-center text-gray-500">Tidak ada data realisasi anggaran.</td>
+                                    </tr>
+                                @endif    
+                            </tbody>
+                        </table>
+
+
                     </div>
                 </div>
             </div>
