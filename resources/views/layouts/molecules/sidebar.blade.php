@@ -50,7 +50,7 @@
         {{-- Arsip --}}
         <div class="mt-4 flex-col">
             <label for="arsip" class="font-bold">ARSIP</label>
-            <a href="#" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
+            <a href="{{ route('arsip-proyek.index') }}" class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 hover:text-[#3D42DF]">
                 <i class="ph-bold ph-box-arrow-down"></i>
                 <span>Arsip Proyek</span>
             </a>
