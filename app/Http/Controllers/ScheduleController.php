@@ -275,4 +275,55 @@ class ScheduleController extends Controller
         }
     }
     
+    // Get calendar events data for FullCalendar.js
+    public function getCalendarEvents($id)
+    {
+        $project = Project::where('project_id', $id)->firstOrFail();
+        $phases = ProjectPhase::where('project_id', $id)->get();
+
+        $events = [];
+
+        foreach ($phases as $phase) {
+            // Planned events
+            if ($phase->estimated_start_date && $phase->estimated_end_date) {
+                $events[] = [
+                    'id' => 'planned_' . $phase->phase_id,
+                    'title' => $phase->phase_name . ' (Rencana)',
+                    'start' => $phase->estimated_start_date,
+                    'end' => Carbon::parse($phase->estimated_end_date)->addDay()->format('Y-m-d'), // FullCalendar end is exclusive
+                    'className' => 'planned-event',
+                    'backgroundColor' => '#3B82F6', // Blue for planned
+                    'borderColor' => '#2563EB',
+                    'textColor' => '#FFFFFF',
+                    'extendedProps' => [
+                        'type' => 'planned',
+                        'phase_id' => $phase->phase_id,
+                        'is_completed' => $phase->is_completed
+                    ]
+                ];
+            }
+
+            // Actual events (only if completed or has actual dates)
+            if ($phase->actual_start_date && ($phase->actual_end_date || $phase->is_completed)) {
+                $endDate = $phase->actual_end_date ? $phase->actual_end_date : Carbon::now()->format('Y-m-d');
+                $events[] = [
+                    'id' => 'actual_' . $phase->phase_id,
+                    'title' => $phase->phase_name . ' (Realisasi)',
+                    'start' => $phase->actual_start_date,
+                    'end' => Carbon::parse($endDate)->addDay()->format('Y-m-d'), // FullCalendar end is exclusive
+                    'className' => 'actual-event',
+                    'backgroundColor' => $phase->is_completed ? '#10B981' : '#F59E0B', // Green if completed, orange if ongoing
+                    'borderColor' => $phase->is_completed ? '#059669' : '#D97706',
+                    'textColor' => '#FFFFFF',
+                    'extendedProps' => [
+                        'type' => 'actual',
+                        'phase_id' => $phase->phase_id,
+                        'is_completed' => $phase->is_completed
+                    ]
+                ];
+            }
+        }
+
+        return response()->json($events);
+    }
 }

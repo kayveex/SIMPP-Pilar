@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [ScheduleController::class, 'index'])->name('schedules.index');
         Route::post('/store/{id}', [ScheduleController::class, 'storePhase'])->name('schedules.store');
         Route::get('/{id}/view', [ScheduleController::class, 'viewSchedule'])->name('schedules.view');
+        Route::get('/{id}/calendar-events', [ScheduleController::class, 'getCalendarEvents'])->name('schedules.calendar.events');
         // Edit project phase
         Route::get('/phase/{id}/edit', [ScheduleController::class, 'editJadwal'])->name('schedules.phase.edit');
 

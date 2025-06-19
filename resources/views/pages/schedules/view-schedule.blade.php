@@ -65,9 +65,76 @@
             {{-- Tab content --}}
             <div class="p-4">
                 <div x-show="tab === 'visual'" class="space-y-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                    <h2 class="text-xl font-bold mb-2">Visualisasi Jadwal</h2>
-                    <p>Visualisasi jadwal proyek akan ditampilkan di sini.</p>
-                    {{-- Placeholder for visual content --}}
+                    <div class="flex flex-col p-4">
+                        <h2 class="text-xl font-bold mb-4">Visualisasi Jadwal</h2>
+                        <p class="text-gray-600 mb-4">Visualisasi jadwal proyek dalam bentuk kalender dengan perbandingan rencana dan realisasi.</p>
+                        
+                        {{-- Calendar Legend --}}
+                        <div class="calendar-legend mb-4">
+                            <div class="legend-item">
+                                <div class="legend-color legend-planned"></div>
+                                <span>Jadwal Rencana</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-actual"></div>
+                                <span>Jadwal Realisasi (Ongoing)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color legend-completed"></div>
+                                <span>Jadwal Realisasi (Selesai)</span>
+                            </div>
+                        </div>
+                        
+                        {{-- Project Period Info --}}
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <h3 class="font-semibold text-gray-800 mb-2">Informasi Proyek</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="font-medium text-gray-600">Nama Proyek:</span>
+                                    <span class="text-gray-800">{{ $project->project_name }}</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-gray-600">Status:</span>
+                                    <span class="px-2 py-1 rounded-full text-xs {{ $project->status === 'completed' ? 'bg-green-100 text-green-800' : ($project->status === 'on_progress' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800') }}">
+                                        {{ ucfirst(str_replace('_', ' ', $project->status)) }}
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-gray-600">Periode Proyek:</span>
+                                    <span class="text-gray-800">
+                                        {{ \Carbon\Carbon::parse($project->start_date)->format('d M Y') }} - 
+                                        @if ($project->actual_end_date)
+                                            {{ \Carbon\Carbon::parse($project->actual_end_date)->format('d M Y') }}
+                                        @else
+                                            {{ \Carbon\Carbon::parse($project->estimated_end_date)->format('d M Y') }} (Est.)
+                                        @endif
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-gray-600">Progress:</span>
+                                    <span class="text-gray-800">{{ number_format($project->progress_percentage, 1) }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {{-- Calendar Container --}}
+                        <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <div id="calendar" class="p-4"></div>
+                        </div>
+                        
+                        {{-- Instructions --}}
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+                            <h4 class="font-medium text-blue-800 mb-2">Cara Menggunakan Kalender:</h4>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• Klik pada event untuk melihat detail jadwal</li>
+                                <li>• Gunakan tombol navigasi atau panah keyboard (←/→) untuk berpindah bulan</li>
+                                <li>• Tekan spasi untuk kembali ke bulan ini</li>
+                                <li>• Event biru menunjukkan jadwal rencana</li>
+                                <li>• Event hijau menunjukkan jadwal realisasi</li>
+                                <li>• Event dengan tanda centang (✓) menunjukkan fase yang sudah selesai</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <div x-show="tab === 'table'" class="space-y-4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
@@ -315,3 +382,93 @@
 
 @endsection
 
+{{-- Scripts --}}
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    if (typeof addCalendarStyles === 'function') {
+        addCalendarStyles();
+    }
+    
+    
+    let calendarInitialized = false;
+    let calendar = null;
+    
+    function initCalendar() {
+        if (!calendarInitialized && typeof initializeCalendar === 'function') {
+            const calendarEl = document.getElementById('calendar');
+            if (calendarEl) {
+                calendar = initializeCalendar(calendarEl, {{ $project->project_id }});
+                calendarInitialized = true;
+            }
+        }
+    }
+    
+    
+    setTimeout(() => {
+        const visualTab = document.querySelector('[x-show="tab === \'visual\'"]');
+        if (visualTab && !visualTab.hasAttribute('style')) {
+            initCalendar();
+        }
+    }, 100);
+    
+    
+    const visualTab = document.querySelector('[x-show="tab === \'visual\'"]');
+    if (visualTab) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    const isVisible = !visualTab.hasAttribute('style') || 
+                                    visualTab.style.display !== 'none';
+                    if (isVisible && !calendarInitialized) {
+                        setTimeout(initCalendar, 100);
+                    }
+                    if (isVisible && calendar) {
+                        setTimeout(() => calendar.updateSize(), 200);
+                    }
+                }
+            });
+        });
+        
+        observer.observe(visualTab, {
+            attributes: true,
+            attributeFilter: ['style']
+        });
+    }
+    
+    
+    window.addEventListener('resize', function() {
+        if (calendar) {
+            calendar.updateSize();
+        }
+    });
+    
+    
+    document.addEventListener('keydown', function(e) {
+        if (!calendar) return;
+        
+        
+        const visualTab = document.querySelector('[x-show="tab === \'visual\'"]');
+        const isVisible = visualTab && (!visualTab.hasAttribute('style') || visualTab.style.display !== 'none');
+        
+        if (!isVisible) return;
+        
+        switch(e.key) {
+            case 'ArrowLeft':
+                e.preventDefault();
+                calendar.prev();
+                break;
+            case 'ArrowRight':
+                e.preventDefault();
+                calendar.next();
+                break;
+            case ' ': 
+                e.preventDefault();
+                calendar.today();
+                break;
+        }
+    });
+});
+</script>
+@endsection
