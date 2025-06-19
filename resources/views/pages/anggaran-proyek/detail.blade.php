@@ -26,6 +26,10 @@
         {{-- Page header --}}
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800">Detail Anggaran Proyek</h1>
+            <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
+                <i class="ph-bold ph-microsoft-excel-logo"></i>
+                <span class="ml-2 font-bold">Export Excel</span>
+            </a>
         </div>
 
         {{-- Breadcrumb --}}
@@ -57,10 +61,10 @@
                         <div class="flex flex-row items-center justify-between gap-2">
                             <h2 class="text-2xl font-bold">Rencana Anggaran</h2>
                             <div class="flex flex-row items-center gap-2">
-                                <button class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
-                                </button>
+                                </a>
                                 <a href="{{ route('anggaran-proyek.add', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" >
                                     <i class="ph-bold ph-plus"></i>
                                     <span class="ml-2 font-bold">Tambahkan</span>
@@ -169,10 +173,10 @@
                             <h2 class="text-2xl font-bold">Realisasi Anggaran</h2>
 
                             <div class="flex flex-row items-center gap-2">
-                                <button class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200" onclick="window.location.href='{{ route('projects.create') }}'">
+                                <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
-                                </button>
+                                </a>
                                 <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                     <i class="ph-bold ph-plus"></i>
                                     <span class="ml-2 font-bold">Tambahkan</span>

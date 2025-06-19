@@ -7,9 +7,11 @@ use App\Models\AnggaranRealisasiItems;
 use App\Models\AnggaranRencana;
 use App\Models\AnggaranRencanaItems;
 use App\Models\Project;
+use App\Exports\BudgetExport;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AnggaranProyekController extends Controller
 {
@@ -287,5 +289,15 @@ class AnggaranProyekController extends Controller
             ->with('success', 'Item anggaran realisasi berhasil dihapus.');
     }
 
+    /**
+     * Export budget data to Excel
+     */
+    public function exportBudget($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $fileName = 'Anggaran_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
+        
+        return Excel::download(new BudgetExport($projectId), $fileName);
+    }
 
 }
