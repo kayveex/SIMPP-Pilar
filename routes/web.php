@@ -128,6 +128,8 @@ Route::middleware('auth')->group(function() {
         // Delete Anggaran Realisasi Items
         Route::delete('/delete-anggaran-realisasi-items/{id}', [AnggaranProyekController::class, 'deleteAnggaranRealisasiItem'])->name('anggaran-proyek.realisasi.items.delete');
 
+        // Export Budget
+        Route::get('/export/{projectId}', [AnggaranProyekController::class, 'exportBudget'])->name('anggaran-proyek.export');
 
         
     });

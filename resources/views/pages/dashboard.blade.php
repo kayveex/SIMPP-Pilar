@@ -44,60 +44,44 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Honing Line & Hardchrome Piston</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">24 Mei 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">9</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                                    Berlangsung
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Fabrikasi Sterntube Stuffing Box</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 Juni 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">17</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                                    Perencanaan
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Line Boring & Undercoat Polishing</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">12 Juni 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">28</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-800">
-                                    Belum Dimulai
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Repair Bearing Housing</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5 Mei 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
-                                    Selesai
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Machining Compressor Parts</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">10 Juli 2025</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">49</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
-                                    Ditunda
-                                </span>
-                            </td>
+                        @forelse($activeProjects as $index => $project)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $project->project_name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {{ $project->estimated_end_date ? \Carbon\Carbon::parse($project->estimated_end_date)->format('d M Y') : '-' }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    @if($project->estimated_end_date)
+                                        {{ $project->days_remaining >= 0 ? $project->days_remaining : 0 }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @php
+                                        $statusConfig = [
+                                            'berlangsung' => ['bg-amber-100', 'text-amber-800', 'Berlangsung'],
+                                            'belum_dimulai' => ['bg-rose-100', 'text-rose-800', 'Belum Dimulai'],
+                                            'tertunda' => ['bg-slate-100', 'text-slate-800', 'Ditunda'],
+                                            'selesai' => ['bg-emerald-100', 'text-emerald-800', 'Selesai'],
+                                            'dibatalkan' => ['bg-red-100', 'text-red-800', 'Dibatalkan'],
+                                        ];
+                                        $config = $statusConfig[$project->status] ?? ['bg-gray-100', 'text-gray-800', ucfirst($project->status)];
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {{ $config[0] }} {{ $config[1] }}">
+                                        {{ $config[2] }}
+                                    </span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    Tidak ada proyek aktif
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
                         </tr>
                     </tbody>
                 </table>
