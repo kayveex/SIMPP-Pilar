@@ -8,6 +8,8 @@ use App\Models\AnggaranRencana;
 use App\Models\AnggaranRencanaItems;
 use App\Models\Project;
 use App\Exports\BudgetExport;
+use App\Exports\AnggaranRencanaExport;
+use App\Exports\AnggaranRealisasiExport;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -298,6 +300,28 @@ class AnggaranProyekController extends Controller
         $fileName = 'Anggaran_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
         
         return Excel::download(new BudgetExport($projectId), $fileName);
+    }
+
+    /**
+     * Export Anggaran Rencana to Excel
+     */
+    public function exportAnggaranRencana($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $fileName = 'Anggaran_Rencana_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
+        
+        return Excel::download(new AnggaranRencanaExport($projectId), $fileName);
+    }
+
+    /**
+     * Export Anggaran Realisasi to Excel
+     */
+    public function exportAnggaranRealisasi($projectId)
+    {
+        $project = Project::findOrFail($projectId);
+        $fileName = 'Anggaran_Realisasi_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
+        
+        return Excel::download(new AnggaranRealisasiExport($projectId), $fileName);
     }
 
 }

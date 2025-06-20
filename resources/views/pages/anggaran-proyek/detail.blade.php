@@ -26,10 +26,6 @@
         {{-- Page header --}}
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800">Detail Anggaran Proyek</h1>
-            <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
-                <i class="ph-bold ph-microsoft-excel-logo"></i>
-                <span class="ml-2 font-bold">Export Excel</span>
-            </a>
         </div>
 
         {{-- Breadcrumb --}}
@@ -61,7 +57,7 @@
                         <div class="flex flex-row items-center justify-between gap-2">
                             <h2 class="text-2xl font-bold">Rencana Anggaran</h2>
                             <div class="flex flex-row items-center gap-2">
-                                <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
+                                <a href="{{ route('anggaran-proyek.export.rencana', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>
@@ -173,7 +169,7 @@
                             <h2 class="text-2xl font-bold">Realisasi Anggaran</h2>
 
                             <div class="flex flex-row items-center gap-2">
-                                <a href="{{ route('anggaran-proyek.export', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
+                                <a href="{{ route('anggaran-proyek.export.realisasi', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>

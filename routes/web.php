@@ -130,6 +130,8 @@ Route::middleware('auth')->group(function() {
 
         // Export Budget
         Route::get('/export/{projectId}', [AnggaranProyekController::class, 'exportBudget'])->name('anggaran-proyek.export');
+        Route::get('/export-rencana/{projectId}', [AnggaranProyekController::class, 'exportAnggaranRencana'])->name('anggaran-proyek.export.rencana');
+        Route::get('/export-realisasi/{projectId}', [AnggaranProyekController::class, 'exportAnggaranRealisasi'])->name('anggaran-proyek.export.realisasi');
 
         
     });
