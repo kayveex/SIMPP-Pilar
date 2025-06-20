@@ -105,7 +105,7 @@
             <!-- Left Section -->
             <div class="flex flex-col w-1/2 gap-6">
                 
-                <!-- Top Row - Statistics Cards -->
+                <!-- Statistics Cards -->
                 <div class="flex flex-row gap-6">
                     <!-- Proyek Masuk Card -->
                     <div class="bg-white rounded-lg shadow-sm p-6 flex-1">
@@ -119,20 +119,12 @@
                     </div>
                 </div>
 
-                <!-- Bottom Row - Calendar Card -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Kalender Proyek</h3>
-                    <div class="h-48 bg-gray-50 rounded-lg flex items-center justify-center">
-                        <span class="text-gray-400">Calendar content placeholder</span>
-                    </div>
-                </div>
-
             </div>
 
             <!-- Right Section -->
             <div class="flex flex-col w-1/2 gap-6">
                 
-                <!-- Top Row - Statistics Cards -->
+                <!-- Statistics Cards -->
                 <div class="flex flex-row gap-6">
                     <!-- Proyek Selesai Card -->
                     <div class="bg-white rounded-lg shadow-sm p-6 flex-1">
@@ -143,14 +135,6 @@
                             <span class="text-green-600 font-medium">+16</span>
                             <span class="text-gray-500 ml-1">dari bulan April</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Row - User Activity Card -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Aktivitas Pengguna</h3>
-                    <div class="h-48 bg-gray-50 rounded-lg flex items-center justify-center">
-                        <span class="text-gray-400">User activity placeholder</span>
                     </div>
                 </div>
             </div>
