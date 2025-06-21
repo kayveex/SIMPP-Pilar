@@ -22,7 +22,12 @@ Route::middleware('auth')->group(function() {
     // Dashboard
     Route::get('/home', [DashboardController::class, 'index'])->name('home');
     // User Profile
-    Route::get('/profile/edit/{userId}', [UserProfileController::class, 'editProfile'])->name('profile.edit');
+    Route::prefix('user')->group(function() {
+        Route::get('/profile/edit/{userId}', [UserProfileController::class, 'editProfile'])->name('user.profile.edit');
+        Route::patch('/profile/update/{userId}', [UserProfileController::class, 'updateProfile'])->name('user.profile.update');
+        Route::patch('/profile/update-password/{userId}', [UserProfileController::class, 'updatePassword'])->name('user.profile.update.password');
+
+    });
         
     // Project Routes
     Route::prefix('projects')->group(function() {
