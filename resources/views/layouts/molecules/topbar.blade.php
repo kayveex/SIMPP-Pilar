@@ -16,7 +16,7 @@
                     <!-- Sidebar content here -->
                     <div class="mt-2 flex-col">
                         <label for="home" class="font-bold">HOME</label>
-                        <a href="#" class="flex flex-row items-center text-lg font-semibold gap-2">
+                        <a href="{{ route('home') }}" class="flex flex-row items-center text-lg font-semibold gap-2">
                             <i class="ph-fill ph-squares-four"></i>
                             <span>Dashboard</span>
                         </a>
@@ -157,7 +157,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-52 p-2 shadow">
                 <li class="hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] hover:cursor-pointer rounded-lg flex flex-row items-center">
                     <i class="ph-bold ph-user-gear"></i>
-                    <a class="font-bold" href="">Pengaturan</a>
+                    <a class="font-bold" href="{{ route('profile.edit', Auth::user()->id) }}">Pengaturan</a>
                 </li>
                 <li class="hover:bg-[#3D42DF]/30 hover:border-1 text-red-700 hover:border-[#3D42DF] hover:cursor-pointer rounded-lg flex flex-row items-center">
                     <i class="ph-fill ph-sign-out"></i>
