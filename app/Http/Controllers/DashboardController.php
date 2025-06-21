@@ -27,6 +27,31 @@ class DashboardController extends Controller
                 return $project;
             });
 
-        return view('pages.dashboard', compact('activeProjects'));
+        // Count the number of active projects, without limiting the query
+        $activeProjectsCount = Project::whereNotIn('status', ['selesai', 'ditolak'])->count();
+        // count the number of project 'selesai' only
+        $completedProjectsCount = Project::where('status', 'selesai')->count();
+        // Hitung komparasi project bulan ini dengan bulan lalu berdasarkan start_date
+        $currentMonth = Carbon::now()->month;
+        $previousMonth = Carbon::now()->subMonth()->month;
+        $currentMonthCount = Project::whereMonth('start_date', $currentMonth)->count();
+        $previousMonthCount = Project::whereMonth('start_date', $previousMonth)->count();
+
+        $currentMonthCountCompleted  = Project::whereMonth('start_date', $currentMonth)
+            ->where('status', 'selesai')
+            ->count();
+        $previousMonthCountCompleted = Project::whereMonth('start_date', $previousMonth)
+            ->where('status', 'selesai')
+            ->count();
+        // Hitung selisih antara bulan ini dan bulan lalu
+        $differenceOut = $currentMonthCountCompleted - $previousMonthCountCompleted;
+
+        $differenceIn = $currentMonthCount - $previousMonthCount;
+        $prevMonthName = Carbon::now()->subMonth()->format('F');
+
+
+
+
+        return view('pages.dashboard', compact('activeProjects', 'activeProjectsCount', 'differenceIn','prevMonthName', 'completedProjectsCount', 'differenceOut'));
     }
 }
