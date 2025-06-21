@@ -62,9 +62,10 @@ class Project extends Model
         return $this->hasMany(ProjectDocument::class, 'project_id');
     }
 
-    public function budget()
-    {
-        return $this->hasMany(Anggaran::class, 'project_id');
-    }
+
+
+
+
+
 
 }
