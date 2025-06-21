@@ -140,7 +140,7 @@
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="avatar btn border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
                 <div class="w-10 rounded-full flex flex-col items-center justify-center border-2 border-[#3D42DF] hover:cursor-pointer">
-                    <img alt="Profile Avatar" src="https://placehold.co/300x300" />
+                    <img alt="Profile Avatar" src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : 'https://placehold.co/300x300' }}" />
                 </div>
                 <h3 class="text-[12px] font-semibold text-start">{{ Str::limit(Auth::user()->name, 16) }} <br/><p class="text-xs font-normal text-gray-500 text-start">{{ Auth::user()->role }}</p></h3>
                 {{-- Custom Icons --}}
@@ -157,7 +157,7 @@
             <ul tabindex="0" class="menu menu-sm dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-52 p-2 shadow">
                 <li class="hover:bg-[#3D42DF]/30 hover:border-1 hover:border-[#3D42DF] hover:cursor-pointer rounded-lg flex flex-row items-center">
                     <i class="ph-bold ph-user-gear"></i>
-                    <a class="font-bold" href="{{ route('profile.edit', Auth::user()->id) }}">Pengaturan</a>
+                    <a class="font-bold" href="{{ route('user.profile.edit', Auth::user()->id) }}">Pengaturan</a>
                 </li>
                 <li class="hover:bg-[#3D42DF]/30 hover:border-1 text-red-700 hover:border-[#3D42DF] hover:cursor-pointer rounded-lg flex flex-row items-center">
                     <i class="ph-fill ph-sign-out"></i>
