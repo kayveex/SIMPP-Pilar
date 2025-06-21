@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AnggaranProyekController;
-use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
@@ -9,24 +8,21 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ScheduleController;
 // Import controllers
 use App\Http\Controllers\MaterialController;
-use App\Http\Controllers\ArchiveController;
-use App\Http\Controllers\ArchiveViewController;
 use App\Http\Controllers\ArsipProyekController;
 use App\Http\Controllers\MaterialItemExportController;
 use App\Http\Controllers\MaterialItemsController;
 use App\Http\Controllers\NotifController;
 use App\Http\Controllers\ProgressProyekController;
+use App\Http\Controllers\UserProfileController;
 
 // Routes - Authenticated
 Route::middleware('auth')->group(function() {
     // Logout
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
-    
-    // Home
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-
     // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/home', [DashboardController::class, 'index'])->name('home');
+    // User Profile
+    Route::get('/profile/edit/{userId}', [UserProfileController::class, 'editProfile'])->name('profile.edit');
         
     // Project Routes
     Route::prefix('projects')->group(function() {
