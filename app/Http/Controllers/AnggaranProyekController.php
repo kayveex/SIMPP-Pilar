@@ -118,6 +118,13 @@ class AnggaranProyekController extends Controller
             Auth::id()
         );
 
+        // Log user activity
+        log_user_activity(
+            'menambahkan anggaran rencana baru',
+            'pada proyek: ' . $project->project_name,
+            Auth::id()
+        );
+
         return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Anggaran rencana berhasil ditambahkan.');
     }
@@ -140,6 +147,13 @@ class AnggaranProyekController extends Controller
             'Anggaran Realisasi Baru',
             'Anggaran realisasi baru telah ditambahkan pada proyek ' . $project->project_name,
             'success',
+            Auth::id()
+        );
+
+        // Log user activity
+        log_user_activity(
+            'menambahkan anggaran realisasi baru',
+            'pada proyek: ' . $project->project_name,
             Auth::id()
         );
 
@@ -310,6 +324,13 @@ class AnggaranProyekController extends Controller
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Rencana_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
         
+        // Log user activity
+        log_user_activity(
+            'mengekspor anggaran rencana',
+            'untuk proyek: ' . $project->project_name,
+            Auth::id()
+        );
+        
         return Excel::download(new AnggaranRencanaExport($projectId), $fileName);
     }
 
@@ -320,6 +341,13 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Realisasi_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
+        
+        // Log user activity
+        log_user_activity(
+            'mengekspor anggaran realisasi',
+            'untuk proyek: ' . $project->project_name,
+            Auth::id()
+        );
         
         return Excel::download(new AnggaranRealisasiExport($projectId), $fileName);
     }

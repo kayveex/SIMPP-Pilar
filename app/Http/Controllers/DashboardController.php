@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Notification;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -49,9 +50,69 @@ class DashboardController extends Controller
         $differenceIn = $currentMonthCount - $previousMonthCount;
         $prevMonthName = Carbon::now()->subMonth()->format('F');
 
+        // Get calendar data for projects (start_date and estimated_end_date)
+        $calendarProjects = Project::select('project_id', 'project_name', 'start_date', 'estimated_end_date', 'status')
+            ->whereNotNull('start_date')
+            ->whereNotNull('estimated_end_date')
+            ->orderBy('start_date', 'asc')
+            ->get()
+            ->map(function ($project) {
+                return [
+                    'id' => $project->project_id,
+                    'title' => $project->project_name,
+                    'start' => $project->start_date,
+                    'end' => $project->estimated_end_date,
+                    'status' => $project->status,
+                    'color' => $this->getProjectColor($project->status)
+                ];
+            });
 
+        // Get recent user activities (notifications)
+        $recentActivities = Notification::with('user')
+            ->where('type', 'activity')
+            ->orderBy('created_at', 'desc')
+            ->limit(10)
+            ->get()
+            ->map(function ($notification) {
+                return [
+                    'id' => $notification->notif_id,
+                    'user_name' => $notification->user->name ?? 'System',
+                    'action' => $notification->title,
+                    'time' => $notification->created_at->diffForHumans(),
+                    'type' => $notification->type
+                ];
+            });
 
+        return view('pages.dashboard', compact(
+            'activeProjects', 
+            'activeProjectsCount', 
+            'differenceIn',
+            'prevMonthName', 
+            'completedProjectsCount', 
+            'differenceOut',
+            'calendarProjects',
+            'recentActivities'
+        ));
+    }
 
-        return view('pages.dashboard', compact('activeProjects', 'activeProjectsCount', 'differenceIn','prevMonthName', 'completedProjectsCount', 'differenceOut'));
+    /**
+     * Get color based on project status
+     */
+    private function getProjectColor($status)
+    {
+        switch ($status) {
+            case 'berlangsung':
+                return '#3B82F6'; // Blue
+            case 'belum_dimulai':
+                return '#EF4444'; // Red
+            case 'tertunda':
+                return '#6B7280'; // Gray
+            case 'selesai':
+                return '#10B981'; // Green
+            case 'dibatalkan':
+                return '#F59E0B'; // Orange
+            default:
+                return '#6B7280'; // Gray
+        }
     }
 }
