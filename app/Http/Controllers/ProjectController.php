@@ -147,6 +147,13 @@ class ProjectController extends Controller
                 'success',
                 Auth::id()
             );
+
+            // Log user activity
+            log_user_activity(
+                'membuat proyek baru',
+                'proyek: ' . $project->project_name,
+                Auth::id()
+            );
             
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
         } catch (\Throwable $th) {
@@ -220,20 +227,18 @@ class ProjectController extends Controller
                 'location' => $request->location,
             ]);
 
-            // Simpan Notifikasi ke model Notification
-            $notif = Notification::create([
-                'user_id' => Auth::user()->id,
-                'title' => 'Detail Proyek Telah Diperbarui',
-                'message' => 'Detail proyek "' . $project->project_name . '" telah berhasil diperbarui.',
-                'type' => 'success',
-                'is_read' => false,
-            ]);
-
-            // Pakai helper untuk membuat notifikasi
+            // Create notification and log activity
             create_notification(
                 'Detail Proyek Diperbarui',
                 'Detail proyek "' . $project->project_name . '" telah berhasil diperbarui.',
                 'success',
+                Auth::id()
+            );
+
+            // Log user activity
+            log_user_activity(
+                'memperbarui detail proyek',
+                'proyek: ' . $project->project_name,
                 Auth::id()
             );
 

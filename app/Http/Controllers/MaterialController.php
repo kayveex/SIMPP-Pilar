@@ -127,6 +127,13 @@ class MaterialController extends Controller
                 Auth::id()
             );
 
+            // Log user activity
+            log_user_activity(
+                'mengajukan material baru',
+                'material: ' . $material->material_title,
+                Auth::id()
+            );
+
             // Redirect to the edit page for the newly created material
             return redirect()->route('material.edit', $material->material_id)
                 ->with('success', 'Material berhasil diajukan. Silakan tambahkan item material.');
@@ -208,6 +215,13 @@ class MaterialController extends Controller
                 Auth::id()
             );
 
+            // Log user activity
+            log_user_activity(
+                'menyetujui material',
+                'material: ' . $material->material_title,
+                Auth::id()
+            );
+
             return redirect()->route('material.index')->with('success', 'Material berhasil disetujui.');
         }
     }
@@ -227,6 +241,13 @@ class MaterialController extends Controller
                 'Material Ditolak',
                 'Material telah ditolak: ' . $material->material_title,
                 'warning',
+                Auth::id()
+            );
+
+            // Log user activity
+            log_user_activity(
+                'menolak material',
+                'material: ' . $material->material_title,
                 Auth::id()
             );
 
