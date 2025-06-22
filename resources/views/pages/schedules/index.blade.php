@@ -50,9 +50,9 @@
                 {{-- Input Dropdown - Prioritas  --}}
                 <select name="priority" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-1/3">
                     <option value="">Prioritas</option>
-                    <option value="high" {{ request('priority') == 'high' ? 'selected' : '' }}>Tinggi</option>
-                    <option value="medium" {{ request('priority') == 'medium' ? 'selected' : '' }}>Sedang</option>
-                    <option value="low" {{ request('priority') == 'low' ? 'selected' : '' }}>Rendah</option>
+                    <option value="high" {{ request('priority') == 'high' ? 'selected' : '' }}>Tinggi (H-7)</option>
+                    <option value="medium" {{ request('priority') == 'medium' ? 'selected' : '' }}>Sedang (H-14)</option>
+                    <option value="low" {{ request('priority') == 'low' ? 'selected' : '' }}>Rendah (H-30)</option>
                 </select>
 
                 {{-- Input Dropdown - Jenis Proyek --}}
