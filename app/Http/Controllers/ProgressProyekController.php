@@ -75,9 +75,15 @@ class ProgressProyekController extends Controller
         $phases = ProjectPhase::where('project_id', $id)
             ->orderBy('phase_id', 'asc')
             ->get();
-            
+
+        // Pilih phase yang is_completed === false, dan ambil yang estimated_start_date dan estimated_end_date di tanggal sekarang!
+        $currentPhase = $phases->where('is_completed', false)
+            ->where('estimated_start_date', '<=', Carbon::now())
+            ->where('estimated_end_date', '>=', Carbon::now())
+            ->first();
+       
         // Return the view with project, phases, and reports
-        return view('pages.progress-proyek.view', compact('project', 'phases'));
+        return view('pages.progress-proyek.view', compact('project', 'phases', 'currentPhase'));
     }
 
     // Display the report list for a specific project_phases
@@ -174,10 +180,6 @@ class ProgressProyekController extends Controller
             return redirect()->route('progress-proyek.report', $id)
                 ->withErrors(['error' => 'Gagal membuat laporan: ' . $th->getMessage()]);
         }
-
-
-
-
         // Check if there are any files to upload 
     }
 

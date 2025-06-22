@@ -61,10 +61,12 @@
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>
-                                <a href="{{ route('anggaran-proyek.add', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" >
-                                    <i class="ph-bold ph-plus"></i>
-                                    <span class="ml-2 font-bold">Tambahkan</span>
-                                </a>
+                                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                    <a href="{{ route('anggaran-proyek.add', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" >
+                                        <i class="ph-bold ph-plus"></i>
+                                        <span class="ml-2 font-bold">Tambahkan</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
 
@@ -85,7 +87,9 @@
                                     <th>Satuan</th>
                                     <th>Harga Satuan</th>
                                     <th>Total</th>
-                                    <th>Aksi</th>
+                                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                        <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
 
@@ -99,16 +103,17 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td>
-                                                <form action="{{ route('anggaran-proyek.rencana.delete', $aren->anggaran_rencana_id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
-                                                        <i class="ph-bold ph-minus-circle"></i>
-                                                    </button>
-                                                </form>
-                                            </td> 
-
+                                            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                <td>
+                                                    <form action="{{ route('anggaran-proyek.rencana.delete', $aren->anggaran_rencana_id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                            <i class="ph-bold ph-minus-circle"></i>
+                                                        </button>
+                                                    </form>
+                                                </td> 
+                                            @endif
                                             @foreach ($aren->items as $index2 => $item)
                                                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
                                                     <td>{{ $index2 + 1 }}</td>
@@ -120,15 +125,17 @@
                                                     <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
                                                     <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
                                                     {{-- Ini untuk Perintah Aksi`` --}}
-                                                    <td>
-                                                        <form action="{{ route('anggaran-proyek.rencana.items.delete', $item->anggaran_rencana_item_id) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
-                                                                <i class="ph-bold ph-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
+                                                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                        <td>
+                                                            <form action="{{ route('anggaran-proyek.rencana.items.delete', $item->anggaran_rencana_item_id) }}" method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                                    <i class="ph-bold ph-trash"></i>
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                         <tr>
@@ -173,10 +180,12 @@
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>
-                                <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
-                                    <i class="ph-bold ph-plus"></i>
-                                    <span class="ml-2 font-bold">Tambahkan</span>
-                                </a>
+                                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                    <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                                        <i class="ph-bold ph-plus"></i>
+                                        <span class="ml-2 font-bold">Tambahkan</span>
+                                    </a>
+                                @endif
                             </div>
                         </div>
                         <div class="mt-4">
@@ -195,7 +204,9 @@
                                     <th>Satuan</th>
                                     <th>Harga Satuan</th>
                                     <th>Total</th>
-                                    <th>Aksi</th>
+                                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                        <th>Aksi</th>
+                                    @endif
                                 </tr>
                             </thead>
 
@@ -210,15 +221,17 @@
                                             <td></td>
                                             <td></td>
                                             <td></td>
-                                            <td>
-                                                <form action="{{ route('anggaran-proyek.realisasi.delete', $aren->anggaran_rencana_id) }}" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
-                                                        <i class="ph-bold ph-minus-circle"></i>
-                                                    </button>
-                                                </form>
-                                            </td>  
+                                            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                <td>
+                                                    <form action="{{ route('anggaran-proyek.realisasi.delete', $aren->anggaran_rencana_id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                            <i class="ph-bold ph-minus-circle"></i>
+                                                        </button>
+                                                    </form>
+                                                </td>  
+                                            @endif
                                         </tr>
 
                                         {{-- Rows untuk item per kategori --}}
@@ -230,15 +243,17 @@
                                                 <td>{{ ucfirst($item->unit) }}</td>
                                                 <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
                                                 <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
-                                                <td>
-                                                    <form action="{{ route('anggaran-proyek.realisasi.items.delete', $item->anggaran_realisasi_item_id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
-                                                            <i class="ph-bold ph-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
+                                                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                    <td>
+                                                        <form action="{{ route('anggaran-proyek.realisasi.items.delete', $item->anggaran_realisasi_item_id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                                <i class="ph-bold ph-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                         <tr>

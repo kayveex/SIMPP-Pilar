@@ -56,10 +56,14 @@
                     <i class="ph-fill ph-table"></i>
                     <span>Daftar Tabel</span>
                 </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'new_schedule'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'new_schedule', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'new_schedule'}" class="px-4 py-2 focus:outline-none">
-                    <i class="ph-fill ph-calendar-plus"></i>
-                    <span>Tambah Jadwal</span>
-                </button>
+                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                    <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'new_schedule'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'new_schedule', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'new_schedule'}" class="px-4 py-2 focus:outline-none">
+                        <i class="ph-fill ph-calendar-plus"></i>
+                        <span>Tambah Jadwal</span>
+                    </button>
+                @endif
+
+
             </div>
 
             {{-- Tab content --}}
@@ -171,7 +175,9 @@
                                                 <th>Nama Fase</th>
                                                 <th>Tanggal</th>
                                                 <th>Status</th>
-                                                <th>Aksi</th>
+                                                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                                                    <th>Aksi</th>
+                                                @endif
                                             </tr>
                                         </thead>
 
@@ -214,37 +220,39 @@
                                                                 <span class="bg-green-500 font-bold text-white px-2 py-1 rounded-xl">Selesai</span>
                                                             @endif
                                                         </td>
-                                                        <td class="flex justify-center items-center gap-2 text-xl">
-                                                            @if ($phase->is_completed === false)
-                                                                <form action="{{ route('schedules.phase.complete', $phase->phase_id) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('PATCH')
-                                                                    <button class="text-green-500 cursor-pointer hover:text-green-600" title="Tandai Sudah Selesai">
-                                                                        <i class="ph-bold ph-check-square-offset"></i>
-                                                                    </button>
-                                                                </form>
-                                                            @elseif ($phase->is_completed === true)
-                                                                <form action="{{ route('schedules.phase.undo', $phase->phase_id) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('PATCH')
-                                                                    <button class="text-red-500 cursor-pointer" title="Batalkan Penyelesaian">
-                                                                        <i class="ph-bold ph-x-circle"></i>
-                                                                    </button>
-                                                                </form>
-                                                                
-                                                            @endif
+                                                        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                                                            <td class="flex justify-center items-center gap-2 text-xl">
+                                                                @if ($phase->is_completed === false)
+                                                                    <form action="{{ route('schedules.phase.complete', $phase->phase_id) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PATCH')
+                                                                        <button class="text-green-500 cursor-pointer hover:text-green-600" title="Tandai Sudah Selesai">
+                                                                            <i class="ph-bold ph-check-square-offset"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                @elseif ($phase->is_completed === true)
+                                                                    <form action="{{ route('schedules.phase.undo', $phase->phase_id) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PATCH')
+                                                                        <button class="text-red-500 cursor-pointer" title="Batalkan Penyelesaian">
+                                                                            <i class="ph-bold ph-x-circle"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                    
+                                                                @endif
 
-                                                            <a href="{{ route('schedules.phase.edit', $phase->phase_id) }}" class="text-yellow-500 hover:text-yellow-600" title="Edit Jadwal">
-                                                                <i class="ph-bold ph-pencil-simple-line"></i>
-                                                            </a>
-                                                            <form class="flex items-center justify-center" action="{{ route('schedules.phase.destroy', $phase->phase_id) }}" method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="text-red-500 cursor-pointer hover:text-red-600" title="Hapus Jadwal" >
-                                                                    <i class="ph-bold ph-trash"></i>
-                                                                </button>
-                                                            </form>
-                                                        </td>
+                                                                <a href="{{ route('schedules.phase.edit', $phase->phase_id) }}" class="text-yellow-500 hover:text-yellow-600" title="Edit Jadwal">
+                                                                    <i class="ph-bold ph-pencil-simple-line"></i>
+                                                                </a>
+                                                                <form class="flex items-center justify-center" action="{{ route('schedules.phase.destroy', $phase->phase_id) }}" method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" class="text-red-500 cursor-pointer hover:text-red-600" title="Hapus Jadwal" >
+                                                                        <i class="ph-bold ph-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        @endif
                                                     </tr>
                                                 @endforeach
                                             @endif

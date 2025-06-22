@@ -47,10 +47,12 @@
                     <i class="ph-bold ph-stack-simple"></i>
                     <span>List Catatan</span>
                 </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'new_note'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'new_note', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'new_note'}" class="px-4 py-2 focus:outline-none">
-                    <i class="ph-bold ph-list-plus"></i>
-                    <span>Tambah Catatan</span>
-                </button>
+                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                    <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'new_note'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'new_note', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'new_note'}" class="px-4 py-2 focus:outline-none">
+                        <i class="ph-bold ph-list-plus"></i>
+                        <span>Tambah Catatan</span>
+                    </button>
+                @endif
             </div>
 
             {{-- Tab Content --}}
