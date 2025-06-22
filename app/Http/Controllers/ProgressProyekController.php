@@ -165,7 +165,7 @@ class ProgressProyekController extends Controller
             // Use helper
             create_notification(
                 'Laporan Progres Baru',
-                'Laporan progres baru telah dibuat untuk proyek: ' . $report->report_title,
+                Auth::user()->name . ' telah membuat laporan progres baru: ' . $report->report_title,
                 'success',
                 Auth::id()
             );
@@ -214,7 +214,7 @@ class ProgressProyekController extends Controller
             // Use helper
             create_notification(
                 'Laporan Progres Diperbarui',
-                'Laporan progres telah diperbarui untuk proyek: ' . $report->report_title,
+                Auth::user()->name . ' telah memperbarui laporan progres: ' . $report->report_title,
                 'success',
                 Auth::id()
             );
@@ -262,7 +262,7 @@ class ProgressProyekController extends Controller
             // Use helper
             create_notification(
                 'File Laporan Diupload',
-                'File baru telah diunggah untuk laporan: ' . $report->report_title,
+                Auth::user()->name . ' telah mengunggah file baru untuk laporan: ' . $report->report_title,
                 'success',
                 Auth::id()
             );
@@ -297,7 +297,7 @@ class ProgressProyekController extends Controller
             // Use helper
             create_notification(
                 'File Laporan Dihapus',
-                'File telah dihapus dari laporan: ' . $file->report->report_title,
+                Auth::user()->name . ' telah menghapus file: ' . $file->file_name,
                 'warning',
                 Auth::id()
             );
@@ -336,7 +336,7 @@ class ProgressProyekController extends Controller
             // Use helper
             create_notification(
                 'Laporan Dihapus',
-                'Laporan telah dihapus: ' . $report->report_title,
+                Auth::user()->name . ' telah menghapus laporan: ' . $report->report_title,
                 'warning',
                 Auth::id()
             );

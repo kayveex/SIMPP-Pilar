@@ -113,15 +113,8 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Uraian Anggaran Rencana Baru',
-            'Uraian anggaran rencana baru telah ditambahkan pada proyek ' . $project->project_name,
+            Auth::user()->name . ' telah menambahkan uraian anggaran rencana baru pada proyek ' . $project->project_name,
             'success',
-            Auth::id()
-        );
-
-        // Log user activity
-        log_user_activity(
-            'menambahkan anggaran rencana baru',
-            'pada proyek: ' . $project->project_name,
             Auth::id()
         );
 
@@ -145,15 +138,8 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Anggaran Realisasi Baru',
-            'Anggaran realisasi baru telah ditambahkan pada proyek ' . $project->project_name,
+            Auth::user()->name . ' telah menambahkan anggaran realisasi baru pada proyek ' . $project->project_name,
             'success',
-            Auth::id()
-        );
-
-        // Log user activity
-        log_user_activity(
-            'menambahkan anggaran realisasi baru',
-            'pada proyek: ' . $project->project_name,
             Auth::id()
         );
 
@@ -185,7 +171,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Item Anggaran Rencana Baru ',
-            'Item Anggaran Rencana Baru Telah ditambahkan pada proyek ' . $anggaranRencana->project->project_name,
+            Auth::user()->name . ' telah menambahkan item anggaran rencana baru pada proyek ' . $anggaranRencana->project->project_name,
             'success',
             Auth::id()
         );
@@ -218,7 +204,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Item Anggaran Realisasi Baru ',
-            'Item Anggaran Realisasi Baru Telah ditambahkan pada proyek ' . $anggaranRealisasi->project->project_name,
+            Auth::user()->name . ' telah menambahkan item anggaran realisasi baru pada proyek ' . $anggaranRealisasi->project->project_name,
             'success',
             Auth::id()
         );
@@ -238,7 +224,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Anggaran Rencana Dihapus',
-            'Anggaran rencana telah dihapus dari proyek ' . $anggaranRencana->project->project_name,
+            Auth::user()->name . ' telah menghapus anggaran rencana dari proyek ' . $anggaranRencana->project->project_name,
             'warning',
             Auth::id()
         );
@@ -257,7 +243,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Anggaran Realisasi Dihapus',
-            'Anggaran realisasi telah dihapus dari proyek ' . $anggaranRealisasi->project->project_name,
+            Auth::user()->name . ' telah menghapus anggaran realisasi dari proyek ' . $anggaranRealisasi->project->project_name,
             'warning',
             Auth::id()
         );
@@ -277,7 +263,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Item Anggaran Rencana Dihapus',
-            'Item ' . $anggaranRencanaItem->item_name . ' pada anggaran rencana telah dihapus',
+            Auth::user()->name . ' telah menghapus item anggaran rencana: ' . $anggaranRencanaItem->item_name,
             'warning',
             Auth::id()
         );
@@ -296,7 +282,7 @@ class AnggaranProyekController extends Controller
 
         create_notification(
             'Item Anggaran Realisasi Dihapus',
-            'Item ' . $anggaranRealisasiItem->item_name . ' pada anggaran realisasi telah dihapus',
+            Auth::user()->name . ' telah menghapus item anggaran realisasi: ' . $anggaranRealisasiItem->item_name,
             'warning',
             Auth::id()
         );
@@ -324,12 +310,6 @@ class AnggaranProyekController extends Controller
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Rencana_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
         
-        // Log user activity
-        log_user_activity(
-            'mengekspor anggaran rencana',
-            'untuk proyek: ' . $project->project_name,
-            Auth::id()
-        );
         
         return Excel::download(new AnggaranRencanaExport($projectId), $fileName);
     }
@@ -341,14 +321,7 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Realisasi_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
-        
-        // Log user activity
-        log_user_activity(
-            'mengekspor anggaran realisasi',
-            'untuk proyek: ' . $project->project_name,
-            Auth::id()
-        );
-        
+             
         return Excel::download(new AnggaranRealisasiExport($projectId), $fileName);
     }
 

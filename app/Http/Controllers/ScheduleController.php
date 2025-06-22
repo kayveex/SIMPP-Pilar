@@ -108,7 +108,7 @@ class ScheduleController extends Controller
         // Use helper function to create notification
         create_notification(
             'Fase Proyek Dibuat',
-            "Fase proyek '{$phase->phase_name}' telah dibuat untuk proyek '{$project->project_name}'.",
+            Auth::user()->name . " telah membuat fase proyek '{$phase->phase_name}' untuk proyek '{$project->project_name}'.",
             'success',
             Auth::id() // Assuming the creator is the one who should receive the notification
         );
@@ -146,7 +146,7 @@ class ScheduleController extends Controller
             // Use helper function to create notification
             create_notification(
                 'Fase Proyek Selesai',
-                "Fase proyek '{$phase->phase_name}' telah ditandai selesai pada proyek '{$project->project_name}'.",
+                Auth::user()->name . " telah menandai fase proyek '{$phase->phase_name}' sebagai selesai pada proyek '{$project->project_name}'.",
                 'success',
                 Auth::id() // Assuming the creator is the one who should receive the notification
             );
@@ -188,7 +188,7 @@ class ScheduleController extends Controller
             // Use helper function to create notification
             create_notification(
                 'Fase Proyek Tidak Selesai',
-                "Fase proyek '{$phase->phase_name}' telah ditandai tidak selesai pada proyek '{$project->project_name}'.",
+                Auth::user()->name . " telah mengembalikan fase proyek '{$phase->phase_name}' ke status tidak selesai pada proyek '{$project->project_name}'.",
                 'warning',
                 Auth::id() // Assuming the creator is the one who should receive the notification
             );
@@ -227,7 +227,7 @@ class ScheduleController extends Controller
         // Use helper function to create notification
         create_notification(
             'Fase Proyek Diperbarui',
-            "Fase proyek '{$phase->phase_name}' telah diperbarui untuk proyek '{$phase->project->project_name}'.",
+            Auth::user()->name . " telah memperbarui fase proyek '{$phase->phase_name}' pada proyek '{$phase->project->project_name}'.",
             'success',
             Auth::id() // Assuming the creator is the one who should receive the notification
         );
@@ -261,7 +261,7 @@ class ScheduleController extends Controller
             // Use helper function to create notification
             create_notification(
                 'Fase Proyek Dihapus',  
-                "Fase proyek '{$phase->phase_name}' telah dihapus dari proyek '{$project->project_name}'.",
+                Auth::user()->name . " telah menghapus fase proyek '{$phase->phase_name}' dari proyek '{$project->project_name}'.",
                 'warning',
                 Auth::id() // Assuming the creator is the one who should receive the notification
             );

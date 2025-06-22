@@ -60,7 +60,7 @@ class MaterialItemsController extends Controller
             // use helper
             create_notification(
                 'Item Material Baru',
-                'Item material baru telah ditambahkan: ' . $itemForMaterial->item_name,
+                Auth::user()->name . ' telah menambahkan item material baru: ' . $itemForMaterial->item_name,
                 'success',
                 Auth::id()
             );
@@ -120,7 +120,7 @@ class MaterialItemsController extends Controller
             // use helper
             create_notification(
                 'Item Material Diperbarui',
-                'Item material telah diperbarui: ' . $materialItem->item_name,
+                Auth::user()->name . ' telah memperbarui item material: ' . $materialItem->item_name,
                 'success',
                 Auth::id()
             );
@@ -150,7 +150,7 @@ class MaterialItemsController extends Controller
             // use helper
             create_notification(
                 'Item Material Dihapus',
-                'Item material telah dihapus: ' . $item->item_name,
+                Auth::user()->name . ' telah menghapus item material: ' . $item->item_name,
                 'warning',
                 Auth::id()
             );

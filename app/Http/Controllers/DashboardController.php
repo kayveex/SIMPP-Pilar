@@ -60,28 +60,14 @@ class DashboardController extends Controller
                 return [
                     'id' => $project->project_id,
                     'title' => $project->project_name,
-                    'start' => $project->start_date,
-                    'end' => $project->estimated_end_date,
+                    'start' => Carbon::parse($project->start_date)->format('Y-m-d'),
+                    'end' => Carbon::parse($project->estimated_end_date)->addDay()->format('Y-m-d'),
                     'status' => $project->status,
                     'color' => $this->getProjectColor($project->status)
                 ];
             });
 
-        // Get recent user activities (notifications)
-        $recentActivities = Notification::with('user')
-            ->where('type', 'activity')
-            ->orderBy('created_at', 'desc')
-            ->limit(10)
-            ->get()
-            ->map(function ($notification) {
-                return [
-                    'id' => $notification->notif_id,
-                    'user_name' => $notification->user->name ?? 'System',
-                    'action' => $notification->title,
-                    'time' => $notification->created_at->diffForHumans(),
-                    'type' => $notification->type
-                ];
-            });
+        $recentActivities = Notification::orderBy('created_at', 'desc')->limit(5)->get();
 
         return view('pages.dashboard', compact(
             'activeProjects', 
