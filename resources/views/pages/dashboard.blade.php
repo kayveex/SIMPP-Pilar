@@ -11,6 +11,8 @@
 @section('styles-head')
     <!-- Dashboard Calendar CSS -->
     <link href="{{ asset('css/dashboard-calendar.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.min.css" />
+
 @endsection
 
 {{-- Sidebar --}}
@@ -113,18 +115,17 @@
             </div>
         </div>
 
-        <!-- Statistics Cards Layout -->
-        <div class="flex flex-row w-full h-fit gap-6 my-10">
-            <!-- Left Section -->
+        {{-- Revised Statistics Cards Layout --}}
+        <div class="flex flex-row w-full gap-6 my-10 items-stretch">
+            {{-- Left --}}
             <div class="flex flex-col w-1/2 gap-6">
-
                 <!-- Top Row - Statistics Cards -->
-                <div class="flex flex-row gap-6">
+                <div class="flex flex-row gap-6 h-full">
                     <!-- Proyek Masuk Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 flex-1">
+                    <div class="bg-white rounded-lg shadow-sm p-6 flex-1 flex flex-col justify-between">
                         <h3 class="text-sm font-medium text-gray-500 mb-2">Proyek Masuk</h3>
                         <div class="text-3xl font-bold text-gray-900 mb-2">{{ $activeProjectsCount }}</div>
-                        <div class="flex items-center text-sm">
+                        <div class="flex items-center text-sm mt-auto">
                             @if ($differenceIn > 0)
                                 <i class="ph ph-trend-up w-4 h-4 text-green-500 mr-1"></i>
                                 <span class="text-green-600 font-medium">+{{ $differenceIn }}</span>
@@ -133,54 +134,17 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Bottom Row - Calendar Card -->
-                <div class="bg-white rounded-lg shadow-sm p-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Kalender Proyek</h3>
-                    
-                    <!-- Detail Calendar View -->
-                    <div class="h-48 overflow-y-auto">
-                        @if ($calendarProjects->count() > 0)
-                            <div class="space-y-2">
-                                @foreach ($calendarProjects as $project)
-                                    <div class="p-3 bg-gray-50 rounded-lg border-l-4" style="border-left-color: {{ $project['color'] }}">
-                                        <div class="flex justify-between items-start">
-                                            <div class="flex-1">
-                                                <h4 class="font-medium text-sm text-gray-900">{{ $project['title'] }}</h4>
-                                                <div class="text-xs text-gray-500 mt-1">
-                                                    <div>Mulai: {{ \Carbon\Carbon::parse($project['start'])->format('d M Y') }}</div>
-                                                    <div>Selesai: {{ \Carbon\Carbon::parse($project['end'])->format('d M Y') }}</div>
-                                                </div>
-                                            </div>
-                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium" 
-                                                  style="background-color: {{ $project['color'] }}20; color: {{ $project['color'] }}">
-                                                {{ ucfirst(str_replace('_', ' ', $project['status'])) }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="h-full flex items-center justify-center">
-                                <span class="text-gray-400">Tidak ada proyek dengan jadwal</span>
-                            </div>
-                        @endif
-                    </div>
-                    
-                </div>
-
             </div>
 
-            <!-- Right Section -->
+            {{-- Right --}}
             <div class="flex flex-col w-1/2 gap-6">
-
                 <!-- Top Row - Statistics Cards -->
-                <div class="flex flex-row gap-6">
+                <div class="flex flex-row gap-6 h-full">
                     <!-- Proyek Selesai Card -->
-                    <div class="bg-white rounded-lg shadow-sm p-6 flex-1">
+                    <div class="bg-white rounded-lg shadow-sm p-6 flex-1 flex flex-col justify-between">
                         <h3 class="text-sm font-medium text-gray-500 mb-2">Proyek Selesai</h3>
                         <div class="text-3xl font-bold text-gray-900 mb-2">{{ $completedProjectsCount }}</div>
-                        <div class="flex items-center text-sm">
+                        <div class="flex items-center text-sm mt-auto">
                             @if ($differenceOut > 0)
                                 <i class="ph ph-trend-up w-4 h-4 text-green-500 mr-1"></i>
                                 <span class="text-green-600 font-medium">+{{ $differenceOut }}</span>
@@ -189,7 +153,24 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
+
+        <!-- Bottom Row - Calendar and User Activity -->
+        <div class="flex flex-row w-full h-fit gap-6 my-10 items-stretch min-h-[80vh]">
+            <!-- Left Section -->
+            <div class="flex flex-col w-1/2 gap-6">
+                <!-- Bottom Row - Calendar Card -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Kalender Proyek</h3>
+                    <!-- Detail Calendar View -->
+                    <div id="calendar" class="h-fit"></div>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex flex-col w-1/2 gap-6">
                 <!-- Bottom Row - User Activity Card -->
                 <div class="bg-white rounded-lg shadow-sm p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">Aktivitas Pengguna</h3>
@@ -199,17 +180,17 @@
                                 @foreach ($recentActivities as $activity)
                                     <div class="flex items-start space-x-3">
                                         <div class="flex-shrink-0">
-                                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                                <i class="ph-bold ph-user text-blue-600 text-sm"></i>
-                                            </div>
+                                            <img class="h-10 w-10 rounded-full object-cover"
+                                                 src="{{ $activity->user->photo ? asset('storage/' . $activity->user->photo) : 'https://placehold.co/300x300' }}"
+                                                 alt="{{ $activity->user->name }}">
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-sm">
-                                                <span class="font-medium text-gray-900">{{ $activity['user_name'] }}</span>
-                                                <span class="text-gray-600">{{ $activity['action'] }}</span>
+                                            <div class="text-sm flex flex-col">
+                                                <span class="font-medium text-gray-900">{{ $activity->user->name }}</span>
+                                                <span class="text-gray-500"> {{ $activity->message }}</span>
                                             </div>
                                             <div class="text-xs text-gray-500 mt-1">
-                                                {{ $activity['time'] }}
+                                                {{ $activity->created_at->diffForHumans() }}
                                             </div>
                                         </div>
                                     </div>
@@ -227,5 +208,123 @@
 
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const events = @json($calendarProjects);
+            const calendarContainer = document.getElementById("calendar");
+
+            let viewDate = new Date();
+
+            function renderCalendar(year, month) {
+                const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDay = firstDay.getDay();
+                const totalDays = lastDay.getDate();
+
+                // Header Navigasi
+                const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                let nav = `
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex gap-2">
+                            <button id="prevYear" class="bg-gray-200 text-sm px-2 py-1 rounded hover:bg-gray-300">&laquo;</button>
+                            <button id="prevMonth" class="bg-gray-200 text-sm px-2 py-1 rounded hover:bg-gray-300">&lsaquo;</button>
+                        </div>
+                        <h2 class="text-lg font-semibold">${monthNames[month]} ${year}</h2>
+                        <div class="flex gap-2">
+                            <button id="nextMonth" class="bg-gray-200 text-sm px-2 py-1 rounded hover:bg-gray-300">&rsaquo;</button>
+                            <button id="nextYear" class="bg-gray-200 text-sm px-2 py-1 rounded hover:bg-gray-300">&raquo;</button>
+                        </div>
+                    </div>
+                `;
+
+                // Tabel
+                let table = `<table class="w-full table-fixed border-collapse">`;
+                table += "<thead><tr>";
+                days.forEach(day => {
+                    table += `<th class="border px-2 py-1 bg-gray-100 text-xs">${day}</th>`;
+                });
+                table += "</tr></thead>";
+
+                let tbody = "<tbody><tr>";
+                let day = 1;
+                let col = 0;
+
+                for (let i = 0; i < startDay; i++) {
+                    tbody += `<td class="border p-2 text-sm text-gray-400"></td>`;
+                    col++;
+                }
+
+                while (day <= totalDays) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+                    // Filter event yang start / end pada tanggal ini
+                    const startEvents = events.filter(e => e.start.startsWith(dateStr));
+                    const endEvents = events.filter(e => e.end.startsWith(dateStr));
+
+                    // Warna cell jika ada event
+                    const hasEvent = startEvents.length > 0 || endEvents.length > 0;
+                    const cellHighlight = hasEvent ? 'bg-gray-50' : '';
+
+                    tbody += `<td class="border p-2 text-xs align-top ${cellHighlight}">
+                                <div class="font-semibold mb-1">${day}</div>`;
+
+                    startEvents.forEach(e => {
+                        tbody += `<div class="text-[10px] text-green-700 bg-green-100 px-1 py-0.5 rounded mb-1">
+                                    ✅ ${e.title}<br><span class="italic">Proyek dimulai</span>
+                                </div>`;
+                    });
+
+                    endEvents.forEach(e => {
+                        tbody += `<div class="text-[10px] text-red-700 bg-red-100 px-1 py-0.5 rounded mb-1">
+                                    ❌ ${e.title}<br><span class="italic">Proyek harus selesai</span>
+                                </div>`;
+                    });
+
+                    tbody += `</td>`;
+                    day++;
+                    col++;
+
+                    if (col % 7 === 0 && day <= totalDays) {
+                        tbody += "</tr><tr>";
+                    }
+                }
+
+                while (col % 7 !== 0) {
+                    tbody += `<td class="border p-2 text-sm text-gray-300"></td>`;
+                    col++;
+                }
+
+                tbody += "</tr></tbody>";
+                table += tbody + "</table>";
+
+                calendarContainer.innerHTML = nav + table;
+
+                // Navigasi event
+                document.getElementById("prevMonth").onclick = () => {
+                    viewDate.setMonth(viewDate.getMonth() - 1);
+                    renderCalendar(viewDate.getFullYear(), viewDate.getMonth());
+                };
+                document.getElementById("nextMonth").onclick = () => {
+                    viewDate.setMonth(viewDate.getMonth() + 1);
+                    renderCalendar(viewDate.getFullYear(), viewDate.getMonth());
+                };
+                document.getElementById("prevYear").onclick = () => {
+                    viewDate.setFullYear(viewDate.getFullYear() - 1);
+                    renderCalendar(viewDate.getFullYear(), viewDate.getMonth());
+                };
+                document.getElementById("nextYear").onclick = () => {
+                    viewDate.setFullYear(viewDate.getFullYear() + 1);
+                    renderCalendar(viewDate.getFullYear(), viewDate.getMonth());
+                };
+            }
+
+            renderCalendar(viewDate.getFullYear(), viewDate.getMonth());
+        });
+    </script>
+@endsection
+
 
 
