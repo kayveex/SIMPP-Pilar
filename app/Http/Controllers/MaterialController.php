@@ -122,15 +122,8 @@ class MaterialController extends Controller
             // use helper
             create_notification(
                 'Material Diajukan',
-                'Material baru telah diajukan: ' . $material->material_title,
+                Auth::user()->name . ' telah mengajukan material: ' . $material->material_title,
                 'success',
-                Auth::id()
-            );
-
-            // Log user activity
-            log_user_activity(
-                'mengajukan material baru',
-                'material: ' . $material->material_title,
                 Auth::id()
             );
 
@@ -180,7 +173,7 @@ class MaterialController extends Controller
             // use helper
             create_notification(
                 'Material Diperbarui',
-                'Material telah diperbarui: ' . $material->material_title,
+                Auth::user()->name . ' telah memperbarui material: ' . $material->material_title,
                 'success',
                 Auth::id()
             );
@@ -210,15 +203,8 @@ class MaterialController extends Controller
             // use helper
             create_notification(
                 'Material Disetujui',
-                'Material telah disetujui: ' . $material->material_title,
+                Auth::user()->name . ' telah menyetujui material: ' . $material->material_title,
                 'success',
-                Auth::id()
-            );
-
-            // Log user activity
-            log_user_activity(
-                'menyetujui material',
-                'material: ' . $material->material_title,
                 Auth::id()
             );
 
@@ -239,15 +225,8 @@ class MaterialController extends Controller
             // use helper
             create_notification(
                 'Material Ditolak',
-                'Material telah ditolak: ' . $material->material_title,
+                Auth::user()->name . ' telah menolak material: ' . $material->material_title,
                 'warning',
-                Auth::id()
-            );
-
-            // Log user activity
-            log_user_activity(
-                'menolak material',
-                'material: ' . $material->material_title,
                 Auth::id()
             );
 
@@ -269,7 +248,7 @@ class MaterialController extends Controller
         // use helper
         create_notification(
             'Material Dihapus',
-            'Material telah dihapus: ' . $material->material_title,
+            Auth::user()->name . ' telah menghapus material: ' . $material->material_title,
             'warning',
             Auth::id()
         );

@@ -25,22 +25,3 @@ if (!function_exists('create_notification')) {
         }
     }
 }
-
-if (!function_exists('log_user_activity')) {
-    function log_user_activity(string $action, string $details = '', $userId = null)
-    {
-        try {
-            $notif = Notification::create([
-                'user_id' => $userId ?? (Auth::id() ?? 1),
-                'title' => $action,
-                'message' => $details,
-                'type' => 'activity',
-                'is_read' => false,
-            ]);
-
-            return $notif;
-        } catch (\Throwable $e) {
-            return null;
-        }
-    }
-}

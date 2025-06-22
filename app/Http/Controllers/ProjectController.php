@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notification;
 use App\Models\Project;
 use App\Models\ProjectDocument;
 use Illuminate\Http\Request;
@@ -143,18 +142,11 @@ class ProjectController extends Controller
             // Create a notification using the helper function
             create_notification(
                 'Proyek Baru Telah Dibuat',
-                'Proyek baru "' . $project->project_name . '" telah berhasil dibuat.',
+                Auth::user()->name . ' telah membuat proyek baru: ' . $project->project_name,
                 'success',
                 Auth::id()
             );
-
-            // Log user activity
-            log_user_activity(
-                'membuat proyek baru',
-                'proyek: ' . $project->project_name,
-                Auth::id()
-            );
-            
+           
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -230,15 +222,8 @@ class ProjectController extends Controller
             // Create notification and log activity
             create_notification(
                 'Detail Proyek Diperbarui',
-                'Detail proyek "' . $project->project_name . '" telah berhasil diperbarui.',
+                Auth::user()->name . ' telah memperbarui detail proyek: ' . $project->project_name,
                 'success',
-                Auth::id()
-            );
-
-            // Log user activity
-            log_user_activity(
-                'memperbarui detail proyek',
-                'proyek: ' . $project->project_name,
                 Auth::id()
             );
 
@@ -254,38 +239,6 @@ class ProjectController extends Controller
 
 
     // Update the permission of the project
-
-    public function updatePersetujuanProject($id) 
-    {
-        if (Auth::user()->role === 'Divisi Teknikal') {
-            $project = Project::findOrFail($id);
-            $project->update([
-                'technical_approval' => true,
-            ]);
-
-        }
-
-        // Other roles soon!
-
-        return redirect()->back()->with('success', 'Persetujuan berhasil diperbarui.');
-
-    }
-
-
-    // Delete Persetujuan Project
-    public function deletePersetujuanProject($id) 
-    {
-        if (Auth::user()->role === 'Divisi Teknikal') {
-            $project = Project::findOrFail($id);
-            $project->update([
-                'technical_approval' => false,
-            ]);
-        }
-
-        // Other roles soon!
-
-        return redirect()->back()->with('success', 'Persetujuan berhasil dihapus.');
-    }
 
     /**
      * Remove the specified project from storage.
@@ -336,7 +289,7 @@ class ProjectController extends Controller
             // Buat notifikasi menggunakan helper
             create_notification(
                 'Proyek Dihapus',
-                'Proyek "' . $project->project_name . '" telah berhasil dihapus.',
+                Auth::user()->name . ' telah menghapus proyek: ' . $project->project_name,
                 'warning',
                 Auth::id()
             );
@@ -379,7 +332,7 @@ class ProjectController extends Controller
             // Buat notifikasi menggunakan helper
             create_notification(
                 'Dokumen Proyek Ditambahkan',
-                'Dokumen baru telah berhasil ditambahkan ke proyek "' . $project->project_name . '".',
+                Auth::user()->name . ' telah menambahkan dokumen baru ke proyek: ' . $project->project_name,
                 'success',
                 Auth::id()
             );
@@ -413,7 +366,7 @@ class ProjectController extends Controller
             // Buat notifikasi menggunakan helper
             create_notification(
                 'Dokumen Proyek Dihapus',
-                'Dokumen "' . $document->document_name . '" telah berhasil dihapus dari proyek.',
+                Auth::user()->name . ' telah menghapus dokumen: ' . $document->document_name,
                 'warning',
                 Auth::id()
             );
