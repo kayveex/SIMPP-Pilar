@@ -57,6 +57,7 @@
                     Edit Tabel Item
                 </button>
                 {{-- Buat Divisi Purchasing - > NgeACC --}}
+                @if(Auth::user()->isPurchasing())
                 <button
                     class="tab border-2 font-bold text-lg"
                     :class="{ 'tab-active text-[#4880FF]': tab === 'persetujuan' }"
@@ -64,6 +65,7 @@
                 >
                     Edit Persetujuan
                 </button>
+                @endif
             </div>
 
             {{-- Tab content --}}
@@ -110,6 +112,7 @@
                                     class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">{{ $material->material_notes }}</textarea>
                             </div>
                             <div class="flex w-full mb-4 gap-4">
+                                @if(Auth::user()->isPurchasing())
                                 <div class="w-1/2 flex-col mb-4">
                                     <h3 class="text-lg font-semibold mb-2">Vendor</h3>
                                     <input type="text" id="vendor" name="vendor" value="{{ $material->vendor }}"
@@ -120,10 +123,12 @@
                                     <input type="file" id="invoice" name="invoice"
                                         class="file-input file-input-bordered border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full file:bg-blue-600 file:text-white file:border-none file:rounded file:px-4 file:py-2 file:cursor-pointer" >
                                 </div>
+                                @endif
 
                             </div>
 
-                            {{-- Tanggal - Tanggal Kedatangan --}}
+                            {{-- Tanggal - Tanggal Kedatangan (Only for Purchasing) --}}
+                            @if(Auth::user()->isPurchasing())
                             <div class="flex flex-row w-full mb-4 gap-4">
                                 <div class="w-1/2 flex flex-col">
                                     <h3 class="text-lg font-semibold mb-2">Tanggal Estimasi Kedatangan</h3>
@@ -136,8 +141,10 @@
                                         class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" >
                                 </div>
                             </div>
+                            @endif
 
-                            {{-- approval_status --}}
+                            {{-- approval_status (Only for Purchasing) --}}
+                            @if(Auth::user()->isPurchasing())
                             <div class="flex flex-col w-full mb-4">
                                 <h3 class="text-lg font-semibold mb-2">Status Pengajuan</h3>
                                 <select id="approval_status" name="approval_status"
@@ -150,6 +157,7 @@
                                     <option value="ditolak" {{ $material->approval_status === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
                                 </select>
                             </div>
+                            @endif
 
                             {{-- Button - Edit --}}
                             <div class="flex flex-row justify-end">
@@ -254,6 +262,8 @@
                     </div>
                 </div>
                 {{-- Tab 3 --}}
+                {{-- Tab 3 (Only for Purchasing) --}}
+                @if(Auth::user()->isPurchasing())
                 <div x-show="tab === 'persetujuan'" xtransition>
                     {{-- Fill content here --}}
 
@@ -311,6 +321,7 @@
                             @endif
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </section>

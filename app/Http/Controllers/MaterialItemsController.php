@@ -14,25 +14,51 @@ class MaterialItemsController extends Controller
 {
     // Create a new material item from certain material (view)
     public function createMaterialItem($id) {
+        // Check if user has access to materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $material = Material::findOrFail($id);
-        return view('pages.materials.add-table', compact('material'));
+        
+        // Get current user role for conditional display
+        $userRole = Auth::user()->role;
+        
+        return view('pages.materials.add-table', compact('material', 'userRole'));
     }
 
     // Display the detail of a material item
     public function showMaterialItem($id) {
+        // Check if user has access to materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $item = MaterialRequestItem::findOrFail($id);
         $material = Material::findOrFail($item->material_id);
 
-        return view('pages.materials.view-table', compact('item', 'material'));
+        // Get current user role for conditional display
+        $userRole = Auth::user()->role;
+
+        return view('pages.materials.view-table', compact('item', 'material', 'userRole'));
     }
     
     // Store a new material item
     public function storeMaterialItem(Request $request, $id)
     {
+        // Check if user has access to materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $request->validate([
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|numeric|min:0',
             'unit' => 'required',
+            'custom_unit' => 'required_if:unit,lainnya|string|max:50',
             'price_per_unit' => 'required|numeric|min:0',
             'required_date' => 'nullable|date',
             'notes' => 'nullable|string|max:1000',
@@ -40,13 +66,16 @@ class MaterialItemsController extends Controller
 
         $material = Material::findOrFail($id);
 
+        // Determine the final unit value
+        $finalUnit = $request->unit === 'lainnya' ? $request->custom_unit : $request->unit;
+
         DB::beginTransaction();
 
         try {
             $itemForMaterial = MaterialRequestItem::create([
                 'item_name' => $request->item_name,
                 'quantity' => $request->quantity,
-                'unit' => $request->unit,
+                'unit' => $finalUnit,
                 'price_per_unit' => $request->price_per_unit,
                 // Total price is calculated as quantity * price per unit
                 'total_price' => $request->quantity * $request->price_per_unit,
@@ -73,22 +102,37 @@ class MaterialItemsController extends Controller
             return redirect()->back()->withErrors(['error' => 'Gagal menyimpan item material: ' . $th->getMessage()]);
         }
     }
-
+    
     // Edit a material item (view)
     public function editMaterialItem($id) {
+        // Check if user has access to materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $item = MaterialRequestItem::findOrFail($id);
         $material = Material::findOrFail($item->material_id);
-
-        return view('pages.materials.edit-table', compact('item', 'material'));
-
+        
+        // Get current user role for conditional display
+        $userRole = Auth::user()->role;
+        
+        return view('pages.materials.edit-table', compact('item', 'material', 'userRole'));
     }
 
     // Patch update a material item
     public function updateMaterialItem(Request $request, $id) {
+        // Check if user has access to materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $request->validate([
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|numeric|min:0',
             'unit' => 'required',
+            'custom_unit' => 'required_if:unit,lainnya|string|max:50',
             'received_quantity' => 'nullable|numeric|min:0',
             'price_per_unit' => 'required|numeric|min:0',
             'required_date' => 'nullable|date',
@@ -101,11 +145,14 @@ class MaterialItemsController extends Controller
         try {
             $materialItem = MaterialRequestItem::findOrFail($id);
 
+            // Determine the final unit value
+            $finalUnit = $request->unit === 'lainnya' ? $request->custom_unit : $request->unit;
+
             $materialItem->update(
                 [
                     'item_name' => $request->item_name,
                     'quantity' => $request->quantity,
-                    'unit' => $request->unit,
+                    'unit' => $finalUnit,
                     'received_quantity' => $request->received_quantity,
                     'price_per_unit' => $request->price_per_unit,
                     'total_price' => $request->quantity * $request->price_per_unit, // Recalculate total price
@@ -138,6 +185,12 @@ class MaterialItemsController extends Controller
 
     // Delete a material item
     public function deleteMaterialItem($id) {
+        // Check if user has access to delete materials (Technical or Purchasing)
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $item = MaterialRequestItem::findOrFail($id);
         $materialId = $item->material_id; // Get the material_id before deleting
 

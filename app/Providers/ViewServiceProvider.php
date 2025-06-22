@@ -30,14 +30,24 @@ class ViewServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $userId = Auth::id();
 
-                $myNotif = Notification::where('user_id', $userId)
-                    ->where('is_read', false)
-                    ->latest()
-                    ->paginate(3);
+                try {
+                    $myNotif = Notification::where('user_id', $userId)
+                        ->where('is_read', false)
+                        ->orderBy('created_at', 'desc')
+                        ->take(3)
+                        ->get();
 
-                $countMyNotif = Notification::where('user_id', $userId)
-                    ->where('is_read', false)
-                    ->count();
+                    $countMyNotif = Notification::where('user_id', $userId)
+                        ->where('is_read', false)
+                        ->count();
+                } catch (\Exception $e) {
+                    // Fallback jika ada error database
+                    $myNotif = collect([]);
+                    $countMyNotif = 0;
+                    
+                    // Log error untuk debugging
+                    \Log::error('Notification query error: ' . $e->getMessage());
+                }
 
                 // Kirim data ke view
                 $view->with([

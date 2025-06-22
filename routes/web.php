@@ -78,26 +78,24 @@ Route::middleware('auth')->group(function() {
     
     // Material Routes
     Route::prefix('material')->group(function() {
-        // Main material page
+        // Main material page - accessible by Technical and Purchasing
         Route::get('/', [MaterialController::class, 'index'])->name('material.index');
-        // Show material details
+        // Show material details - accessible by Technical and Purchasing
         Route::get('/view/{id}', [MaterialController::class, 'viewPage'])->name('material.view');
         
-        // Additional material pages that have corresponding controller methods
+        // Material creation and editing - Technical can create/edit (with limited fields)
         Route::get('/create', [MaterialController::class, 'create'])->name('material.create');
         Route::post('/store', [MaterialController::class, 'storeMaterial'])->name('material.store');
-        Route::delete('/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
         Route::get('/edit/{id}', [MaterialController::class, 'editPage'])->name('material.edit');
         Route::patch('update/{id}', [MaterialController::class, 'updateMaterial'])->name('material.update');
 
-        // Approval Material for Purchasing
+        // Material approval and deletion - Purchasing only (handled in controller)
         Route::patch('/approval/{id}', [MaterialController::class, 'updateApproval'])->name('material.approval');
-        // Delete Approval Material for Purchasing
         Route::patch('/approval/delete/{id}', [MaterialController::class, 'deleteApproval'])->name('material.approval.delete');
-
+        Route::delete('/delete/{id}', [MaterialController::class, 'deleteMaterial'])->name('material.delete');
     });
 
-    // Material Items
+    // Material Items - accessible by Technical and Purchasing
     Route::prefix('material-items')->group(function() {
         // Show material item details
         Route::get('/view/{id}', [MaterialItemsController::class, 'showMaterialItem'])->name('material-items.view');
@@ -156,7 +154,7 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [ProjectController::class, 'deleteDocument'])->name('projectDocs.delete');
     });
 
-    // Export Material Items
+    // Export Material Items - accessible by Technical and Purchasing
     Route::prefix('export')->group(function() {
         Route::get('material-items/{material}', [MaterialItemExportController::class, 'export'])->name('material-items.export');
     });

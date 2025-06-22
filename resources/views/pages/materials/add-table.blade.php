@@ -22,7 +22,7 @@
 @endsection
 
 @section('page-content')
-    <section class="flex flex-col px-6 pt-6">
+    <section class="flex flex-col px-6 pt-6" x-data="{ showCustomUnit: false }">
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Item Material</h1>
         </div>
@@ -59,7 +59,7 @@
                         <label for="unit" class="text-md font-semibold mb-2">Satuan<span class="text-red-500">*</span></label>
                         <select id="unit" name="unit" 
                                 class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                                required>
+                                required x-on:change="showCustomUnit = ($event.target.value === 'lainnya')">
                             <option value="" disabled selected>Pilih Satuan</option>
                             <option value="pcs">Pcs</option>
                             <option value="kg">Kg</option>
@@ -67,13 +67,32 @@
                             <option value="cm">Cm</option>
                             <option value="liter">Liter</option>
                             <option value="set">Set</option>
+                            <option value="lainnya">Lainnya</option>
                         </select>
+                        
+                        <!-- Custom unit input -->
+                        <div x-show="showCustomUnit" class="mt-2">
+                            <label for="custom_unit" class="text-sm font-semibold mb-1">Satuan Lainnya</label>
+                            <input type="text" id="custom_unit" name="custom_unit" 
+                                   class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                   placeholder="Masukkan satuan custom"
+                                   x-bind:required="showCustomUnit">
+                        </div>
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="price_per_unit" class="text-md font-semibold mb-2">Harga Satuan Item <span class="text-red-500">*</span></label>
-                    <input type="number" id="price_per_unit" name="price_per_unit" 
+                    <label for="price_per_unit" class="text-md font-semibold mb-2">
+                        @if(Auth::user()->isTeknikal())
+                            Harga Satuan Item (Perkiraan) <span class="text-red-500">*</span>
+                        @else
+                            Harga Satuan Item <span class="text-red-500">*</span>
+                        @endif
+                    </label>
+                    @if(Auth::user()->isTeknikal())
+                        <p class="text-sm text-gray-600 mb-2">Masukkan perkiraan harga. Divisi Purchasing dapat mengedit harga ini nanti.</p>
+                    @endif
+                    <input type="number" id="price_per_unit" name="price_per_unit" step="any"
                            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                            value="{{ old('price_per_unit') }}" required>
                 </div>
@@ -82,7 +101,7 @@
                     <label for="required_date" class="text-md font-semibold mb-2">Dibutuhkan Tanggal</label>
                     <input type="date" id="required_date" name="required_date" 
                            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                           value="{{ old('required_date') }}" required>
+                           value="{{ old('required_date') }}">
                 </div>
 
                 <div class="mb-4">
@@ -97,21 +116,7 @@
                         Simpan
                     </button>
                 </div>
-                    
-
-
-                </div>
-
-
-                </div>
-
             </form>
-
         </div>
-
-
-
     </section>
-
-    
 @endsection

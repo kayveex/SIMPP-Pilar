@@ -19,10 +19,16 @@ class MaterialController extends Controller
     /**
      * Display the materials page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index(Request $request)
     {
+        // Check authorization - only Technical and Purchasing can access materials
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $query = Material::with('project');
 
         if ($request->filled('search')) {
@@ -65,6 +71,12 @@ class MaterialController extends Controller
     //Edit - Edit page for material
     public function editPage($id)
     {
+        // Check authorization - only Technical and Purchasing can access materials
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $material = Material::findOrFail($id);
 
         // Make $materialRequests available to the view, ascending by created_at
@@ -72,11 +84,20 @@ class MaterialController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
         
-        return view('pages.materials.edit', compact('material', 'materialRequests'));
+        // Get current user role for conditional display
+        $userRole = Auth::user()->role;
+        
+        return view('pages.materials.edit', compact('material', 'materialRequests', 'userRole'));
     }
 
     public function viewPage($id)
     {
+        // Check authorization - only Technical and Purchasing can access materials
+        $user = Auth::user();
+        if (!$user->isTeknikal() && !$user->isPurchasing()) {
+            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+        }
+
         $material = Material::findOrFail($id);
 
         // Make $materialRequests available to the view, ascending by created_at
@@ -84,7 +105,10 @@ class MaterialController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
         
-        return view('pages.materials.view', compact('material', 'materialRequests'));
+        // Get current user role for conditional display
+        $userRole = Auth::user()->role;
+        
+        return view('pages.materials.view', compact('material', 'materialRequests', 'userRole'));
     }
 
 
