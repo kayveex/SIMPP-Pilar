@@ -65,7 +65,7 @@ class MaterialController extends Controller
     /**
      * Show the material status page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
 
     //Edit - Edit page for material
@@ -74,7 +74,7 @@ class MaterialController extends Controller
         // Check authorization - only Technical and Purchasing can access materials
         $user = Auth::user();
         if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
+            return redirect(to: '/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
         }
 
         $material = Material::findOrFail($id);
@@ -90,6 +90,11 @@ class MaterialController extends Controller
         return view('pages.materials.edit', compact('material', 'materialRequests', 'userRole'));
     }
 
+    /**
+     * Show the material view page.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function viewPage($id)
     {
         // Check authorization - only Technical and Purchasing can access materials
