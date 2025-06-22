@@ -28,7 +28,7 @@
         {{-- Title --}}
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800"> Pengajuan Material</h1>
-            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Purchasing')
+            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
                 <a href="{{ route('material.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
                     <i class="ph-bold ph-plus"></i>
                     <span class="ml-2">Tambah Material</span>
@@ -113,7 +113,8 @@
                                         <a href="{{ route('material.view', $material->material_id) }}"  class="py-2 text-blue-600 hover:text-blue-800 transition duration-200" title="Lihat Detail Material">
                                             <i class="ph-bold ph-eye"></i>
                                         </a>
-                                        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Purchasing')
+                                        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Divisi Teknikal')
+                                            {{-- Edit and Delete buttons --}}
                                             <a href="{{ route('material.edit', $material->material_id) }}" class="py-2 text-yellow-500 hover:text-yellow-600 transition duration-200" title="Edit Detail Material">
                                                 <i class="ph-bold ph-pencil-simple-line"></i>
                                             </a>
