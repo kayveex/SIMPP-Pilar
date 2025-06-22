@@ -47,14 +47,16 @@
                     <i class="ph-bold ph-article"></i>
                     <span>Detail Catatan</span>
                 </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'edit_notes'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'edit_notes', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'edit_notes'}" class="px-4 py-2 focus:outline-none">
-                    <i class="ph-bold ph-pencil-simple-line"></i>
-                    <span>Edit Catatan</span>
-                </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'edit_doc'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'edit_doc', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'edit_doc'}" class="px-4 py-2 focus:outline-none">
-                    <i class="ph-bold ph-camera-plus"></i>
-                    <span>Edit Dokumentasi</span>
-                </button>
+                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                    <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'edit_notes'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'edit_notes', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'edit_notes'}" class="px-4 py-2 focus:outline-none">
+                        <i class="ph-bold ph-pencil-simple-line"></i>
+                        <span>Edit Catatan</span>
+                    </button>
+                    <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'edit_doc'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'edit_doc', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'edit_doc'}" class="px-4 py-2 focus:outline-none">
+                        <i class="ph-bold ph-camera-plus"></i>
+                        <span>Edit Dokumentasi</span>
+                    </button>
+                @endif
             </div>
 
             {{-- Tab content --}}

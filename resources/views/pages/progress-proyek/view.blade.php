@@ -51,10 +51,20 @@
                     Catatan Proyek tersimpan di dalam tiap fase proyek. 
                     Anda dapat melihat catatan-catatan tersebut dengan mengeklik tombol <i class="ph-bold mx-1.5 ph-eye text-blue-500"></i> pada salah satu fase.
                 </p>
-                {{-- Untuk mengubah status fase, gunakan tombol di bawah ini --}}
-                <p>
-                    Untuk mengubah status fase/tambah fase, silahkan klik <a href="{{ route('schedules.view', $project->project_id) }}" class="text-blue-500 hover:underline">disini</a>
-                </p>
+                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+                    <p>
+                        Untuk mengubah status fase/tambah fase, silahkan klik <a href="{{ route('schedules.view', $project->project_id) }}" class="text-blue-500 hover:underline">disini</a>
+                    </p>
+                @endif
+
+                @if ($currentPhase !== null)
+                    <div class="flex flex-row items-center gap-2 text-md bg-yellow-500/90 border-2 text-yellow-800 rounded-xl px-2 py-1.5 my-2 border-yellow-700">
+                        <i class="ph-bold ph-bell-simple-ringing"></i>
+                        <p class="font-semibold">
+                            Hari ini sampai tanggal {{ $currentPhase->estimated_end_date->format('d M Y') }} adalah fase <span class="font-bold">{{ $currentPhase->phase_name }}</span> dari proyek ini.
+                        </p>
+                    </div>
+                @endif
             </div>
                 
             <table class="table w-full table-zebra">
@@ -63,7 +73,6 @@
                         <th>No.</th>
                         <th>Nama Fase</th>
                         <th>Tanggal Periode</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -93,15 +102,6 @@
                                         <span class="text-red-500">{{ $phase->actual_end_date->format('d M Y') }}</span>
                                     @endif
                                 </td>
-                                <td>                                                                         {{-- Jika status belum selesai, tampilkan "Belum Selesai" --}}
-                                    @if ($phase->is_completed === false)
-                                        <span class="bg-red-500 font-bold text-white px-2 py-1 rounded-xl">Belum Selesai</span>
-                                    {{-- Jika status sudah selesai, tampilkan "Selesai" --}}
-                                    @elseif ($phase->is_completed === true)
-                                        <span class="bg-green-500 font-bold text-white px-2 py-1 rounded-xl">Selesai</span>
-                                    @endif
-                                </td>
-
                                 <td>
                                     <div class="flex flex-row justify-center text-lg items-center gap-2">
                                         <a href="{{ route('progress-proyek.report', $phase->phase_id) }}" class="py-2 text-blue-500 hover:text-blue-600 transition duration-200" title="Lihat Catatan Proyek">
@@ -110,20 +110,10 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
-                        
+                        @endforeach  
                     @endif
                 </tbody>
-
-
-
             </table>
         </div>
-
-
-
-
     </section>
-
-    
 @endsection
