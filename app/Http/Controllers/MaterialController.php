@@ -25,23 +25,27 @@ class MaterialController extends Controller
     {
         // Check authorization - only Technical and Purchasing can access materials
         $user = Auth::user();
+
         $query = Material::with('project');
 
+        // Handle pencarian keyword
         if ($request->filled('search')) {
             $search = strtolower($request->search);
 
             $query->where(function ($q) use ($search) {
                 $q->whereHas('project', function ($subQuery) use ($search) {
                     $subQuery->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"])
-                            ->orWhereRaw('CAST(project_id AS TEXT) LIKE ?', ["%{$search}%"]);
+                            ->orWhere('project_id', 'like', "%{$search}%");
                 });
             });
         }
 
+        // Filter berdasarkan status approval jika ada
         if ($request->filled('approval_status')) {
             $query->where('approval_status', $request->approval_status);
         }
 
+        // Sorting
         if ($request->filled('sort')) {
             if ($request->sort === 'latest') {
                 $query->orderBy('created_at', 'desc');
@@ -49,13 +53,17 @@ class MaterialController extends Controller
                 $query->orderBy('created_at', 'asc');
             }
         } else {
+            // Default sorting
             $query->orderBy('created_at', 'desc');
         }
 
+        // Ambil data paginasi
         $materials = $query->paginate(5)->withQueryString();
 
+        // Tampilkan view
         return view('pages.materials.index', compact('materials'));
     }
+
 
 
     /**
