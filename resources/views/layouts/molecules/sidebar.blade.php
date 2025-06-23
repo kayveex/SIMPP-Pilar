@@ -68,7 +68,7 @@
             <div class="mt-4 flex-col">
                 <label for="arsip" class="font-bold">SUPER ADMIN</label>
                 <a href="{{ route('user.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('arsip-proyek*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('user*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
                     <i class="ph-bold ph-users-three"></i>
                     <span>Akun</span>
                 </a>
