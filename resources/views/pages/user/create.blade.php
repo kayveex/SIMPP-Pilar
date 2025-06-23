@@ -64,7 +64,6 @@
                         <option value="Divisi Teknikal">Divisi Teknikal</option>
                         <option value="Divisi Purchasing">Divisi Purchasing</option>
                         <option value="Divisi Finance">Divisi Finance</option>
-                        <option value="Divisi Admin">Divisi Admin</option>
                         <option value="Direktur">Direktur</option>
                         <option value="Super Admin">Super Admin</option>
                     </select>
