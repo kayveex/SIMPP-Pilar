@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AnggaranProyekController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,11 @@ Route::middleware('auth')->group(function() {
         Route::get('/profile/edit/{userId}', [UserProfileController::class, 'editProfile'])->name('user.profile.edit');
         Route::patch('/profile/update/{userId}', [UserProfileController::class, 'updateProfile'])->name('user.profile.update');
         Route::patch('/profile/update-password/{userId}', [UserProfileController::class, 'updatePassword'])->name('user.profile.update.password');
+        // From AccountController
+        Route::get('/acc', [AccountController::class, 'index'])->name('user.index');
+        Route::get('/acc/create', [AccountController::class, 'create'])->name('user.create');
+        Route::post('/acc/store', [AccountController::class, 'store'])->name('user.store');
+
 
     });
         
