@@ -22,8 +22,20 @@
 @endsection
 
 @section('page-content')
-    <section class="flex flex-col p-6">
-        {{-- Page Header --}}
+    <section class="flex flex-col p-6"
+            x-data="{
+            tab: 'tab1',
+            showCustomUnit: false,
+            pricePerUnit: '{{ old('price_per_unit', 0) }}',
+            rupiahFormat(value) {
+                let val = parseFloat(value || 0);
+                return 'Rp ' + val.toLocaleString('id-ID', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
+        }"
+    >        {{-- Page Header --}}
         <div class="flex flex-col justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Anggaran Realisasi</h1>
             <p class="text-lg font-semibold text-gray-500">Proyek {{ $project->project_name }}</p>
@@ -95,8 +107,10 @@
                             </div>
 
                             <div class="mb-4">
-                                <label for="unit" class="block text-md mb-2 font-bold text-gray-700">Satuan <span class="text-red-500">*</span></label>
-                                <select id="unit" name="unit" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
+                                <label for="unit" class="text-md font-semibold mb-2">Satuan<span class="text-red-500">*</span></label>
+                                <select id="unit" name="unit" 
+                                        class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                        required x-on:change="showCustomUnit = ($event.target.value === 'lainnya')">
                                     <option value="" disabled selected>Pilih Satuan</option>
                                     <option value="pcs">Pcs</option>
                                     <option value="kg">Kg</option>
@@ -104,12 +118,28 @@
                                     <option value="cm">Cm</option>
                                     <option value="liter">Liter</option>
                                     <option value="set">Set</option>
+                                    <option value="lainnya">Lainnya</option>
                                 </select>
+                                
+                                <!-- Custom unit input -->
+                                <div x-show="showCustomUnit" class="mt-2">
+                                    <label for="custom_unit" class="text-sm font-semibold mb-1">Satuan Lainnya</label>
+                                    <input type="text" id="custom_unit" name="custom_unit" 
+                                        class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                        placeholder="Masukkan satuan custom"
+                                        x-bind:required="showCustomUnit">
+                                </div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="price_per_unit" class="block text-md mb-2 font-bold text-gray-700">Harga Satuan Item <span class="text-red-500">*</span></label>
-                                <input type="number" id="price_per_unit" name="price_per_unit" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" value="{{ old('price_per_unit') }}" required>
+                                <input type="number" id="price_per_unit" name="price_per_unit"
+                                    x-model="pricePerUnit"
+                                    class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                                    value="{{ old('price_per_unit') }}" required>
+                                    <p class="text-sm text-gray-500 mt-2">
+                                        Preview: <span x-text="rupiahFormat(pricePerUnit)"></span>
+                                    </p>
                             </div>
 
                             {{-- Button untuk submit --}}

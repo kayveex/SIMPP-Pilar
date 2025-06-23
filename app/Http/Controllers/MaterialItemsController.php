@@ -16,9 +16,6 @@ class MaterialItemsController extends Controller
     public function createMaterialItem($id) {
         // Check if user has access to materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $material = Material::findOrFail($id);
         
@@ -32,9 +29,6 @@ class MaterialItemsController extends Controller
     public function showMaterialItem($id) {
         // Check if user has access to materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $item = MaterialRequestItem::findOrFail($id);
         $material = Material::findOrFail($item->material_id);
@@ -50,15 +44,11 @@ class MaterialItemsController extends Controller
     {
         // Check if user has access to materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $request->validate([
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|numeric|min:0',
-            'unit' => 'required',
-            'custom_unit' => 'required_if:unit,lainnya|string|max:50',
+            'unit' => 'required|string|max:50',
             'price_per_unit' => 'required|numeric|min:0',
             'required_date' => 'nullable|date',
             'notes' => 'nullable|string|max:1000',
@@ -107,9 +97,6 @@ class MaterialItemsController extends Controller
     public function editMaterialItem($id) {
         // Check if user has access to materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $item = MaterialRequestItem::findOrFail($id);
         $material = Material::findOrFail($item->material_id);
@@ -124,15 +111,11 @@ class MaterialItemsController extends Controller
     public function updateMaterialItem(Request $request, $id) {
         // Check if user has access to materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $request->validate([
             'item_name' => 'required|string|max:255',
             'quantity' => 'required|numeric|min:0',
-            'unit' => 'required',
-            'custom_unit' => 'required_if:unit,lainnya|string|max:50',
+            'unit' => 'required|string|max:50',
             'received_quantity' => 'nullable|numeric|min:0',
             'price_per_unit' => 'required|numeric|min:0',
             'required_date' => 'nullable|date',
@@ -187,9 +170,6 @@ class MaterialItemsController extends Controller
     public function deleteMaterialItem($id) {
         // Check if user has access to delete materials (Technical or Purchasing)
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $item = MaterialRequestItem::findOrFail($id);
         $materialId = $item->material_id; // Get the material_id before deleting

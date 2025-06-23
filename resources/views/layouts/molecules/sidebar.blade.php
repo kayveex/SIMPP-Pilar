@@ -14,50 +14,44 @@
         </div>
 
         {{-- Proyek Tab --}}
-        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal' || Auth::user()->role === 'Direktur')
-            <div class="mt-4 flex-col">
-                <label for="proyek" class="font-bold">PROYEK</label>
-                <a href="{{ route('projects.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('projects*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
-                    <i class="ph-bold ph-article"></i>
-                    <span>Daftar Proyek</span>
-                </a>
-                <a href="{{ route('schedules.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('schedules*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
-                    <i class="ph-bold ph-calendar-blank"></i>
-                    <span>Jadwal</span>
-                </a>
-                <a href="{{ route('progress-proyek.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('progress-proyek*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
-                    <i class="ph-bold ph-circle-notch"></i>
-                    <span>Progress Proyek</span>
-                </a>
-            </div>
-        @endif
+        <div class="mt-4 flex-col">
+            <label for="proyek" class="font-bold">PROYEK</label>
+            <a href="{{ route('projects.index') }}"
+                class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('projects*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                <i class="ph-bold ph-article"></i>
+                <span>Daftar Proyek</span>
+            </a>
+            <a href="{{ route('schedules.index') }}"
+                class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('schedules*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                <i class="ph-bold ph-calendar-blank"></i>
+                <span>Jadwal</span>
+            </a>
+            <a href="{{ route('progress-proyek.index') }}"
+                class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('progress-proyek*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                <i class="ph-bold ph-circle-notch"></i>
+                <span>Progress Proyek</span>
+            </a>
+        </div>
 
         {{-- Material Tab --}}
-        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal' || Auth::user()->role === 'Direktur' || Auth::user()->role === 'Divisi Purchasing')
-            <div class="mt-4 flex-col">
-                <label for="material" class="font-bold">MATERIAL</label>
-                <a href="{{ route('material.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('material*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
-                    <i class="ph-bold ph-check-square-offset"></i>
-                    <span>Pengajuan & Status</span>
-                </a>
-            </div>
-        @endif
+        <div class="mt-4 flex-col">
+            <label for="material" class="font-bold">MATERIAL</label>
+            <a href="{{ route('material.index') }}"
+                class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('material*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                <i class="ph-bold ph-check-square-offset"></i>
+                <span>Pengajuan & Status</span>
+            </a>
+        </div>
 
         {{-- Keuangan Tab --}}
-        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance' || Auth::user()->role === 'Direktur')
-            <div class="mt-4 flex-col">
-                <label for="keuangan" class="font-bold">KEUANGAN</label>
-                <a href="{{ route('anggaran-proyek.index') }}"
-                    class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('anggaran-proyek*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
-                    <i class="ph-bold ph-coins"></i>
-                    <span>Anggaran Proyek</span>
-                </a>
-            </div>
-        @endif
+        <div class="mt-4 flex-col">
+            <label for="keuangan" class="font-bold">KEUANGAN</label>
+            <a href="{{ route('anggaran-proyek.index') }}"
+                class="flex flex-row items-center text-lg font-semibold mt-2 gap-2 {{ request()->is('anggaran-proyek*') ? 'text-[#3D42DF]' : 'hover:text-[#3D42DF]' }}">
+                <i class="ph-bold ph-coins"></i>
+                <span>Anggaran Proyek</span>
+            </a>
+        </div>
 
         {{-- Arsip --}}
         <div class="mt-4 flex-col">
