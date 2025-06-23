@@ -66,7 +66,7 @@
                 <h3 class="text-lg font-semibold mb-2">Role</h3>
                 <select name="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                     <option value="" disabled>Pilih Role</option>
-                    @foreach (['Divisi Teknikal', 'Divisi Purchasing', 'Divisi Finance', 'Divisi Admin', 'Direktur', 'Super Admin'] as $role)
+                    @foreach (['Divisi Teknikal', 'Divisi Purchasing', 'Divisi Finance', 'Direktur', 'Super Admin'] as $role)
                         <option value="{{ $role }}" {{ old('role', $user->role) === $role ? 'selected' : '' }}>{{ $role }}</option>
                     @endforeach
                 </select>
