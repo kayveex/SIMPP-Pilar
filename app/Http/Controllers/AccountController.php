@@ -74,4 +74,66 @@ class AccountController extends Controller
 
         return redirect()->route('user.index')->with('success', 'User account created successfully.');
     }
+
+    // show the edit form for a user account
+    public function editForm($id)
+    {
+        $user = User::findOrFail($id);
+        return view('pages.user.editacc', compact('user'));
+    }
+
+    // update a user account
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|string',
+            'photo' => 'nullable|image', // Optional photo upload
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+
+        // Handle photo upload if provided
+        if ($request->hasFile('photo')) {
+            $path = $request->file('photo')->store('photos', 'public');
+            $user->photo = $path;
+        }
+
+        $user->save();
+
+        create_notification(
+            'Akun User Diperbarui',
+            Auth::user()->name . ' telah memperbarui akun user: ' . $user->name,
+            'success',
+            Auth::id(),
+        );
+
+        return redirect()->route('user.index')->with('success', 'User account updated successfully.');
+    }
+
+    // delete a user account
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+
+        // Prevent deletion of the currently authenticated user
+        if ($user->id === Auth::id()) {
+            return redirect()->route('user.index')->with('error', 'You cannot delete your own account.');
+        }
+
+        $user->delete();
+
+        create_notification(
+            'Akun User Dihapus',
+            Auth::user()->name . ' telah menghapus akun user: ' . $user->name,
+            'success',
+            Auth::id(),
+        );
+
+        return redirect()->route('user.index')->with('success', 'User account deleted successfully.');
+    }
 }

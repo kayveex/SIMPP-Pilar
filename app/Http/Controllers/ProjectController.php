@@ -101,7 +101,7 @@ class ProjectController extends Controller
             'client_name' => 'required|max:255|min:3',
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
-            'description' => 'nullable|max:1000|min:3',
+            'description' => 'nullable|min:3',
             'location' => 'nullable|max:255|min:3',
         ]);
 
@@ -197,7 +197,7 @@ class ProjectController extends Controller
             'start_date' => 'required|date',
             'estimated_end_date' => 'required|date|after_or_equal:start_date',
             'actual_end_date' => 'nullable|date|after_or_equal:start_date',
-            'description' => 'nullable|max:1000',
+            'description' => 'nullable|min:3',
             'location' => 'nullable|max:255',
         ]);
 

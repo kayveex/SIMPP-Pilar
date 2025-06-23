@@ -91,10 +91,10 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->role }}</td>
                             <td class="text-lg">
-                                <a title="Edit Akun" href="" class="text-yellow-500 hover:text-yellow-600">
+                                <a title="Edit Akun" href="{{ route('user.edit', $user->id) }}" class="text-yellow-500 hover:text-yellow-600">
                                     <i class="ph-bold ph-pencil-simple-line"></i>
                                 </a>
-                                <form action="" method="POST" class="inline-block ml-2">
+                                <form action="{{ route('user.delete', $user->id) }}" method="POST" class="inline-block ml-2">
                                     @csrf
                                     @method('DELETE')
                                     <button title="Hapus Akun" type="submit" class="text-red-500 hover:text-red-600 cursor-pointer">
