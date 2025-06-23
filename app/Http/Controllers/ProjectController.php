@@ -32,6 +32,11 @@ class ProjectController extends Controller
             });
         }
 
+        // Kecualikan proyek selesai jika status tidak difilter secara eksplisit
+        if (!$request->filled('status')) {
+            $query->where('status', '!=', 'selesai');
+        }
+
         // Filter: Jenis Proyek
         if ($request->filled('project_type')) {
             $query->where('project_type', $request->project_type);
@@ -63,6 +68,7 @@ class ProjectController extends Controller
         
         return view('pages.projects.index', compact('projects'));
     }
+
 
 
     /**

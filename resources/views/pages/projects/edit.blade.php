@@ -108,7 +108,7 @@
 
                             <div class="mb-4">
                                 <h3 class="text-lg font-semibold mb-2">Keterangan Proyek</h3>
-                                <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>{{ $project->description }}</textarea>
+                                <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">{{ $project->description }}</textarea>
                             </div>
 
                             <div class="flex flex-row gap-4 mb-4">
