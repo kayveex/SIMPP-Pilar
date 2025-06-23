@@ -129,7 +129,8 @@ class ScheduleController extends Controller
         try {
             $phase->update([
                 'is_completed' => true,
-                'actual_end_date' => Carbon::now(),
+                // 'actual_end_date' => Carbon::now(),
+                'actual_end_date' => $phase->estimated_end_date,
                 'actual_start_date' => $phase->estimated_start_date,
             ]);
 
@@ -170,8 +171,8 @@ class ScheduleController extends Controller
         try {
             $phase->update([
                 'is_completed' => false,
-                'actual_start_date' => null,
-                'actual_end_date' => null,
+                // 'actual_start_date' => null,
+                // 'actual_end_date' => null,
             ]);
 
             // After undo, count the progress_percentage from Project
