@@ -275,7 +275,7 @@
                         @php
                             $userRole = Auth::user()->role;
                             $isPurchasing = $userRole === 'Divisi Purchasing' || $userRole === 'Super Admin';
-                            $isApproved = $material->purchasing_approval === true;
+                            $isApproved = $material->purchasing_approval == true || $material->purchasing_approval == 1 ;
                         @endphp
 
                         @if ($isPurchasing && !$isApproved)
