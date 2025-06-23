@@ -28,7 +28,8 @@
         {{-- Title --}}
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800"> Pengajuan Material</h1>
-            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal')
+            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Teknikal' || Auth::user()->role === 'Divisi Purchasing')
+                {{-- Button to create new material --}}
                 <a href="{{ route('material.create') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
                     <i class="ph-bold ph-plus"></i>
                     <span class="ml-2">Tambah Material</span>

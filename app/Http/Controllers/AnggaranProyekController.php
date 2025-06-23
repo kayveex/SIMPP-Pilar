@@ -171,6 +171,9 @@ class AnggaranProyekController extends Controller
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
         ]);
+        // isi total_budget pada model AnggaranRencana, hitung total_price dari anggaranRencanaItem
+        $anggaranRencana->total_budget += $anggaranRencanaItem->total_price;
+        $anggaranRencana->save();
 
         create_notification(
             'Item Anggaran Rencana Baru ',
@@ -207,6 +210,10 @@ class AnggaranProyekController extends Controller
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
         ]);
+
+        // isi total_budget pada model AnggaranRealisasi
+        $anggaranRealisasi->total_budget += $anggaranRealisasiItem->total_price;
+        $anggaranRealisasi->save();
 
         create_notification(
             'Item Anggaran Realisasi Baru ',

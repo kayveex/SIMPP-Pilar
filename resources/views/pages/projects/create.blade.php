@@ -49,7 +49,7 @@
                 <div class="flex flex-row">
                     {{-- Nama Proyek --}}
                     <div class="flex flex-col w-1/2">
-                        <label for="project_name" class="text-sm font-bold text-gray-700 mb-2">Nama Proyek</label>
+                        <label for="project_name" class="text-sm font-bold text-gray-700 mb-2">Nama Proyek <span class="text-red-500">*</span></label>
                         <input type="text" value="{{ old('project_name') }}" id="project_name" name="project_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                         @error('project_name')
                             <p class="text-red-500 text-sm mt-2">
@@ -59,7 +59,7 @@
                     </div>
                     {{-- Nama klien --}}
                     <div class="flex flex-col w-1/2 ml-4">
-                        <label for="client_name" class="text-sm font-bold text-gray-700 mb-2">Nama Klien</label>
+                        <label for="client_name" class="text-sm font-bold text-gray-700 mb-2">Nama Klien <span class="text-red-500">*</span></label>
                         <input type="text" value="{{ old('client_name') }}" id="client_name" name="client_name" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                         @error('client_name')
                             <p class="text-red-500 text-sm mt-2">
@@ -73,7 +73,7 @@
                 <div class="flex flex-row items-center mt-4">
                     {{-- Tanggal Mulai --}}
                     <div class="flex flex-col w-1/2">
-                        <label for="start_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Mulai</label>
+                        <label for="start_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Mulai <span class="text-red-500">*</span></label>
                         <input type="date" id="start_date" name="start_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                         @error('start_date')
                             <p class="text-red-500 text-sm mt-2">
@@ -87,7 +87,7 @@
 
                     {{-- Tanggal Selesai --}}
                     <div class="flex flex-col w-1/2">
-                        <label for="estimated_end_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Selesai (Perkiraan)</label>
+                        <label for="estimated_end_date" class="text-sm font-bold text-gray-700 mb-2">Tanggal Selesai (Perkiraan) <span class="text-red-500">*</span></label>
                         <input type="date" id="estimated_end_date" name="estimated_end_date" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                         @error('estimated_end_date')
                             <p class="text-red-500 text-sm mt-2">
@@ -101,7 +101,7 @@
                 <div class="flex flex-row mt-4">
                     {{-- Jenis Proyek --}}
                     <div class="flex flex-col w-1/3">
-                        <label for="project_type"  class="text-sm font-bold text-gray-700 mb-2">Jenis Proyek</label>
+                        <label for="project_type"  class="text-sm font-bold text-gray-700 mb-2">Jenis Proyek <span class="text-red-500">*</span></label>
                         <select name="project_type" id="project_type" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                             <option value="onsite">On-Site</option>
                             <option value="workshop">Workshop</option>
@@ -109,7 +109,7 @@
                     </div>
                     {{-- Status --}}
                     <div class="flex flex-col w-1/3 ml-4">
-                        <label for="status" class="text-sm font-bold text-gray-700 mb-2">Status</label>
+                        <label for="status" class="text-sm font-bold text-gray-700 mb-2">Status <span class="text-red-500">*</span></label>
                         <select name="status" id="status" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                             <option value="belum_dimulai">Belum Dimulai</option>
                             <option value="berlangsung">Berlangsung</option>
@@ -121,7 +121,7 @@
 
                     {{-- Penanggungjawab --}}
                     <div class="flex flex-col w-1/3 ml-4">
-                        <label for="person_in_charge" class="text-sm font-bold text-gray-700 mb-2">Penanggungjawab</label>
+                        <label for="person_in_charge" class="text-sm font-bold text-gray-700 mb-2">Penanggungjawab <span class="text-red-500">*</span></label>
                         <input type="text" value="{{ old('person_in_charge') }}" id="person_in_charge" name="person_in_charge" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required>
                         @error('person_in_charge')
                             <p class="text-red-500 text-sm mt-2">
@@ -134,8 +134,8 @@
                 {{-- Form Baris #4 --}}
                 <div class="flex flex-col mt-4">
                     {{-- Deskripsi Proyek --}}
-                    <label for="description" class="text-sm font-bold text-gray-700 mb-2">Keterangan Proyek</label>
-                    <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" required></textarea>
+                    <label for="description" class="text-sm font-bold text-gray-700 mb-2">Keterangan Proyek </label>
+                    <textarea id="description" name="description" rows="4" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"></textarea>
                     @error('description')
                         <p class="text-red-500 text-sm mt-2">
                             {{ $message }}

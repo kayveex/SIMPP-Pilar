@@ -31,8 +31,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/acc', [AccountController::class, 'index'])->name('user.index');
         Route::get('/acc/create', [AccountController::class, 'create'])->name('user.create');
         Route::post('/acc/store', [AccountController::class, 'store'])->name('user.store');
-
-
+        Route::get('/acc/edit/{id}', [AccountController::class, 'editForm'])->name('user.edit');
+        Route::patch('/acc/update/{id}', [AccountController::class, 'update'])->name('user.update');
+        Route::delete('/acc/delete/{id}', [AccountController::class, 'destroy'])->name('user.delete');
     });
         
     // Project Routes
