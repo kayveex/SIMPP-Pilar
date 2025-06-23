@@ -100,30 +100,23 @@
                                                         </a>
                                                     </div>
                                                     {{-- Delete Button --}}
-                                                    <form action="{{ route('progress-proyek.report.delete', $report->report_id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="text-red-600 hover:text-red-700 transition duration-200 cursor-pointer text-lg" title="Hapus Catatan">
-                                                            <i class="ph-bold ph-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    @if (Auth::user()->role == 'Super Admin' || Auth::user()->role == 'Divisi Teknikal')
+                                                        <form action="{{ route('progress-proyek.report.delete', $report->report_id) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="text-red-600 hover:text-red-700 transition duration-200 cursor-pointer text-lg" title="Hapus Catatan">
+                                                                <i class="ph-bold ph-trash"></i>
+                                                            </button>
+                                                        </form>        
+                                                    @endif
                                                 </td>
                                             </tr>  
                                         @endforeach
-                                        
                                     @endif
-
                                 </tbody>
-
                             </table>
                         </div>
-
-
-
-
                     </div>
-
-
                 </div>
                 <div x-show="tab === 'new_note'" class="space-y-4">
                     <div class="flex flex-col p-4">
