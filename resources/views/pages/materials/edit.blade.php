@@ -272,7 +272,13 @@
                         <h2 class="text-lg font-bold">Edit Persetujuan</h2>
                     </div>
                     <div class="flex flex-col border-2 border-blue-600 rounded-bl-lg rounded-tr-lg rounded-br-lg p-4">
-                        @if ((Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') && $material->purchasing_approval === false)
+                        @php
+                            $userRole = Auth::user()->role;
+                            $isPurchasing = $userRole === 'Divisi Purchasing' || $userRole === 'Super Admin';
+                            $isApproved = $material->purchasing_approval === true;
+                        @endphp
+
+                        @if ($isPurchasing && !$isApproved)
                             <h3 class="text-lg font-semibold">
                                 Berikan Persetujuan Material Sebagai Perwakilan Divisi Purchasing?
                             </h3>
@@ -285,7 +291,7 @@
                                 </button>
                             </form>
 
-                        @elseif ((Auth::user()->role === 'Divisi Purchasing' || Auth::user()->role === 'Super Admin') && $material->purchasing_approval === true)
+                        @elseif ($isPurchasing && $isApproved)
                             <h3 class="text-lg font-semibold">
                                 Material Sudah Disetujui Oleh Divisi Purchasing pada
                                 <span class="font-bold text-green-600">
@@ -301,7 +307,7 @@
                                 </button>
                             </form>
 
-                        @elseif ((Auth::user()->role !== 'Divisi Purchasing' && Auth::user()->role !== 'Super Admin') && $material->purchasing_approval === true)
+                        @elseif (!$isPurchasing && $isApproved)
                             <h3 class="text-lg font-semibold">
                                 Material ini sudah disetujui oleh Divisi Purchasing pada
                                 <span class="font-bold text-green-600">
@@ -311,14 +317,15 @@
                             <p class="text-sm text-gray-500 mt-2">
                                 Anda tidak dapat mengubah status persetujuan material ini karena sudah disetujui oleh Divisi Purchasing.
                             </p>
-                            @elseif ((Auth::user()->role !== 'Divisi Purchasing' && Auth::user()->role !== 'Super Admin') && $material->purchasing_approval === false)
-                                <h3 class="text-lg font-semibold">
-                                    Material ini belum disetujui oleh Divisi Purchasing.
-                                </h3>
-                                <p class="text-sm text-gray-500 mt-2">
-                                    Anda tidak dapat mengubah status persetujuan material ini karena bukan merupakan Divisi Purchasing.
-                                </p>
-                            @endif
+
+                        @elseif (!$isPurchasing && !$isApproved)
+                            <h3 class="text-lg font-semibold">
+                                Material ini belum disetujui oleh Divisi Purchasing.
+                            </h3>
+                            <p class="text-sm text-gray-500 mt-2">
+                                Anda tidak dapat mengubah status persetujuan material ini karena bukan merupakan Divisi Purchasing.
+                            </p>
+                        @endif
                     </div>
                 </div>
                 @endif

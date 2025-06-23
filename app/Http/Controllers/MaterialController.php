@@ -25,10 +25,6 @@ class MaterialController extends Controller
     {
         // Check authorization - only Technical and Purchasing can access materials
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
-
         $query = Material::with('project');
 
         if ($request->filled('search')) {
@@ -73,9 +69,6 @@ class MaterialController extends Controller
     {
         // Check authorization - only Technical and Purchasing can access materials
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect(to: '/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $material = Material::findOrFail($id);
 
@@ -99,9 +92,6 @@ class MaterialController extends Controller
     {
         // Check authorization - only Technical and Purchasing can access materials
         $user = Auth::user();
-        if (!$user->isTeknikal() && !$user->isPurchasing()) {
-            return redirect('/home')->with('error', 'Anda tidak memiliki akses untuk halaman ini');
-        }
 
         $material = Material::findOrFail($id);
 

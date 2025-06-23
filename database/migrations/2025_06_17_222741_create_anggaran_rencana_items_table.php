@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('anggaran_rencana_id'); // Foreign key to anggaran_rencana table
             $table->string('item_name'); // Name of the budget item
             $table->decimal('quantity', 15, 2);
-            $table->enum('unit', ['pcs', 'kg', 'm', 'cm', 'liter', 'set'])->default('pcs'); //unit of measurement
+            $table->string('unit')->default('pcs'); // Unit of measurement (e.g., pcs, kg, liter)
             $table->bigInteger('price_per_unit')->nullable(); //harga per unit, bisa dikosongkan jika tidak ada
             $table->decimal('total_price', 15, 2)->nullable(); //total harga, bisa dikosongkan jika tidak ada
 

@@ -160,11 +160,14 @@ class AnggaranProyekController extends Controller
 
         $anggaranRencana = AnggaranRencana::findOrFail($request->anggaran_rencana_id);
 
+        // Ambil unit final (jika 'lainnya', pakai input custom)
+        $finalUnit = $request->unit === 'lainnya' ? $request->custom_unit : $request->unit;
+
         $anggaranRencanaItem = AnggaranRencanaItems::create([
             'anggaran_rencana_id' => $request->anggaran_rencana_id,
             'item_name' => $request->item_name,
             'quantity' => $request->quantity,
-            'unit' => $request->unit,
+            'unit' => $finalUnit,
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
         ]);
@@ -193,11 +196,14 @@ class AnggaranProyekController extends Controller
 
         $anggaranRealisasi = AnggaranRealisasi::findOrFail($request->anggaran_realisasi_id);
 
+        // Ambil unit final (jika 'lainnya', pakai input custom)
+        $finalUnit = $request->unit === 'lainnya' ? $request->custom_unit : $request->unit;
+
         $anggaranRealisasiItem = AnggaranRealisasiItems::create([
             'anggaran_realisasi_id' => $request->anggaran_realisasi_id,
             'item_name' => $request->item_name,
             'quantity' => $request->quantity,
-            'unit' => $request->unit,
+            'unit' => $finalUnit,
             'price_per_unit' => $request->price_per_unit,
             'total_price' => $request->quantity * $request->price_per_unit, // Hitung total harga
         ]);

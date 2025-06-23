@@ -210,7 +210,6 @@
                             </table>
                         </div>
 
-
                         {{-- Info jumlah data + Pagination --}}
                         <div class="flex justify-between items-center mt-4 px-4 py-2 text-sm text-gray-600">
                             <div>

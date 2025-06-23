@@ -22,7 +22,19 @@
 @endsection
 
 @section('page-content')
-    <section class="flex flex-col px-6 pt-6" x-data="{ showCustomUnit: false }">
+    <section class="flex flex-col p-6"
+            x-data="{
+            showCustomUnit: false,
+            pricePerUnit: '{{ old('price_per_unit', 0) }}',
+            rupiahFormat(value) {
+                let val = parseFloat(value || 0);
+                return 'Rp ' + val.toLocaleString('id-ID', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
+        }"
+    >        
         <div class="flex flex-row items-center justify-between mb-4">
             <h1 class="text-2xl font-bold text-gray-800">Tambah Item Material</h1>
         </div>
@@ -92,9 +104,13 @@
                     @if(Auth::user()->isTeknikal())
                         <p class="text-sm text-gray-600 mb-2">Masukkan perkiraan harga. Divisi Purchasing dapat mengedit harga ini nanti.</p>
                     @endif
-                    <input type="number" id="price_per_unit" name="price_per_unit" step="any"
-                           class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                           value="{{ old('price_per_unit') }}" required>
+                        <input type="number" id="price_per_unit" name="price_per_unit"
+                            x-model="pricePerUnit"
+                            class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                            value="{{ old('price_per_unit') }}" required>
+                        <p class="text-sm text-gray-500 mt-2">
+                            Preview: <span x-text="rupiahFormat(pricePerUnit)"></span>
+                        </p>
                 </div>
 
                 <div class="mb-4">
