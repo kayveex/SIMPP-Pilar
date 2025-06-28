@@ -125,7 +125,7 @@ class MaterialController extends Controller
         return view('pages.materials.create', compact('projects'));
     }
 
-    // store a material 
+    // store a material - Pengajuan Material ke Divisi Purchasing
     public function storeMaterial(Request $request) 
     {
         $request->validate([
@@ -151,7 +151,8 @@ class MaterialController extends Controller
                 'Material Diajukan',
                 Auth::user()->name . ' telah mengajukan material: ' . $material->material_title,
                 'success',
-                Auth::id()
+                Auth::id(),
+                'Divisi Purchasing' // Target role for the notification
             );
 
             // Redirect to the edit page for the newly created material

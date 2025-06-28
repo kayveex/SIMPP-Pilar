@@ -74,7 +74,7 @@
     <div class="flex flex-row w-1/2 h-fit items-center justify-end">
         {{-- Make dropdown for notification --}}
         <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+            <label title="Notifikasi Saya" tabindex="0" class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
                 <i class="ph-fill ph-bell text-lg"></i>
                 @if ($countMyNotif > 0)
                     <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
@@ -137,8 +137,66 @@
 
             </ul>
         </div>
+
+        {{-- Dropdown Untuk Pengumuman Deadline fase proyek, untuk Divisi Teknikal saja --}}
+        @if (Auth::user()->role === 'Divisi Teknikal' || Auth::user()->role === 'Super Admin')
+            <div class="dropdown dropdown-end">
+                <label title="Reminder Proyek" tabindex="0"
+                    class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+                    <i class="ph-fill ph-megaphone text-lg"></i>
+                    {{-- Badge untuk jumlah fase reminder --}}
+                    @if ($reminderNotifCount > 0)
+                        <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                            {{ $reminderNotifCount }}
+                        </span>
+                    @elseif ($reminderNotifCount > 99)
+                        <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                            99 +
+                        </span>
+                    @endif
+
+                </label>
+
+                <ul tabindex="0"
+                    class="menu dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-80 py-4 px-4 shadow-lg">
+                    <div class="flex flex-row items-center gap-2 mb-3">
+                        <h2 class="font-bold text-lg">Reminder Proyek</h2>
+                    </div>
+
+                    @forelse($reminderProyek as $project)
+                        <li class="menu-title bg-[#3D42DF] text-white p-3 rounded-t-lg">
+                            <span class="text-sm font-bold">
+                                {{ $project->project_name }}
+                            </span>
+                        </li>
+
+                        @foreach($project->phases as $phase)
+                            <li class=" mb-3 border  p-3 bg-[#3D42DF]/10 border-[#3D42DF] rounded-b-lg">
+                                <div class="flex flex-row items-center gap-2 mb-1">
+                                    <i class="ph-bold ph-clock-countdown text-[#3D42DF]"></i>
+                                    <h3 class="font-semibold text-[#3D42DF]">
+                                        {{ $phase->phase_name }}
+                                    </h3>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500 ml-6 font-semibold">
+                                        Batas Akhir: <span class="text-red-500 font-bold">{{ $phase->estimated_end_date->format('d F Y') }}</span> 
+                                    </p>
+                                </div>
+                            </li>
+                        @endforeach
+                    @empty
+                        <li class="p-3 text-center text-gray-500">
+                            Tidak ada fase dalam 7 hari ke depan.
+                        </li>
+                    @endforelse
+                </ul>
+            </div>
+        @endif
+
+        {{-- Dropdown untuk Profil --}}
         <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="avatar btn border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+            <div title="Profil Saya" tabindex="0" role="button" class="avatar btn border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
                 <div class="w-10 rounded-full flex flex-col items-center justify-center border-2 border-[#3D42DF] hover:cursor-pointer">
                     <img alt="Profile Avatar" src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : 'https://placehold.co/300x300' }}" />
                 </div>
