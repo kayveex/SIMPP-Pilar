@@ -203,7 +203,7 @@ class MaterialController extends Controller
                 'Material Diperbarui',
                 Auth::user()->name . ' telah memperbarui material: ' . $material->material_title,
                 'success',
-                Auth::id()
+                Auth::id(),
             );
 
             return redirect()->route('material.index')->with('success', 'Material berhasil diperbarui.');
@@ -233,7 +233,8 @@ class MaterialController extends Controller
                 'Material Disetujui',
                 Auth::user()->name . ' telah menyetujui material: ' . $material->material_title,
                 'success',
-                Auth::id()
+                Auth::id(),
+                'Divisi Teknikal'
             );
 
             return redirect()->route('material.index')->with('success', 'Material berhasil disetujui.');
@@ -255,7 +256,8 @@ class MaterialController extends Controller
                 'Material Ditolak',
                 Auth::user()->name . ' telah menolak material: ' . $material->material_title,
                 'warning',
-                Auth::id()
+                Auth::id(),
+                'Divisi Teknikal'
             );
 
             return redirect()->route('material.index')->with('success', 'Persetujuan material berhasil dihapus.');

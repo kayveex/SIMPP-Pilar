@@ -72,6 +72,56 @@
     </div>
     {{-- Right side  --}}
     <div class="flex flex-row w-1/2 h-fit items-center justify-end">
+        {{-- Make dropdown for global notification --}}
+        <div class="dropdown dropdown-end">
+            <label title="Aktivitas Global" tabindex="0" class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+                @if ($countGlobalNotif == 0)
+                    <i class="ph-bold ph-globe"></i>
+                @elseif ($countGlobalNotif > 0)
+                    <i class="ph-fill ph-globe-simple text-lg"></i>
+                @endif
+            </label>
+
+            <ul tabindex="0" class="menu dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-80 py-4 px-4 shadow-lg">
+                <div class="flex flex-row items-center justify-between mb-3">
+                    <h2 class="font-bold text-lg">Aktivitas Global</h2>
+                    <a class="text-sm font-semibold bg-[#3D42DF] text-white px-3 py-1 rounded-lg hover:bg-[#3D42DF]/90 transition-colors" href="{{ route('notif.index') }}">Lihat Semua</a>
+                </div>
+
+                @if ($countGlobalNotif == 0)
+                    <li class="bg-gray-50 mb-3 border border-gray-200 p-3 hover:bg-[#3D42DF]/10 hover:border-[#3D42DF] rounded-lg">
+                        <div class="flex flex-row items-center gap-2 mb-1">
+                            <i class="ph-bold ph-bell text-gray-400"></i>
+                            <h3 class="font-semibold text-gray-600">Tidak ada aktivitas</h3>     
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 ml-6">
+                                Anda tidak memiliki aktivitas baru.
+                            </p>
+                        </div>
+                    </li>
+
+                @elseif ($countGlobalNotif > 0)
+                    {{-- Loop the $myNotif --}}
+                    @foreach ($globalNotif as $notif)
+                        <li class="bg-gray-50 border border-gray-200 mb-2 p-3 hover:bg-[#3D42DF]/10 hover:border-[#3D42DF] rounded-lg transition-all duration-200">
+                            <div class="flex flex-row items-start gap-2">
+                                <i class="ph-bold ph-bell text-[#3D42DF] mt-0.5"></i>
+                                <h3 class="font-semibold text-gray-800 text-sm leading-tight">{{ $notif->title }}</h3>
+                            </div>
+                            <div class="ml-6">
+                                <p class="text-sm text-gray-600 leading-tight">
+                                    {{ $notif->message }}
+                                </p>
+                            </div>
+                        </li>
+                    @endforeach    
+                @endif
+            </ul>
+        </div>
+
+
+
         {{-- Make dropdown for notification --}}
         <div class="dropdown dropdown-end">
             <label title="Notifikasi Saya" tabindex="0" class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
@@ -141,56 +191,64 @@
         {{-- Dropdown Untuk Pengumuman Deadline fase proyek, untuk Divisi Teknikal saja --}}
         @if (Auth::user()->role === 'Divisi Teknikal' || Auth::user()->role === 'Super Admin')
             <div class="dropdown dropdown-end">
-                <label title="Reminder Proyek" tabindex="0"
-                    class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20 rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
-                    <i class="ph-fill ph-megaphone text-lg"></i>
-                    {{-- Badge untuk jumlah fase reminder --}}
-                    @if ($reminderNotifCount > 0)
-                        <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
-                            {{ $reminderNotifCount }}
-                        </span>
-                    @elseif ($reminderNotifCount > 99)
-                        <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
-                            99 +
-                        </span>
-                    @endif
+            <label title="Reminder Proyek" tabindex="0"
+                    class="btn text-[#3D42DF] btn-ghost border-none bg-none hover:bg-[#3D42DF]/20
+                            rounded-lg py-6 w-full flex flex-row items-center gap-3 hover:cursor-pointer">
+                <i class="ph-fill ph-megaphone text-lg"></i>
+                {{-- Periksa >99 dulu, baru >0 --}}
+                @if ($reminderNotifCount > 99)
+                <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                    99+
+                </span>
+                @elseif ($reminderNotifCount > 0)
+                <span class="badge badge-xs badge-primary bg-red-500 px-2 py-2 rounded-full text-white">
+                    {{ $reminderNotifCount }}
+                </span>
+                @endif
+            </label>
 
-                </label>
+            <ul tabindex="0"
+                class="menu dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-80 py-4 px-4 shadow-lg">
+                <div class="flex flex-row items-center gap-2 mb-3">
+                <h2 class="font-bold text-lg">Reminder Proyek</h2>
+                </div>
 
-                <ul tabindex="0"
-                    class="menu dropdown-content bg-[#FFFFFF] rounded-box rounded-lg z-1 mt-3 w-80 py-4 px-4 shadow-lg">
-                    <div class="flex flex-row items-center gap-2 mb-3">
-                        <h2 class="font-bold text-lg">Reminder Proyek</h2>
+                {{-- Forelse tunggal untuk projects --}}
+                @forelse ($reminderProyek as $project)
+                {{-- Judul project --}}
+                <li class="menu-title bg-[#3D42DF] text-white p-3 rounded-t-lg">
+                    <span class="text-sm font-bold">
+                    {{ $project->project_name }}
+                    </span>
+                </li>
+
+                {{-- Loop fase untuk setiap project --}}
+                @foreach ($project->phases as $phase)
+                    <li class="mb-3 border p-3 bg-[#3D42DF]/10 border-[#3D42DF] rounded-b-lg">
+                    <div class="flex flex-row items-center gap-2 mb-1">
+                        <i class="ph-bold ph-clock-countdown text-[#3D42DF]"></i>
+                        <h3 class="font-semibold text-[#3D42DF]">
+                        {{ $phase->phase_name }}
+                        </h3>
                     </div>
+                    <div>
+                        <p class="text-sm text-gray-500 ml-6 font-semibold">
+                        Batas Akhir: 
+                        <span class="text-red-500 font-bold">
+                            {{ $phase->estimated_end_date->format('d F Y') }}
+                        </span>
+                        </p>
+                    </div>
+                    </li>
+                @endforeach
 
-                    @forelse($reminderProyek as $project)
-                        <li class="menu-title bg-[#3D42DF] text-white p-3 rounded-t-lg">
-                            <span class="text-sm font-bold">
-                                {{ $project->project_name }}
-                            </span>
-                        </li>
+                @empty
+                <li class="p-3 text-center text-gray-500">
+                    Tidak ada proyek yang memiliki fase dalam 7 hari ke depan.
+                </li>
+                @endforelse
 
-                        @foreach($project->phases as $phase)
-                            <li class=" mb-3 border  p-3 bg-[#3D42DF]/10 border-[#3D42DF] rounded-b-lg">
-                                <div class="flex flex-row items-center gap-2 mb-1">
-                                    <i class="ph-bold ph-clock-countdown text-[#3D42DF]"></i>
-                                    <h3 class="font-semibold text-[#3D42DF]">
-                                        {{ $phase->phase_name }}
-                                    </h3>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500 ml-6 font-semibold">
-                                        Batas Akhir: <span class="text-red-500 font-bold">{{ $phase->estimated_end_date->format('d F Y') }}</span> 
-                                    </p>
-                                </div>
-                            </li>
-                        @endforeach
-                    @empty
-                        <li class="p-3 text-center text-gray-500">
-                            Tidak ada fase dalam 7 hari ke depan.
-                        </li>
-                    @endforelse
-                </ul>
+            </ul>
             </div>
         @endif
 
