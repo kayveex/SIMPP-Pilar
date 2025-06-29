@@ -77,7 +77,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $notification->title }}</div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $notification->message }}">
+                                            <div class="text-sm text-gray-900" title="{{ $notification->message }}">
                                                 {{ $notification->message }}
                                             </div>
                                         </td>
@@ -162,7 +162,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $notification->title }}</div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $notification->message }}">
+                                            <div class="text-sm text-gray-900" title="{{ $notification->message }}">
                                                 {{ $notification->message }}
                                             </div>
                                         </td>
@@ -240,7 +240,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $notification->title }}</div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $notification->message }}">
+                                            <div class="text-sm text-gray-900" title="{{ $notification->message }}">
                                                 {{ $notification->message }}
                                             </div>
                                         </td>
@@ -314,7 +314,7 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $notification->title }}</div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="text-sm text-gray-900 max-w-xs truncate" title="{{ $notification->message }}">
+                                            <div class="text-sm text-gray-900" title="{{ $notification->message }}">
                                                 {{ $notification->message }}
                                             </div>
                                         </td>
