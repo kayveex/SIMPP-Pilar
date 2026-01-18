@@ -28,7 +28,7 @@ class ProjectController extends Controller
             $search = strtolower($request->search); // konversi input ke lowercase
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(client_name) LIKE ?', ["%{$search}%"]);
+                    ->orWhereRaw('LOWER(client_name) LIKE ?', ["%{$search}%"]);
             });
         }
 
@@ -56,16 +56,16 @@ class ProjectController extends Controller
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(7));
                 } elseif ($request->priority === 'medium') {
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(14))
-                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(7));
+                        ->whereDate('estimated_end_date', '>', $today->copy()->addDays(7));
                 } elseif ($request->priority === 'low') {
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(30))
-                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(14));
+                        ->whereDate('estimated_end_date', '>', $today->copy()->addDays(14));
                 }
             });
         }
 
         $projects = $query->orderBy('created_at', 'desc')->paginate(5)->withQueryString();
-        
+
         return view('pages.projects.index', compact('projects'));
     }
 
@@ -152,7 +152,7 @@ class ProjectController extends Controller
                 'success',
                 Auth::id()
             );
-           
+
             return redirect()->route('projects.index')->with('success', 'Proyek berhasil dibuat!');
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -220,7 +220,7 @@ class ProjectController extends Controller
                 'client_name' => $request->client_name,
                 'start_date' => $request->start_date,
                 'estimated_end_date' => $request->estimated_end_date,
-                'actual_end_date' => $request->actual_end_date, 
+                'actual_end_date' => $request->actual_end_date,
                 'description' => $request->description,
                 'location' => $request->location,
             ]);
@@ -235,7 +235,7 @@ class ProjectController extends Controller
 
             DB::commit();
             return redirect()->route('projects.index')->with('success', 'Detail Proyek berhasil diperbarui!');
-            
+
         } catch (\Throwable $th) {
             DB::rollBack();
             dd($th);
@@ -287,6 +287,18 @@ class ProjectController extends Controller
                 $document->delete();
             }
 
+            // Hapus semua Anggaran Rencana dan items terkait
+            foreach ($project->anggaranRencana as $anggaranRencana) {
+                $anggaranRencana->items()->delete();
+                $anggaranRencana->delete();
+            }
+
+            // Hapus semua Anggaran Realisasi dan items terkait
+            foreach ($project->anggaranRealisasi as $anggaranRealisasi) {
+                $anggaranRealisasi->items()->delete();
+                $anggaranRealisasi->delete();
+            }
+
             // Terakhir, hapus Project itu sendiri
             $project->delete();
 
@@ -307,7 +319,7 @@ class ProjectController extends Controller
     }
 
     // Adding new document to project
-    public function addDocuments(Request $request, $id) 
+    public function addDocuments(Request $request, $id)
     {
         $request->validate([
             'attachments.*' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png',

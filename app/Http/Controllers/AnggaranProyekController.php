@@ -17,7 +17,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AnggaranProyekController extends Controller
 {
-    
+
     // Display index page for Anggaran Proyek
     public function index(Request $request)
     {
@@ -28,7 +28,7 @@ class AnggaranProyekController extends Controller
             $search = strtolower($request->search); // konversi input ke lowercase
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(project_name) LIKE ?', ["%{$search}%"])
-                ->orWhereRaw('LOWER(client_name) LIKE ?', ["%{$search}%"]);
+                    ->orWhereRaw('LOWER(client_name) LIKE ?', ["%{$search}%"]);
             });
         }
 
@@ -51,10 +51,10 @@ class AnggaranProyekController extends Controller
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(7));
                 } elseif ($request->priority === 'medium') {
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(14))
-                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(7));
+                        ->whereDate('estimated_end_date', '>', $today->copy()->addDays(7));
                 } elseif ($request->priority === 'low') {
                     $q->whereDate('estimated_end_date', '<=', $today->copy()->addDays(30))
-                    ->whereDate('estimated_end_date', '>', $today->copy()->addDays(14));
+                        ->whereDate('estimated_end_date', '>', $today->copy()->addDays(14));
                 }
             });
         }
@@ -96,9 +96,9 @@ class AnggaranProyekController extends Controller
 
         return view('pages.anggaran-proyek.add-anggaran-realisasi', compact('project', 'anggaranRealisasi'));
     }
-    
+
     // Store Anggaran Rencana
-    public function storeAnggaranRencana(Request $request, $projectId) 
+    public function storeAnggaranRencana(Request $request, $projectId)
     {
         $project = Project::findOrFail($projectId);
         // Validasi input
@@ -146,7 +146,7 @@ class AnggaranProyekController extends Controller
         return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Anggaran realisasi berhasil ditambahkan.');
     }
-    
+
     // Store Anggaran Rencana Items
     public function storeAnggaranRencanaItems(Request $request)
     {
@@ -243,7 +243,7 @@ class AnggaranProyekController extends Controller
         );
         return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Anggaran rencana berhasil dihapus.');
-  
+
     }
 
     // Hapus Anggaran Realisasi dan semua item terkait
@@ -263,9 +263,9 @@ class AnggaranProyekController extends Controller
 
         return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Anggaran realisasi berhasil dihapus.');
-        
+
     }
-    
+
     // Delete Anggaran Rencana Item
     public function deleteAnggaranRencanaItem($id)
     {
@@ -284,13 +284,13 @@ class AnggaranProyekController extends Controller
         return redirect()->route('anggaran-proyek.detail', $anggaranRencanaId)
             ->with('success', 'Item anggaran rencana berhasil dihapus.');
     }
-    
+
     // Delete Anggaran Realisasi Item
     public function deleteAnggaranRealisasiItem($id)
     {
         // Hapus Anggaran Realisasi Item
-        $anggaranRealisasiItem = AnggaranRencanaItems::findOrFail($id);
-        $anggaranRealisasiId = $anggaranRealisasiItem->anggaran_rencana_id;
+        $anggaranRealisasiItem = AnggaranRealisasiItems::findOrFail($id);
+        $projectId = $anggaranRealisasiItem->anggaranRealisasi->project_id;
         $anggaranRealisasiItem->delete();
 
         create_notification(
@@ -300,7 +300,7 @@ class AnggaranProyekController extends Controller
             Auth::id()
         );
 
-        return redirect()->route('anggaran-proyek.detail', $anggaranRealisasiId)
+        return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Item anggaran realisasi berhasil dihapus.');
     }
 
@@ -311,7 +311,7 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
-        
+
         return Excel::download(new BudgetExport($projectId), $fileName);
     }
 
@@ -322,8 +322,8 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Rencana_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
-        
-        
+
+
         return Excel::download(new AnggaranRencanaExport($projectId), $fileName);
     }
 
@@ -334,7 +334,7 @@ class AnggaranProyekController extends Controller
     {
         $project = Project::findOrFail($projectId);
         $fileName = 'Anggaran_Realisasi_' . str_replace(' ', '_', $project->project_name) . '_' . date('Y-m-d') . '.xlsx';
-             
+
         return Excel::download(new AnggaranRealisasiExport($projectId), $fileName);
     }
 

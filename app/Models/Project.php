@@ -12,7 +12,7 @@ class Project extends Model
     protected $table = 'projects';
     protected $primaryKey = 'project_id';
     public $incrementing = true;
-    
+
     protected $fillable = [
         'project_name',
         'project_type',
@@ -62,10 +62,13 @@ class Project extends Model
         return $this->hasMany(ProjectDocument::class, 'project_id');
     }
 
+    public function anggaranRencana()
+    {
+        return $this->hasMany(AnggaranRencana::class, 'project_id');
+    }
 
-
-
-
-
-
+    public function anggaranRealisasi()
+    {
+        return $this->hasMany(AnggaranRealisasi::class, 'project_id');
+    }
 }
