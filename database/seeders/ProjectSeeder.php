@@ -54,7 +54,8 @@ class ProjectSeeder extends Seeder
                 'actual_end_date' => null,
                 'project_type' => 'workshop',
                 'person_in_charge' => 'Citra Dewi',
-                'status' => 'belum_dimulai',                'description' => 'Line boring dan undercoat polishing untuk engine block alat berat',
+                'status' => 'belum_dimulai',
+                'description' => 'Line boring dan undercoat polishing untuk engine block alat berat',
                 'created_by' => 1,
                 'created_at' => Carbon::now()->subMonths(1),
                 'updated_at' => Carbon::now()
@@ -75,7 +76,7 @@ class ProjectSeeder extends Seeder
                 'created_at' => Carbon::now()->subDays(15),
                 'updated_at' => Carbon::now()
             ],
-            
+
             // Completed Projects
             [
                 'project_name' => 'Repair Bearing Housing',
@@ -109,7 +110,7 @@ class ProjectSeeder extends Seeder
                 'created_at' => Carbon::now()->subMonths(5),
                 'updated_at' => Carbon::now()
             ],
-              // Planning Projects
+            // Planning Projects
             [
                 'project_name' => 'Cylinder Head Reconditioning',
                 'client_name' => 'PT. Toyota Motor Manufacturing',
@@ -158,7 +159,7 @@ class ProjectSeeder extends Seeder
                 'created_at' => Carbon::now()->subDays(1),
                 'updated_at' => Carbon::now()
             ],
-            
+
             // Additional Projects
             [
                 'project_name' => 'Hydraulic Cylinder Repair',
@@ -191,7 +192,8 @@ class ProjectSeeder extends Seeder
                 'created_by' => 1,
                 'created_at' => Carbon::now()->subMonths(2),
                 'updated_at' => Carbon::now()
-            ],            [
+            ],
+            [
                 'project_name' => 'Gear Box Overhaul',
                 'client_name' => 'PT. Scania Indonesia',
                 'location' => 'Cakung',
@@ -210,8 +212,10 @@ class ProjectSeeder extends Seeder
         ];
 
         // Clear existing data first
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('projects')->truncate();
-        
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
         // Insert new data
         DB::table('projects')->insert($projects);
     }

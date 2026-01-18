@@ -37,14 +37,18 @@
         </div>
 
         {{-- Content Section --}}
-        <div x-data="{tab: 'tab1'}" class="w-full bg-white shadow-md rounded-xl border border-gray-200" >
+        <div x-data="{tab: 'tab1'}" class="w-full bg-white shadow-md rounded-xl border border-gray-200">
             {{-- Tab Header --}}
             <div class="flex border-b border-gray-200 bg-[#F1F4F9] rounded-t-xl font-bold">
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'tab1'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'tab1', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'tab1'}" class="px-4 py-2 focus:outline-none">
+                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'tab1'"
+                    :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'tab1', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'tab1'}"
+                    class="px-4 py-2 focus:outline-none">
                     <i class="ph-bold ph-receipt"></i>
                     <span>Rencana Anggaran</span>
                 </button>
-                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'tab2'" :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'tab2', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'tab2'}" class="px-4 py-2 focus:outline-none">
+                <button class="flex px-3 py-2 flex-row gap-2 items-center" @click="tab = 'tab2'"
+                    :class="{'border-blue-500 text-blue-600 bg-white rounded-t-xl': tab === 'tab2', 'text-gray-500 bg-[#F1F4F9] cursor-pointer': tab !== 'tab2'}"
+                    class="px-4 py-2 focus:outline-none">
                     <i class="ph-bold ph-hand-coins"></i>
                     <span>Realisasi Anggaran</span>
                 </button>
@@ -53,16 +57,18 @@
             {{-- Tab Content --}}
             <div class="p-6">
                 <div x-show="tab === 'tab1'" class="mt-4">
-                    <div class="flex flex-col p-4" >
+                    <div class="flex flex-col p-4">
                         <div class="flex flex-row items-center justify-between gap-2">
                             <h2 class="text-2xl font-bold">Rencana Anggaran</h2>
                             <div class="flex flex-row items-center gap-2">
-                                <a href="{{ route('anggaran-proyek.export.rencana', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
+                                <a href="{{ route('anggaran-proyek.export.rencana', $project->project_id) }}"
+                                    class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>
                                 @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
-                                    <a href="{{ route('anggaran-proyek.add', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200" >
+                                    <a href="{{ route('anggaran-proyek.add', $project->project_id) }}"
+                                        class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                         <i class="ph-bold ph-plus"></i>
                                         <span class="ml-2 font-bold">Tambahkan</span>
                                     </a>
@@ -72,7 +78,8 @@
 
                         {{-- Display project name --}}
                         <div class="mt-4">
-                            <h3 class="text-lg font-bold">Proyek: <span class="font-normal">{{ $project->project_name }}</span></h3>
+                            <h3 class="text-lg font-bold">Proyek: <span
+                                    class="font-normal">{{ $project->project_name }}</span></h3>
                         </div>
                         {{-- hr line --}}
                         <hr class="my-4 border-gray-300">
@@ -105,14 +112,17 @@
                                             <td></td>
                                             @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
                                                 <td>
-                                                    <form action="{{ route('anggaran-proyek.rencana.delete', $aren->anggaran_rencana_id) }}" method="POST">
+                                                    <form
+                                                        action="{{ route('anggaran-proyek.rencana.delete', $aren->anggaran_rencana_id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                        <button type="submit" title="Hapus Uraian Anggaran"
+                                                            class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
                                                             <i class="ph-bold ph-minus-circle"></i>
                                                         </button>
                                                     </form>
-                                                </td> 
+                                                </td>
                                             @endif
                                             @foreach ($aren->items as $index2 => $item)
                                                 <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
@@ -127,10 +137,13 @@
                                                     {{-- Ini untuk Perintah Aksi`` --}}
                                                     @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
                                                         <td>
-                                                            <form action="{{ route('anggaran-proyek.rencana.items.delete', $item->anggaran_rencana_item_id) }}" method="POST">
+                                                            <form
+                                                                action="{{ route('anggaran-proyek.rencana.items.delete', $item->anggaran_rencana_item_id) }}"
+                                                                method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                                <button type="submit" title="Hapus Item"
+                                                                    class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
                                                                     <i class="ph-bold ph-trash"></i>
                                                                 </button>
                                                             </form>
@@ -141,21 +154,22 @@
                                         <tr>
                                             <td colspan="7" class="text-right">
                                                 {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
-                                                <strong>Total: </strong> Rp {{ number_format($aren->items->sum('total_price'), 0, ',', '.') }}
+                                                <strong>Total: </strong> Rp
+                                                {{ number_format($aren->items->sum('total_price'), 0, ',', '.') }}
                                             </td>
                                         </tr>
                                     @endforeach
 
 
-                                    
+
                                 @endif
 
                                 <tr>
                                     <td colspan="7" class="text-right font-bold text-gray-700">
                                         {{-- Total keseluruhan dari semua rencana anggaran --}}
-                                        Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRencana->sum(function($item) {
-                                            return $item->items->sum('total_price');
-                                        }), 0, ',', '.') }}</span> 
+                                        Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRencana->sum(function ($item) {
+        return $item->items->sum('total_price');
+    }), 0, ',', '.') }}</span>
                                     </td>
                                 </tr>
 
@@ -167,21 +181,23 @@
                                 @endif
                             </tbody>
                         </table>
-                        
+
                     </div>
                 </div>
                 <div x-show="tab === 'tab2'" class="mt-4">
-                    <div class="flex flex-col p-4" >
+                    <div class="flex flex-col p-4">
                         <div class="flex flex-row items-center justify-between gap-2">
                             <h2 class="text-2xl font-bold">Realisasi Anggaran</h2>
 
                             <div class="flex flex-row items-center gap-2">
-                                <a href="{{ route('anggaran-proyek.export.realisasi', $project->project_id) }}" class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
+                                <a href="{{ route('anggaran-proyek.export.realisasi', $project->project_id) }}"
+                                    class="px-4 py-2 bg-green-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-green-700 transition duration-200">
                                     <i class="ph-bold ph-microsoft-excel-logo"></i>
                                     <span class="ml-2 font-bold">Export Excel</span>
                                 </a>
                                 @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
-                                    <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}" class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
+                                    <a href="{{ route('anggaran-proyek.add.realisasi', $project->project_id) }}"
+                                        class="px-4 py-2 bg-blue-600 flex flex-row items-center cursor-pointer text-white rounded-lg hover:bg-blue-700 transition duration-200">
                                         <i class="ph-bold ph-plus"></i>
                                         <span class="ml-2 font-bold">Tambahkan</span>
                                     </a>
@@ -189,7 +205,8 @@
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h3 class="text-lg font-bold">Proyek: <span class="font-normal">{{ $project->project_name }}</span></h3>
+                            <h3 class="text-lg font-bold">Proyek: <span
+                                    class="font-normal">{{ $project->project_name }}</span></h3>
                         </div>
                         {{-- hr line --}}
                         <hr class="my-4 border-gray-300">
@@ -212,70 +229,78 @@
 
                             <tbody class="text-center">
                                 @if (isset($anggaranRealisasi) && count($anggaranRealisasi) > 0)
-                                    @foreach ($anggaranRealisasi as $index => $are)
-                                        {{-- Row untuk kategori --}}
-                                        <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
-                                            <td>{{ chr(65 + $index) }}.</td>
-                                            <td>{{ $are->title }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
-                                                <td>
-                                                    <form action="{{ route('anggaran-proyek.realisasi.delete', $aren->anggaran_rencana_id) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" title="Hapus Uraian Anggaran" class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
-                                                            <i class="ph-bold ph-minus-circle"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>  
-                                            @endif
-                                        </tr>
+                                                            @foreach ($anggaranRealisasi as $index => $are)
+                                                                {{-- Row untuk kategori --}}
+                                                                <tr class="border-b font-semibold border-gray-200 hover:bg-gray-50 transition duration-200">
+                                                                    <td>{{ chr(65 + $index) }}.</td>
+                                                                    <td>{{ $are->title }}</td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                                        <td>
+                                                                            <form
+                                                                                action="{{ route('anggaran-proyek.realisasi.delete', $are->anggaran_realisasi_id) }}"
+                                                                                method="POST">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" title="Hapus Uraian Anggaran"
+                                                                                    class="px-3 text-xl py-1 text-red-600 rounded-lg hover:text-red-700 transition duration-200 cursor-pointer items-center">
+                                                                                    <i class="ph-bold ph-minus-circle"></i>
+                                                                                </button>
+                                                                            </form>
+                                                                        </td>
+                                                                    @endif
+                                                                </tr>
 
-                                        {{-- Rows untuk item per kategori --}}
-                                        @foreach ($are->items as $index2 => $item)
-                                            <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
-                                                <td>{{ $index2 + 1 }}</td>
-                                                <td>{{ $item->item_name }}</td>
-                                                <td>{{ $item->quantity }}</td>
-                                                <td>{{ ucfirst($item->unit) }}</td>
-                                                <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
-                                                <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
-                                                @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
-                                                    <td>
-                                                        <form action="{{ route('anggaran-proyek.realisasi.items.delete', $item->anggaran_realisasi_item_id) }}" method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" title="Hapus Item" class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
-                                                                <i class="ph-bold ph-trash"></i>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
-                                        <tr>
-                                            <td colspan="7" class="text-right">
-                                                {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
-                                                <strong>Total: </strong> Rp {{ number_format($are->items->sum('total_price'), 0, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td colspan="7" class="text-right font-bold text-gray-700">
-                                            {{-- Total keseluruhan dari semua rencana anggaran --}}
-                                            Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRealisasi->sum(function($item) {
-                                                return $item->items->sum('total_price');
-                                            }), 0, ',', '.') }}</span> 
-                                        </td>
-                                    </tr>
+                                                                {{-- Rows untuk item per kategori --}}
+                                                                @foreach ($are->items as $index2 => $item)
+                                                                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition duration-200">
+                                                                        <td>{{ $index2 + 1 }}</td>
+                                                                        <td>{{ $item->item_name }}</td>
+                                                                        <td>{{ $item->quantity }}</td>
+                                                                        <td>{{ ucfirst($item->unit) }}</td>
+                                                                        <td>Rp {{ number_format($item->price_per_unit, 0, ',', '.') }}</td>
+                                                                        <td>Rp {{ number_format($item->total_price, 0, ',', '.') }}</td>
+                                                                        @if (Auth::user()->role === 'Super Admin' || Auth::user()->role === 'Divisi Finance')
+                                                                            <td>
+                                                                                <form
+                                                                                    action="{{ route('anggaran-proyek.realisasi.items.delete', $item->anggaran_realisasi_item_id) }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    @method('DELETE')
+                                                                                    <button type="submit" title="Hapus Item"
+                                                                                        class="px-3 py-1 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200 cursor-pointer items-center">
+                                                                                        <i class="ph-bold ph-trash"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            </td>
+                                                                        @endif
+                                                                    </tr>
+                                                                @endforeach
+                                                                <tr>
+                                                                    <td colspan="7" class="text-right">
+                                                                        {{-- Total Keseluruhan Harga, dari penjumlahan total_price --}}
+                                                                        <strong>Total: </strong> Rp
+                                                                        {{ number_format($are->items->sum('total_price'), 0, ',', '.') }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td colspan="7" class="text-right font-bold text-gray-700">
+                                                                    {{-- Total keseluruhan dari semua rencana anggaran --}}
+                                                                    Total Anggaran: <span class="font-medium">Rp {{ number_format($anggaranRealisasi->sum(function ($item) {
+                                        return $item->items->sum('total_price');
+                                    }), 0, ',', '.') }}</span>
+                                                                </td>
+                                                            </tr>
                                 @else
                                     <tr>
-                                        <td colspan="7" class="text-center text-gray-500">Tidak ada data realisasi anggaran.</td>
+                                        <td colspan="7" class="text-center text-gray-500">Tidak ada data realisasi anggaran.
+                                        </td>
                                     </tr>
-                                @endif    
+                                @endif
                             </tbody>
                         </table>
 
