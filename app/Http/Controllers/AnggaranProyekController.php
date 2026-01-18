@@ -271,7 +271,7 @@ class AnggaranProyekController extends Controller
     {
         // Hapus Anggaran Rencana Item
         $anggaranRencanaItem = AnggaranRencanaItems::findOrFail($id);
-        $anggaranRencanaId = $anggaranRencanaItem->anggaran_rencana_id;
+        $projectId = $anggaranRencanaItem->anggaranRencana->project_id;
         $anggaranRencanaItem->delete();
 
         create_notification(
@@ -281,7 +281,7 @@ class AnggaranProyekController extends Controller
             Auth::id()
         );
 
-        return redirect()->route('anggaran-proyek.detail', $anggaranRencanaId)
+        return redirect()->route('anggaran-proyek.detail', $projectId)
             ->with('success', 'Item anggaran rencana berhasil dihapus.');
     }
 
